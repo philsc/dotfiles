@@ -1,0 +1,13 @@
+# Aliases for easier screen usage.
+alias s='screen'
+alias sr='screen -r'
+alias sls='screen -ls'
+
+function sc() {
+  if [[ -z "$1" ]]; then
+    screen
+  else
+    screen -S "$1" -t "$1"
+  fi
+}
+

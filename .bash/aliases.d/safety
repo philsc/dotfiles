@@ -1,0 +1,18 @@
+# Command to allow for better file handling when deleting
+function del() {
+  test -d "$HOME/.trash" || mkdir "$HOME/.trash"
+  mv "$@" "$HOME/.trash"
+}
+
+# safety features
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -Iv'
+alias ln='ln -iv'
+alias cpq='cp -i'
+alias mvq='mv -i'
+alias rmq='rm -i'
+alias lnq='ln -i'
+alias chown='chown --preserve-root -c'
+alias chmod='chmod --preserve-root -c'
+alias chgrp='chgrp --preserve-root -c'

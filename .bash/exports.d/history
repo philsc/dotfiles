@@ -1,0 +1,2 @@
+export HISTIGNORE="cd:ls:pwd:history *"
+export HISTTIMEFORMAT="%T " # for a better history output

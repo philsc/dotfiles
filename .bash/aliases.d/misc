@@ -1,0 +1,18 @@
+# Custom command to join PDFs together.
+function pdfjoin() {
+  OUTPUTFILE=$1;
+  shift;
+  gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile=$OUTPUTFILE "$@";
+}
+
+# Find flash video files to back up
+function flashvids() {
+  lsof | grep /tmp/Flash | awk '{print $1 " " $2 " " $(NF-1)}' | sort -u | while read line; do
+    EXE=$(echo $line | cut -d' ' -f1)
+    PID=$(echo $line | cut -d' ' -f2)
+    FILE=$(echo $line | cut -d' ' -f3)
+    POINTER=$(file /proc/$PID/fd/* | grep $FILE | cut -d: -f1 | uniq)
+    echo "$EXE ($PID) $POINTER -> $FILE"
+  done
+}
+

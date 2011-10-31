@@ -1,0 +1,44 @@
+# Custom colouring and easing of the ls command.
+alias ls='ls --color=auto --group-directories-first --file-type'
+alias ll='ls -l'
+alias lh='ls -lh'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Colourize grep output for easier usage.
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias rgrep='rgrep --color=auto'
+
+# Make some commands less verbose.
+alias octave='octave --silent'
+alias gdb='gdb -quiet'
+
+# Alias for xdg-open. Makes for quick opening of files.
+alias o='xdg-open'
+
+alias dirs='dirs -v -l'
+
+# Easier clipboard
+alias cb='xclip -o -selection clipboard'
+
+# Make it easier to access matlab from the console.
+alias mash='matlab -nodisplay'
+
+# Show progress reports when copying and moving.
+alias rscp='rsync -aP --no-whole-file --inplace'
+alias rsmv='rscp --remove-source-files'
+
+# Alias for serving directories over HTTP
+alias pserv='python -m SimpleHTTPServer'
+
+# Alias for plaing music
+alias mp='mplayer -loop 0'
+
+# Do an `ls' automatically after changing the directory
+function cd() {
+  builtin cd "$@"
+  ls
+}
+
