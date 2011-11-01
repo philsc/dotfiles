@@ -58,7 +58,7 @@ __setps1() {
   local d=""
 
   if g="$(git rev-parse --show-toplevel 2>/dev/null)"; then
-    s="${s}$(__git_ps1 "($TXTRED%s$TXTRST)") "
+    s="$(__git_ps1 "($TXTRED%s$TXTRST)") "
     d="${PWD#$(dirname $g)/}"
   else
     d='\w'
