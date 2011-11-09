@@ -38,7 +38,6 @@ alias mp='mplayer -loop 0'
 
 # Do an `ls' automatically after changing the directory
 function cd() {
-  builtin cd "$@"
-  ls
+  builtin cd "$@" && ls
 }
 
