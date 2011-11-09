@@ -28,9 +28,21 @@ while getopts ":c:r:" opt; do
 done
 
 if ! pgrep Xephyr &> /dev/null; then
-  echo "awful.util.spawn('Xephyr -ac -br -noreset -screen $resolution :1')" | awesome-client
-  sleep 1
-fi
+  # Get an absolute path of the config file
+  rcfile="$(readlink -f $rcfile)"
 
-DISPLAY=:1.0 awesome -c $rcfile
+  # Start a windowed X server
+  Xephyr -ac -br -noreset -screen $resolution :1 &> /dev/null &
+  sleep 1
+  disown
+
+  # Start awesome in the new X server
+  cd
+  export DISPLAY=:1.0
+  awesome -c $rcfile &
+else
+  # If awesome is already running in the new X server, simply restart awesome
+  export DISPLAY=:1.0
+  echo "awesome.restart()" | awesome-client
+fi
 

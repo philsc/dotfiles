@@ -1,11 +1,16 @@
 require("awful")
 require("awful.rules")
 require("awful.autofocus")
+require("scratch")
 require("beautiful")
-require("calendar")
+require("cal")
+require("naughty")
+require("awesompd/awesompd")
+require("vicious")
 
 screentags = {}
 wibox = {}
+promptbox = {}
 layoutbox = {}
 tasklist = {}
 taglist = {}
@@ -20,15 +25,18 @@ terminal = "urxvt"
 browser = "firefox"
 editor = "vim"
 
+-- Other configurations
+netinterface = "wlan0"
+
 -- Tag table
 tags = {
   names = { 1, 2, 3, 4, 5 },
   layouts = {
     awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
-    awful.layout.suit.tile,
+    awful.layout.suit.floating,
+    awful.layout.suit.floating,
+    awful.layout.suit.floating,
+    awful.layout.suit.floating,
   }
 }
 
@@ -40,6 +48,12 @@ layouts = {
 
 --[[ KEY BINDINGS ]]--
 modkey = "Mod4"
+
+volumebuttons = awful.util.table.join(
+    awful.button({ }, 1, function () awful.util.spawn("amixer -q set Master toggle", false) end),
+    awful.button({ }, 4, function () awful.util.spawn("amixer -q set Master 2dB+", false) end),
+    awful.button({ }, 5, function () awful.util.spawn("amixer -q set Master 2dB-", false) end)
+)
 
 layoutbox.buttons = awful.util.table.join(
     awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
@@ -72,8 +86,7 @@ globalkeys = awful.util.table.join(
     -- Standard programs
     awful.key({ modkey,           }, ";", function () awful.util.spawn(terminal) end),
     awful.key({ modkey,           }, "d", function () awful.util.spawn(browser) end),
-    awful.key({ modkey, "Control" }, "r", awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
+    awful.key({ modkey,           }, "/", function () scratch.drop(terminal, "top", "center", 1, 0.2, true) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -89,10 +102,15 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1)         end),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
-    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end)
+    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
+
+    -- Awesome WM config bindings
+    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     -- Prompt
-    -- TODO Add more here
+    awful.key({ modkey, }, "i", function () mypromptbox[mouse.screen]:run() end)
+    -- TODO Add more here, such as an ssh prompt
 )
 
 clientkeys = awful.util.table.join(
@@ -116,6 +134,9 @@ clientbuttons = awful.util.table.join(
 
 --[[ SETUP ]]--
 
+-- Get Vicious to cache various values
+vicious.cache(vicious.widgets.volume)
+
 -- Load the appropriate theme
 if awful.util.file_readable(theme_file) then
   beautiful.init(theme_file)
@@ -129,6 +150,21 @@ clientfocus = function (delta)
     awful.client.focus.byidx(delta)
     if client.focus then client.focus:raise() end
   end
+createlabel = function (text)
+    local label = widget({ type = "textbox" })
+    label.text = '<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>'
+    label:margin({ top = 2, left = 6 })
+    return label
+  end
+createbar = function (buttons, settings)
+  local bar = awful.widget.progressbar(settings or { height = 7, width = 25 })
+  bar:set_color(beautiful.fg_widget)
+  bar:set_border_color(beautiful.fg_widget)
+  bar:set_background_color(beautiful.fg_off_widget)
+  bar.widget:buttons(buttons)
+  awful.widget.layout.margins[bar.widget] = { top = 4, left = 4 }
+  return bar
+end
 
 -- Hold the screen tags
 for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
@@ -138,16 +174,70 @@ separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
 
 -- Create a textclock widget
+textclocklbl = createlabel("Time")
 textclock = awful.widget.textclock({ align = "right" })
-calendar.addCalendarToWidget(textclock, "<span color='green'>%s</span>")
+cal.register(textclock, "<span color='green'>%s</span>")
 
 -- Create a systray
 systray = widget({ type = "systray" })
+
+-- Network usage
+dnlbl = createlabel('Down')
+uplbl = createlabel('Up')
+netdnwidget = widget({ type = "textbox" })
+netupwidget = widget({ type = "textbox" })
+netdnwidget.width, netupwidget.width = 36, 36
+netdnwidget.align, netupwidget.align = "right", "right"
+vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
+  .. beautiful.fg_netdn_widget ..'">${' .. netinterface .. ' down_kb}</span>', 3)
+vicious.register(netupwidget, vicious.widgets.net, '<span color="'
+  .. beautiful.fg_netup_widget ..'">${' .. netinterface .. ' up_kb}</span>', 3)
+
+-- Volume level
+voltext = createlabel('Vol')
+volbar = createbar(volumebuttons)
+vicious.register(volbar, vicious.widgets.volume, "$1", 2, "Master")
+
+-- Weather
+weatherlbl = createlabel('Weather')
+weatherwidget = widget({ type = "textbox" })
+vicious.register(weatherwidget, vicious.widgets.weather, " ${tempc}°C ${sky} &amp; ${weather}", 1800, "CYKF")
+
+-- Create an MPD client
+musiclbl = createlabel('Music')
+musicwidget = awesompd:create() -- Create awesompd widget
+musicwidget.font = "Liberation Mono" -- Set widget font 
+musicwidget.scrolling = false -- If true, the text in the widget will be scrolled
+musicwidget.output_size = 30 -- Set the size of widget in symbols
+musicwidget.update_interval = 10 -- Set the update interval in seconds
+musicwidget.path_to_icons = "/home/phil/.config/awesome/awesompd/icons" 
+musicwidget.jamendo_format = awesompd.FORMAT_MP3
+musicwidget.show_album_cover = true
+musicwidget.album_cover_size = 50
+musicwidget.mpd_config = "/etc/mpd.conf"
+musicwidget.browser = "firefox"
+musicwidget.ldecorator = " "
+musicwidget.rdecorator = " "
+musicwidget.servers = {
+   { server = "localhost",
+        port = 6600 },
+}
+musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_toggle() },
+                 { "Control", awesompd.MOUSE_SCROLL_UP, musicwidget:command_prev_track() },
+           { "Control", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_next_track() },
+           { "", awesompd.MOUSE_SCROLL_UP, musicwidget:command_volume_up() },
+           { "", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_volume_down() },
+           { "", awesompd.MOUSE_RIGHT, musicwidget:command_show_menu() } })
+musicwidget:run() -- After all configuration is done, run the widget
+
 
 --[[ SCREEN SETUP ]]--
 
 -- Create a wibox
 for s = 1, screen.count() do
+  -- Create a promptbox for each screen
+  promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+
   -- Create the layout box for each screen
   layoutbox[s] = awful.widget.layoutbox(s)
   layoutbox[s]:buttons(layoutbox.buttons)
@@ -166,10 +256,14 @@ for s = 1, screen.count() do
     {
       layoutbox[s],
       taglist[s],
+      promptbox[s],
       layout = awful.widget.layout.horizontal.leftright
     },
-    separator, textclock,
-    separator, systray,
+    systray, textclock, textclocklbl,
+    separator, weatherwidget, weatherlbl,
+    separator, volbar.widget, voltext,
+    separator, netupwidget, uplbl, netdnwidget, dnlbl,
+    separator, musicwidget.widget, musiclbl,
     tasklist[s],
     layout = awful.widget.layout.horizontal.rightleft
   }
@@ -194,9 +288,6 @@ awful.rules.rules = {
 
 -- Signal function to execute when a new client appears.
 client.add_signal("manage", function (c, startup)
-    -- Add a titlebar
-    -- awful.titlebar.add(c, { modkey = modkey })
-
     -- Enable sloppy focus
     c:add_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
