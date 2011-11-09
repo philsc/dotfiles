@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 
-stopawesome()
+usage()
 {
-  export DISPLAY=:1.0
-  echo 'awesome.quit()' | awesome-client
+  echo "Usage: $0 [-c RCFILE] [-r CUSTOMRESOLUTION]"
 }
-
-trap stopawesome 1 2 15
 
 rcfile=$XDG_CONFIG_HOME/awesome/rc.lua
 resolution=1280x800
 
-while getopts ":c:r:" opt; do
+while getopts ":hc:r:" opt; do
   case "$opt" in
+    h)
+      usage
+      exit 0
+      ;;
     c)
       rcfile=$OPTARG
       ;;
@@ -20,9 +21,9 @@ while getopts ":c:r:" opt; do
       resolution=$OPTARG
       ;;
     *)
-      echo "Unknown parameter '$opt'."
-      echo ""
-      echo "Usage: $0 [-c RCFILE] [-r CUSTOMRESOLUTION]"
+      echo -e "Unknown parameter:  -$OPTARG\n" >&2
+      usage >&2
+      exit 1
       ;;
   esac
 done
