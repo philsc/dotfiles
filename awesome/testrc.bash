@@ -2,7 +2,7 @@
 
 usage()
 {
-  echo "Usage: $0 [-c RCFILE] [-r CUSTOMRESOLUTION]"
+      echo "Usage: $0 [-c RCFILE] [-r CUSTOMRESOLUTION]"
 }
 
 rcfile=$XDG_CONFIG_HOME/awesome/rc.lua

@@ -64,8 +64,9 @@ theme.widget_vol    = confdir .. "/icons/zenburn/vol.png"
 theme.widget_org    = confdir .. "/icons/zenburn/cal.png"
 theme.widget_date   = confdir .. "/icons/zenburn/time.png"
 theme.widget_crypto = confdir .. "/icons/zenburn/crypto.png"
-theme.widget_sep    = confdir .. "/icons/zenburn/separator.png"
 theme.widget_todo   = confdir .. "/icons/zenburn/todo.png"
+
+theme.widget_sep    = confdir .. "/icons/separator.png"
 
 -- Mouse finder
 theme.mouse_finder_color = "#CC9393"
@@ -87,6 +88,10 @@ theme.taglist_squares_unsel = "/usr/share/awesome/themes/zenburn/taglist/squarez
 theme.awesome_icon           = confdir .. "/icons/archlinux-icon.png"
 theme.menu_submenu_icon      = "/usr/share/awesome/themes/default/submenu.png"
 theme.tasklist_floating_icon = "/usr/share/awesome/themes/default/tasklist/floatingw.png"
+
+theme.menu_logoff = confdir .. "/icons/logoff.png"
+theme.menu_reboot = confdir .. "/icons/reboot.png"
+theme.menu_halt   = confdir .. "/icons/halt.png"
 
 -- Layout
 theme.layout_tile       = "/usr/share/awesome/themes/zenburn/layouts/tile.png"

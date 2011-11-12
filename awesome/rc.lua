@@ -165,6 +165,12 @@ createbar = function (buttons, settings)
   awful.widget.layout.margins[bar.widget] = { top = 4, left = 4 }
   return bar
 end
+readcmd = function (cmd)
+  local fd = io.popen(cmd, "r")
+  local text = fd:read("*a")
+  io.close(fd)
+  return text
+end
 
 -- Hold the screen tags
 for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
@@ -172,14 +178,31 @@ for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layou
 -- Reusable separator
 separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
+separator:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a textclock widget
-textclocklbl = createlabel("Time")
+textclocklbl = createlabel("Sys")
 textclock = awful.widget.textclock({ align = "right" })
 cal.register(textclock, "<span color='green'>%s</span>")
+systip = awful.tooltip({ objects = { textclocklbl } })
+systip.update = function () return readcmd("syssummary -p '/ /home /media/gallifrey /media/dvd /media/usb'") end
+textclock:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a systray
 systray = widget({ type = "systray" })
+
+-- Create a shutdown dialog
+sysbtnimg = image.argb32(14, 14, nil)
+sysbtnimg:draw_rectangle(0, 0, 14, 14, true, beautiful.bg_normal)
+sysbtnimg:draw_rectangle(4, 4, 6, 6, true, "#cc9393")
+shutdownmenu = awful.menu({ items = {
+  { "log off", awesome.quit, beautiful.menu_logoff },
+  { "reboot", "sudo /sbin/reboot", beautiful.menu_reboot },
+  { "halt", "sudo /sbin/shutdown", beautiful.menu_halt },
+  { "cancel", function () shutdownmenu:hide() end }
+}})
+sysbtn = awful.widget.launcher({ image = sysbtnimg, menu = shutdownmenu })
+sysbtn:add_signal("mouse::enter", function () shutdownmenu:show() end)
 
 -- Network usage
 dnlbl = createlabel('Down')
@@ -192,6 +215,8 @@ vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netdn_widget ..'">${' .. netinterface .. ' down_kb}</span>', 3)
 vicious.register(netupwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netup_widget ..'">${' .. netinterface .. ' up_kb}</span>', 3)
+nettip = awful.tooltip({ objects = { dnlbl, uplbl, netdnwidget, netupwidget } })
+nettip.update = function () return readcmd("ifsummary") end
 
 -- Volume level
 voltext = createlabel('Vol')
@@ -259,7 +284,8 @@ for s = 1, screen.count() do
       promptbox[s],
       layout = awful.widget.layout.horizontal.leftright
     },
-    systray, textclock, textclocklbl,
+    sysbtn, systray,
+    separator, textclock, textclocklbl,
     separator, weatherwidget, weatherlbl,
     separator, volbar.widget, voltext,
     separator, netupwidget, uplbl, netdnwidget, dnlbl,
