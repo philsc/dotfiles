@@ -109,16 +109,16 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     -- Prompt
-    awful.key({ modkey, }, "i", function () mypromptbox[mouse.screen]:run() end)
+    awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end)
     -- TODO Add more here, such as an ssh prompt
 )
 
 clientkeys = awful.util.table.join(
-    awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey,           }, "t",      awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "g",      function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey,           }, "f", function (c) c.fullscreen = not c.fullscreen  end),
+    awful.key({ modkey, "Shift"   }, "c", function (c) c:kill()                         end),
+    awful.key({ modkey,           }, "t", awful.client.floating.toggle                     ),
+    awful.key({ modkey, "Shift"   }, "r", function (c) c:redraw()                       end),
+    awful.key({ modkey,           }, "g", function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
