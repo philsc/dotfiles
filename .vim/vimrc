@@ -1,0 +1,174 @@
+set history=1000         " remember more commands and search history
+set undolevels=1000      " use many muchos levels of undo
+set wildignore=*.swp,*.bak,*.pyc,*.class
+set title                " change the terminal's title
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+" Use other ways to track changes to files
+set nobackup
+set noswapfile
+set nowb
+
+" Persistent undo
+set undodir=~/.vim_runtime/undodir
+set undofile
+
+" Use the semi-colon to start commands, in addition to the colon
+nnoremap ; :
+
+" Let backspace work normally, i.e. allow deleting everything
+set backspace=indent,eol,start
+
+" Indentation: automatic and smart, for C-like languages anyway
+set autoindent
+set smartindent
+
+" Auto save before certain dangerous commands, otherwise confirm
+set autowrite
+set confirm
+
+" Incrementally search through the file as you type, highlighting as you go
+" Searches are also case insensitive if entered in lower-case
+" Searches wrap at EOF
+set incsearch
+set hlsearch
+set ignorecase
+set smartcase
+set wrapscan
+
+" Tabs are no good, use spaces instead
+set expandtab
+set smarttab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
+" Let us know that we are in command/insert mode, and show commands as we type
+set showmode
+set showcmd
+
+" Show line numbers and cursor position (rows and cols)
+set number
+set ruler
+
+" Error bells are the worst
+set noerrorbells
+
+" When the cursor is on a bracket/paren/brace, highlight the other one briefly
+set showmatch
+set matchtime=3
+
+" Spell checking is nice, and so is being able to add words to the dictionary
+set spellfile=~/.vim/spellfile.en.add
+setlocal spell spelllang=en_gb
+
+" A nice, dark colour scheme, so make things visible and highlight syntax
+set t_Co=256
+set background=dark
+syntax on
+let g:zenburn_high_Contrast = 1
+colorscheme zenburn
+
+" Highlight redundant whitespaces and tabs.
+highlight RedundantSpaces ctermbg=darkred guibg=red
+match RedundantSpaces /\s\+$\| \+\ze\t/
+
+" Remove the GUI toolbar, make options text instead of popups, enable the
+" mouse, and use a good font
+set guioptions-=T
+set guioptions+=c
+set mouse=a
+"set guifont=Inconsolata\ 10
+
+" Windows should always have a status line
+set laststatus=2
+
+" Autowrap text, autowrap comments (and add comment delimiter), recognise
+" white space, and automatically format paragraphs as they are edited, based
+" on the second line of the paragraph rather than the first
+set formatoptions+=tcwa2
+set wrap
+set textwidth=80
+
+" I really don't want anything to get folded
+set nofoldenable
+
+" When splitting a window, put the new window below the original one
+set splitbelow
+
+" File completion
+set wildmenu
+set wildmode=list:full
+
+" Detect different filetypes, and load appropriate plugins and indent files
+filetype plugin indent on
+
+" Use the arrow keys for something useful
+map <right> <ESC>gt<cr>
+map <left> <ESC>gT<cr>
+
+" Remap the default motion keys so long, wrapped, but unsplit lines can be
+" navigated as independent lines
+noremap j gj
+noremap k gk
+
+" Use C-p to toggle paste mode
+noremap <silent> <C-p> :set paste!<cr>
+
+" Use C-o to toggle spellcheck
+noremap <silent> <C-o> :set spell!<cr>
+
+" If we ever forget to open a file with root privileges
+cmap w!! w !sudo tee % >/dev/null
+
+" Clear the highlighted searches
+nmap ,/ :nohlsearch<CR>
+
+" Use comma instead of back-slash as the leader
+let mapleader=","
+
+" Make the NERDTree plugin easier to use
+map <Leader>f :NERDTree<CR>
+
+" Make the TagList plugin easier to use
+"map <Leader>t :TlistToggle<CR>
+
+" Make tabs easier to use
+map <C-t> :tabnew<CR>
+map <C-q> :tabclose<CR>
+map <C-Tab> :tabnext<CR>
+map <C-S-Tab> :tabprevious<CR>
+imap <C-t> <ESC>:tabnew<CR>
+imap <C-q> <ESC>:tabclose<CR>
+imap <C-Tab> <ESC>:tabnext<CR>
+imap <C-S-Tab> <ESC>:tabprevious<CR>
+
+" Make splits easier to use
+map <C-S-J> <C-W>j<C-W>_
+map <C-S-K> <C-W>k<C-W>_
+map <C-S-H> <C-W>h<C-W>_
+map <C-S-L> <C-W>l<C-W>_
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-H> <C-W>h
+map <C-L> <C-W>l
+set wmh=0
+
+" Make the scratch buffer plugin more useful
+map <Leader>s :Scratch<CR>
+
+" use ghc functionality for haskell files
+au Bufenter *.hs compiler ghc
+let g:haddock_browser = "/usr/bin/firefox"
+
+" Filetype-specific abbreviations and shortcuts....
+au FileType c ab #i #include
+au FileType c ab #d #define
+au FileType h ab #i #include
+au FileType h ab #d #define
+
+" For makefiles, let's just use tabs
+autocmd FileType make set noexpandtab
+
