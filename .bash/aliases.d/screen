@@ -11,3 +11,5 @@ function sc() {
   fi
 }
 
+alias tmux='tmux -2'
+
