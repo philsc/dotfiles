@@ -1,3 +1,9 @@
+" Depending on where this folder is located, put this line in your .vimrc:
+"   source ~/.vim/vimrc
+"
+" This file is based of of Felix Crux' vimrc found at
+" http://felixcrux.com/library/files/
+
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore=*.swp,*.bak,*.pyc,*.class
