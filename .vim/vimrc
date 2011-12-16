@@ -69,6 +69,7 @@ set matchtime=3
 " Spell checking is nice, and so is being able to add words to the dictionary
 set spellfile=~/.vim/spellfile.en.add
 setlocal spell spelllang=en_gb
+set nospell     " turn off by default
 
 " A nice, dark colour scheme, so make things visible and highlight syntax
 set t_Co=256
