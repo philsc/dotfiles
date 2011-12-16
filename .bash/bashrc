@@ -64,11 +64,11 @@ __setps1() {
     d='\w'
   fi
 
-  echo -n "${TXTBLU}\u${TXTRST} $s[${TXTGRN}$d${TXTRST}] r\$?,j\j\n\$ "
+  PS1="${TXTBLU}\u${TXTRST} $s[${TXTGRN}$d${TXTRST}] r\$?,j\j\n\$ "
 }
 
 # Set the command prompt.
-PROMPT_COMMAND='PS1=$(__setps1)'
+PROMPT_COMMAND='__setps1'
 
 # Better ls colors
 eval $(dircolors -b)
