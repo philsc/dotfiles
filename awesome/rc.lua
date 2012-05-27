@@ -20,13 +20,23 @@ taglist = {}
 -- Define the theme
 theme_file = awful.util.getdir("config") .. "/theme.lua"
 
+-- Load user configuration
+--[[ Sample prefs.lua
+
+confdir = awful.util.getdir("config")
+prefs = {}
+
 -- Define default programs
-terminal = "urxvt"
-browser = "firefox"
-editor = "vim"
+prefs.terminal = "urxvt"
+prefs.browser = "firefox"
+prefs.editor = "vim"
 
 -- Other configurations
-netinterface = "wlan0"
+prefs.netinterface = "wlan0"
+
+return prefs
+--]]
+prefs = dofile(awful.util.getdir("config") .. "/prefs.lua")
 
 -- Tag table
 tags = {
@@ -84,9 +94,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "k", function () clientfocus(-1) end),
 
     -- Standard programs
-    awful.key({ modkey,           }, ";", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey,           }, "d", function () awful.util.spawn(browser) end),
-    awful.key({ modkey,           }, "/", function () scratch.drop(terminal, "top", "center", 1, 0.2, true) end),
+    awful.key({ modkey,           }, ";", function () awful.util.spawn(prefs.terminal) end),
+    awful.key({ modkey,           }, "d", function () awful.util.spawn(prefs.browser) end),
+    awful.key({ modkey,           }, "/", function () scratch.drop(prefs.terminal, "top", "center", 1, 0.2, true) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -145,7 +155,7 @@ else
 end
 
 -- Helper functions
-cmd = function (program) return terminal .. " -e " .. program end
+cmd = function (program) return prefs.terminal .. " -e " .. program end
 clientfocus = function (delta)
     awful.client.focus.byidx(delta)
     if client.focus then client.focus:raise() end
@@ -212,9 +222,9 @@ netupwidget = widget({ type = "textbox" })
 netdnwidget.width, netupwidget.width = 36, 36
 netdnwidget.align, netupwidget.align = "right", "right"
 vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${' .. netinterface .. ' down_kb}</span>', 3)
+  .. beautiful.fg_netdn_widget ..'">${' .. prefs.netinterface .. ' down_kb}</span>', 3)
 vicious.register(netupwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netup_widget ..'">${' .. netinterface .. ' up_kb}</span>', 3)
+  .. beautiful.fg_netup_widget ..'">${' .. prefs.netinterface .. ' up_kb}</span>', 3)
 nettip = awful.tooltip({ objects = { dnlbl, uplbl, netdnwidget, netupwidget } })
 nettip.update = function () return readcmd("ifsummary") end
 
