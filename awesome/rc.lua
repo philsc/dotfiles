@@ -5,7 +5,6 @@ require("scratch")
 require("beautiful")
 require("cal")
 require("naughty")
-require("awesompd/awesompd")
 require("vicious")
 
 screentags = {}
@@ -21,22 +20,11 @@ taglist = {}
 theme_file = awful.util.getdir("config") .. "/theme.lua"
 
 -- Load user configuration
---[[ Sample prefs.lua
-
-confdir = awful.util.getdir("config")
-prefs = {}
-
--- Define default programs
-prefs.terminal = "urxvt"
-prefs.browser = "firefox"
-prefs.editor = "vim"
-
--- Other configurations
-prefs.netinterface = "wlan0"
-
-return prefs
---]]
 prefs = dofile(awful.util.getdir("config") .. "/prefs.lua")
+
+if prefs.use_awesompd then
+    require("awesompd/awesompd")
+end
 
 -- Tag table
 tags = {
@@ -238,71 +226,84 @@ weatherlbl = createlabel('Weather')
 weatherwidget = widget({ type = "textbox" })
 vicious.register(weatherwidget, vicious.widgets.weather, " ${tempc}°C ${sky} &amp; ${weather}", 1800, "CYKF")
 
--- Create an MPD client
-musiclbl = createlabel('Music')
-musicwidget = awesompd:create() -- Create awesompd widget
-musicwidget.font = "Liberation Mono" -- Set widget font 
-musicwidget.scrolling = false -- If true, the text in the widget will be scrolled
-musicwidget.output_size = 30 -- Set the size of widget in symbols
-musicwidget.update_interval = 10 -- Set the update interval in seconds
-musicwidget.path_to_icons = "/home/phil/.config/awesome/awesompd/icons" 
-musicwidget.jamendo_format = awesompd.FORMAT_MP3
-musicwidget.show_album_cover = true
-musicwidget.album_cover_size = 50
-musicwidget.mpd_config = "/etc/mpd.conf"
-musicwidget.browser = "firefox"
-musicwidget.ldecorator = " "
-musicwidget.rdecorator = " "
-musicwidget.servers = {
-   { server = "localhost",
-        port = 6600 },
-}
-musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_toggle() },
-                 { "Control", awesompd.MOUSE_SCROLL_UP, musicwidget:command_prev_track() },
-           { "Control", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_next_track() },
-           { "", awesompd.MOUSE_SCROLL_UP, musicwidget:command_volume_up() },
-           { "", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_volume_down() },
-           { "", awesompd.MOUSE_RIGHT, musicwidget:command_show_menu() } })
-musicwidget:run() -- After all configuration is done, run the widget
+musiclbl = nil
+musidwidget = nil
 
+if prefs.use_awesompd then
+    -- Create an MPD client
+    musiclbl = createlabel('Music')
+    musicwidget = awesompd:create() -- Create awesompd widget
+    musicwidget.font = "Liberation Mono" -- Set widget font 
+    musicwidget.scrolling = false -- If true, the text in the widget will be scrolled
+    musicwidget.output_size = 30 -- Set the size of widget in symbols
+    musicwidget.update_interval = 10 -- Set the update interval in seconds
+    musicwidget.path_to_icons = "/home/phil/.config/awesome/awesompd/icons" 
+    musicwidget.jamendo_format = awesompd.FORMAT_MP3
+    musicwidget.show_album_cover = true
+    musicwidget.album_cover_size = 50
+    musicwidget.mpd_config = "/etc/mpd.conf"
+    musicwidget.browser = "firefox"
+    musicwidget.ldecorator = " "
+    musicwidget.rdecorator = " "
+    musicwidget.servers = {
+       { server = "localhost",
+            port = 6600 },
+    }
+    musicwidget:register_buttons({ { "", awesompd.MOUSE_LEFT, musicwidget:command_toggle() },
+                     { "Control", awesompd.MOUSE_SCROLL_UP, musicwidget:command_prev_track() },
+               { "Control", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_next_track() },
+               { "", awesompd.MOUSE_SCROLL_UP, musicwidget:command_volume_up() },
+               { "", awesompd.MOUSE_SCROLL_DOWN, musicwidget:command_volume_down() },
+               { "", awesompd.MOUSE_RIGHT, musicwidget:command_show_menu() } })
+    musicwidget:run() -- After all configuration is done, run the widget
+end
 
 --[[ SCREEN SETUP ]]--
 
 -- Create a wibox
 for s = 1, screen.count() do
-  -- Create a promptbox for each screen
-  promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+    -- Create a promptbox for each screen
+    promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
 
-  -- Create the layout box for each screen
-  layoutbox[s] = awful.widget.layoutbox(s)
-  layoutbox[s]:buttons(layoutbox.buttons)
+    -- Create the layout box for each screen
+    layoutbox[s] = awful.widget.layoutbox(s)
+    layoutbox[s]:buttons(layoutbox.buttons)
 
-  -- Create the tag list for each screen
-  taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
+    -- Create the tag list for each screen
+    taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
 
-  -- Create the task list for each screen
-  tasklist[s] = awful.widget.tasklist(function (c)
-                                        return awful.widget.tasklist.label.currenttags(c, s)
-                                      end, tasklist.buttons)
+    -- Create the task list for each screen
+    tasklist[s] = awful.widget.tasklist(function (c)
+        return awful.widget.tasklist.label.currenttags(c, s)
+    end, tasklist.buttons)
 
-  -- Create the wibox
-  wibox[s] = awful.wibox({ position = "top", screen = s })
-  wibox[s].widgets = {
-    {
-      layoutbox[s],
-      taglist[s],
-      promptbox[s],
-      layout = awful.widget.layout.horizontal.leftright
-    },
-    sysbtn, systray,
-    separator, textclock, textclocklbl,
-    separator, weatherwidget, weatherlbl,
-    separator, volbar.widget, voltext,
-    separator, netupwidget, uplbl, netdnwidget, dnlbl,
-    separator, musicwidget.widget, musiclbl,
-    tasklist[s],
-    layout = awful.widget.layout.horizontal.rightleft
-  }
+    -- Create the wibox
+    wibox[s] = awful.wibox({ position = "top", screen = s })
+    wibox[s].widgets = awful.util.table.join(
+        {
+            {
+                layoutbox[s],
+                taglist[s],
+                promptbox[s],
+                layout = awful.widget.layout.horizontal.leftright
+            },
+            sysbtn, systray,
+            separator, textclock, textclocklbl,
+            separator, weatherwidget, weatherlbl,
+            separator, volbar.widget, voltext,
+            separator, netupwidget, uplbl, netdnwidget, dnlbl,
+        },
+        (function ()
+            if prefs.use_awesompd then
+                return { separator, musicwidget.widget, musiclbl, }
+            else
+                return {}
+            end
+        end)(),
+        {
+            tasklist[s],
+            layout = awful.widget.layout.horizontal.rightleft
+        })
 end
 
 root.keys(globalkeys)
