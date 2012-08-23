@@ -209,7 +209,7 @@ sysbtnimg:draw_rectangle(4, 4, 6, 6, true, "#cc9393")
 shutdownmenu = awful.menu({ items = {
   { "log off", awesome.quit, beautiful.menu_logoff },
   { "reboot", "sudo /sbin/reboot", beautiful.menu_reboot },
-  { "halt", "sudo /sbin/shutdown", beautiful.menu_halt },
+  { "halt", "sudo /sbin/halt", beautiful.menu_halt },
   { "cancel", function () shutdownmenu:hide() end }
 }})
 sysbtn = awful.widget.launcher({ image = sysbtnimg, menu = shutdownmenu })

@@ -41,3 +41,5 @@ function cd() {
   builtin cd "$@" && ls
 }
 
+alias mplayer='mplayer -af scaletempo -softvol -softvol-max 3000'
+
