@@ -1,0 +1,20 @@
+confdir = awful.util.getdir("config")
+
+prefs = {}
+
+-- Define default programs
+prefs.terminal = "urxvt"
+prefs.browser = "firefox"
+prefs.editor = "vim"
+
+-- Other configurations
+
+-- NOTE: I set this environment variable in my .xinitrc when I boot my linux box 
+-- inside a VM instead of on real hardware.
+if os.getenv("INSIDE_VBOX") == "1" then
+    prefs.netinterface = "eth0"
+else
+    prefs.netinterface = "wlan0"
+end
+
+return prefs
