@@ -1,11 +1,11 @@
 require("awful")
 require("awful.rules")
 require("awful.autofocus")
-require("scratch")
+local scratch = require("scratch")
 require("beautiful")
 require("cal")
 require("naughty")
-require("vicious")
+local vicious = require("vicious")
 
 screentags = {}
 wibox = {}

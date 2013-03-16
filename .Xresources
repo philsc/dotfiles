@@ -61,3 +61,7 @@ urxvt.perl-ext:
 ! ncurses session which seemingly expects 80x25.
 urxvt*geometry: 80x26
 
+! Prevent double-click selections from including characters generated
+! by tmux and other regular utilities.
+urxvt.cutchars: "()'*<>[]{|}"
+

@@ -19,6 +19,7 @@ alias gdb='gdb -quiet'
 alias o='xdg-open'
 
 alias dirs='dirs -v -l'
+alias less='less -r'
 
 # Easier clipboard
 alias cb='xclip -o -selection clipboard'
@@ -35,11 +36,9 @@ alias pserv='python -m SimpleHTTPServer'
 
 # Alias for plaing music
 alias mp='mplayer -loop 0'
+alias mplayer='mplayer -af scaletempo -softvol -softvol-max 3000'
 
 # Do an `ls' automatically after changing the directory
 function cd() {
   builtin cd "$@" && ls
 }
-
-alias mplayer='mplayer -af scaletempo -softvol -softvol-max 3000'
-
