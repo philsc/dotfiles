@@ -21,6 +21,7 @@ shopt -s checkwinsize # adjust terminal width dynamically
 #  fi
 #fi
 
+[[ -r ~/.bash/git-prompt.sh ]] && . ~/.bash/git-prompt.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
@@ -31,6 +32,13 @@ __setps1() {
   if g="$(git rev-parse --show-toplevel 2>/dev/null)"; then
     s="$(__git_ps1 "($TXTRED%s$TXTRST)") "
     d="${PWD#$(dirname $g)/}"
+  elif g="$(svn info 2>/dev/null)"; then
+    url="$(sed -ne 's#^URL: ##p' <<<"$g")"
+    root="$(sed -ne 's#^Repository Root: ##p' <<<"$g")"
+    s="$(sed -e 's#^'"$root"'##g' <<<"$url" | egrep -o \
+    '(tags|branches)/[^/]+|trunk' | egrep -o '[^/]+$' | awk '{print $1}')"
+    s="($TXTRED$s$TXTRST) "
+    d='\w'
   else
     d='\w'
   fi
