@@ -100,7 +100,9 @@ set wrap
 set textwidth=80
 
 " I really don't want anything to get folded
-set nofoldenable
+"set nofoldenable
+set foldmethod=syntax
+set foldlevelstart=20
 
 " When splitting a window, put the new window below the original one
 set splitbelow
@@ -109,12 +111,11 @@ set splitbelow
 set wildmenu
 set wildmode=list:full
 
+" Highlight doxygen comments
+let g:load_doxygen_syntax=1
+
 " Detect different filetypes, and load appropriate plugins and indent files
 filetype plugin indent on
-
-" Use the arrow keys for something useful
-map <right> <ESC>gt<cr>
-map <left> <ESC>gT<cr>
 
 " Remap the default motion keys so long, wrapped, but unsplit lines can be
 " navigated as independent lines
@@ -123,6 +124,18 @@ noremap k gk
 
 " Use C-p to toggle paste mode
 noremap <silent> <C-p> :set paste!<cr>
+
+" Make insert mode a bit more emacs-like
+inoremap <C-a>  <Home>
+inoremap <C-e>  <End>
+inoremap <C-b>  <Left>
+inoremap <C-f>  <Right>
+inoremap <C-d>  <Delete>
+"inoremap <Esc>b <S-Left>
+"inoremap <Esc>f <S-Right>
+"inoremap <M-d>  <S-right><Delete>
+"inoremap <Esc>d <S-right><Delete>
+"inoremap <C-g>  <C-c>
 
 " Use C-o to toggle spellcheck
 noremap <silent> <C-o> :set spell!<cr>
@@ -144,11 +157,11 @@ map <Leader>f :NERDTree<CR>
 
 " Make tabs easier to use
 map <C-t> :tabnew<CR>
-map <C-q> :tabclose<CR>
+"map <C-q> :tabclose<CR>
 map <C-Tab> :tabnext<CR>
 map <C-S-Tab> :tabprevious<CR>
 imap <C-t> <ESC>:tabnew<CR>
-imap <C-q> <ESC>:tabclose<CR>
+"imap <C-q> <ESC>:tabclose<CR>
 imap <C-Tab> <ESC>:tabnext<CR>
 imap <C-S-Tab> <ESC>:tabprevious<CR>
 
@@ -157,10 +170,10 @@ map <C-S-J> <C-W>j<C-W>_
 map <C-S-K> <C-W>k<C-W>_
 map <C-S-H> <C-W>h<C-W>_
 map <C-S-L> <C-W>l<C-W>_
-map <C-J> <C-W>j
-map <C-K> <C-W>k
-map <C-H> <C-W>h
-map <C-L> <C-W>l
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-h> <C-w>h
+map <C-l> <C-w>l
 set wmh=0
 
 " Make the scratch buffer plugin more useful
@@ -179,3 +192,48 @@ au FileType h ab #d #define
 " For makefiles, let's just use tabs
 autocmd FileType make set noexpandtab
 
+" Shortcuts for entering/leaving hex mode
+nnoremap <C-c> :Hexmode<CR>
+inoremap <C-c> <Esc>:Hexmode<CR>
+vnoremap <C-c> :<C-U>Hexmode<CR>
+
+" ex command for toggling hex mode - define mapping if desired
+command -bar Hexmode call ToggleHex()
+
+" helper function to toggle hex mode
+function ToggleHex()
+  " hex mode should be considered a read-only operation
+  " save values for modified and read-only for restoration later,
+  " and clear the read-only flag for now
+  let l:modified=&mod
+  let l:oldreadonly=&readonly
+  let &readonly=0
+  let l:oldmodifiable=&modifiable
+  let &modifiable=1
+  if !exists("b:editHex") || !b:editHex
+    " save old options
+    let b:oldft=&ft
+    let b:oldbin=&bin
+    " set new options
+    setlocal binary " make sure it overrides any textwidth, etc.
+    let &ft="xxd"
+    " set status
+    let b:editHex=1
+    " switch to hex editor
+    %!xxd
+  else
+    " restore old options
+    let &ft=b:oldft
+    if !b:oldbin
+      setlocal nobinary
+    endif
+    " set status
+    let b:editHex=0
+    " return to normal editing
+    %!xxd -r
+  endif
+  " restore values for modified and read only state
+  let &mod=l:modified
+  let &readonly=l:oldreadonly
+  let &modifiable=l:oldmodifiable
+endfunction
