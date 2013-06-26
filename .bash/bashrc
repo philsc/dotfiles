@@ -21,10 +21,16 @@ shopt -s checkwinsize # adjust terminal width dynamically
 #  fi
 #fi
 
-[[ -r ~/.bash/git-prompt.sh ]] && . ~/.bash/git-prompt.sh
+sourcefile() { [[ -s "$1" ]] && . "$1"; }
+sourcefile ~/.rvm/scripts/rvm
+sourcefile ~/.rvm/scripts/completion
+sourcefile ~/.bash/git-prompt.sh
+sourcefile ~/.bash/git-completion.sh
+
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
+# Possibly overcomplicated parsing of git/svn branch names
 __setps1() {
   local s=""
   local d=""

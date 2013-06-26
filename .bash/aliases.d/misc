@@ -16,4 +16,5 @@ function flashvids() {
   done
 }
 
-alias fc='grep -rnI --include=*.{c,h}'
+alias fc='grep -rnI --include=*.{c,cpp,h,hh}'
+alias fh='grep -rnI --include=*.{h,hh}'
