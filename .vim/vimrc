@@ -99,7 +99,7 @@ set laststatus=2
 " on the second line of the paragraph rather than the first
 set formatoptions+=tcwa2
 set wrap
-set textwidth=80
+set textwidth=79
 
 " I really don't want anything to get folded
 "set nofoldenable
@@ -154,9 +154,6 @@ let mapleader=","
 " Make the NERDTree plugin easier to use
 map <Leader>f :NERDTree<CR>
 
-" Make the TagList plugin easier to use
-"map <Leader>t :TlistToggle<CR>
-
 " Make tabs easier to use
 map <C-t> :tabnew<CR>
 "map <C-q> :tabclose<CR>
@@ -177,22 +174,6 @@ map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
 set wmh=0
-
-" Make the scratch buffer plugin more useful
-map <Leader>s :Scratch<CR>
-
-" use ghc functionality for haskell files
-au Bufenter *.hs compiler ghc
-let g:haddock_browser = "/usr/bin/firefox"
-
-" Filetype-specific abbreviations and shortcuts....
-au FileType c ab #i #include
-au FileType c ab #d #define
-au FileType h ab #i #include
-au FileType h ab #d #define
-
-" For makefiles, let's just use tabs
-autocmd FileType make set noexpandtab
 
 " Shortcuts for entering/leaving hex mode
 nnoremap <C-c> :Hexmode<CR>
@@ -239,3 +220,24 @@ function ToggleHex()
   let &readonly=l:oldreadonly
   let &modifiable=l:oldmodifiable
 endfunction
+
+" C-style abbreviations and shortcuts
+augroup filetype_c
+    autocmd!
+    autocmd FileType c ia <buffer> #i #include
+    autocmd FileType c ia <buffer> #d #define
+    autocmd FileType cpp ia <buffer> #i #include
+    autocmd FileType cpp ia <buffer> #d #define
+augroup END
+
+" Make abbreviations and shortcuts
+augroup filetype_make
+    autocmd!
+    autocmd FileType make setlocal noexpandtab
+augroup END
+
+" Tell the ftplugin helper which ruby we're using
+" Otherwise it's really slow
+let g:ruby_path = system('rvm current')
+
+execute pathogen#infect()
