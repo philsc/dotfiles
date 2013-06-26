@@ -1,14 +1,15 @@
-require("awful")
+local awful = require("awful")
 require("awful.rules")
 require("awful.autofocus")
 local scratch = require("scratch")
-require("beautiful")
+local beautiful = require("beautiful")
 require("cal")
-require("naughty")
+local naughty = require("naughty")
 local vicious = require("vicious")
+local wibox = require("wibox")
 
 screentags = {}
-wibox = {}
+winbox = {}
 promptbox = {}
 layoutbox = {}
 tasklist = {}
@@ -162,9 +163,9 @@ clientfocus = function (delta)
     if client.focus then client.focus:raise() end
   end
 createlabel = function (text)
-    local label = widget({ type = "textbox" })
-    label.text = '<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>'
-    label:margin({ top = 2, left = 6 })
+    local label = wibox.widget.textbox()
+    label:set_markup('<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>')
+    --label:margin({ top = 2, left = 6 })
     return label
   end
 createbar = function (buttons, settings)
@@ -187,22 +188,23 @@ end
 for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
 
 -- Reusable separator
-separator = widget({ type = "imagebox" })
-separator.image = image(beautiful.widget_sep)
+separator = wibox.widget.imagebox(beautiful.widget_sep)
+--separator:set_image(image(beautiful.widget_sep))
 separator:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a textclock widget
 textclocklbl = createlabel("Sys")
-textclock = awful.widget.textclock({ align = "right" })
+textclock = awful.widget.textclock()
 cal.register(textclock, "<span color='green'>%s</span>")
 systip = awful.tooltip({ objects = { textclocklbl } })
 systip.update = function () return readcmd("syssummary -p '/ /home /media/gallifrey /media/dvd /media/usb'") end
 textclock:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a systray
-systray = widget({ type = "systray" })
+systray = wibox.widget.systray()
 
 -- Create a shutdown dialog
+--[[
 sysbtnimg = image.argb32(14, 14, nil)
 sysbtnimg:draw_rectangle(0, 0, 14, 14, true, beautiful.bg_normal)
 sysbtnimg:draw_rectangle(4, 4, 6, 6, true, "#cc9393")
@@ -214,12 +216,14 @@ shutdownmenu = awful.menu({ items = {
 }})
 sysbtn = awful.widget.launcher({ image = sysbtnimg, menu = shutdownmenu })
 sysbtn:add_signal("mouse::enter", function () shutdownmenu:show() end)
+]]
 
 -- Network usage
+--[[
 dnlbl = createlabel('Down')
 uplbl = createlabel('Up')
-netdnwidget = widget({ type = "textbox" })
-netupwidget = widget({ type = "textbox" })
+netdnwidget = wibox.widget.textbox()
+netupwidget = wibox.widget.textbox()
 netdnwidget.width, netupwidget.width = 36, 36
 netdnwidget.align, netupwidget.align = "right", "right"
 vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
@@ -228,6 +232,7 @@ vicious.register(netupwidget, vicious.widgets.net, '<span color="'
   .. beautiful.fg_netup_widget ..'">${' .. prefs.netinterface .. ' up_kb}</span>', 3)
 nettip = awful.tooltip({ objects = { dnlbl, uplbl, netdnwidget, netupwidget } })
 nettip.update = function () return readcmd("ifsummary") end
+]]
 
 -- Volume level
 voltext = createlabel('Vol')
@@ -236,7 +241,7 @@ vicious.register(volbar, vicious.widgets.volume, "$1", 2, "Master")
 
 -- Weather
 weatherlbl = createlabel('Weather')
-weatherwidget = widget({ type = "textbox" })
+weatherwidget = wibox.widget.textbox()
 vicious.register(weatherwidget, vicious.widgets.weather, " ${tempc}°C ${sky} &amp; ${weather}", 1800, "CYKF")
 
 musiclbl = nil
@@ -286,13 +291,11 @@ for s = 1, screen.count() do
     taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
 
     -- Create the task list for each screen
-    tasklist[s] = awful.widget.tasklist(function (c)
-        return awful.widget.tasklist.label.currenttags(c, s)
-    end, tasklist.buttons)
+    tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist.buttons)
 
     -- Create the wibox
-    wibox[s] = awful.wibox({ position = "top", screen = s })
-    wibox[s].widgets = awful.util.table.join(
+    winbox[s] = awful.wibox({ position = "top", screen = s })
+    winbox[s].widgets = awful.util.table.join(
         {
             {
                 layoutbox[s],
@@ -300,11 +303,11 @@ for s = 1, screen.count() do
                 promptbox[s],
                 layout = awful.widget.layout.horizontal.leftright
             },
-            sysbtn, systray,
+            --[[sysbtn,]] systray,
             separator, textclock, textclocklbl,
             separator, weatherwidget, weatherlbl,
             separator, volbar.widget, voltext,
-            separator, netupwidget, uplbl, netdnwidget, dnlbl,
+            --[[separator, netupwidget, uplbl, netdnwidget, dnlbl,]]
         },
         (function ()
             if prefs.use_awesompd then

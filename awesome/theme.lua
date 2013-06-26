@@ -2,6 +2,8 @@
 -- Alternative icon sets and widget icons:
 --  * http://awesome.naquadah.org/wiki/Nice_Icons
 
+local awful = require("awful")
+
 confdir = awful.util.getdir("config")
 
 -- Main
