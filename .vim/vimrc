@@ -19,7 +19,7 @@ set noswapfile
 set nowb
 
 " Persistent undo
-set undodir=~/.vim_runtime/undodir
+set undodir=~/.vim/undodir
 set undofile
 
 " Use the semi-colon to start commands, in addition to the colon
