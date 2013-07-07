@@ -6,7 +6,8 @@
 
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
-set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore=*.swp,*.bak,*.pyc,*.class,*.lst,*.pdf
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a,*d
 set title                " change the terminal's title
 
 " Set to auto read when a file is changed from the outside
@@ -55,8 +56,8 @@ set softtabstop=4
 set showmode
 set showcmd
 
-" Show line numbers and cursor position (rows and cols)
-set number
+" Show relative line numbers and cursor position (rows and cols)
+set relativenumber
 set ruler
 
 " Error bells are the worst
@@ -124,8 +125,8 @@ filetype plugin indent on
 noremap j gj
 noremap k gk
 
-" Use C-p to toggle paste mode
-noremap <silent> <C-p> :set paste!<cr>
+" Use C-i to toggle paste mode
+noremap <silent> <C-x> :set paste!<cr>
 
 " Make insert mode a bit more emacs-like
 inoremap <C-a>  <Home>
@@ -151,24 +152,7 @@ nmap ,/ :nohlsearch<CR>
 " Use comma instead of back-slash as the leader
 let mapleader=","
 
-" Make the NERDTree plugin easier to use
-map <Leader>f :NERDTree<CR>
-
-" Make tabs easier to use
-map <C-t> :tabnew<CR>
-"map <C-q> :tabclose<CR>
-map <C-Tab> :tabnext<CR>
-map <C-S-Tab> :tabprevious<CR>
-imap <C-t> <ESC>:tabnew<CR>
-"imap <C-q> <ESC>:tabclose<CR>
-imap <C-Tab> <ESC>:tabnext<CR>
-imap <C-S-Tab> <ESC>:tabprevious<CR>
-
 " Make splits easier to use
-map <C-S-J> <C-W>j<C-W>_
-map <C-S-K> <C-W>k<C-W>_
-map <C-S-H> <C-W>h<C-W>_
-map <C-S-L> <C-W>l<C-W>_
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-h> <C-w>h
@@ -236,8 +220,24 @@ augroup filetype_make
     autocmd FileType make setlocal noexpandtab
 augroup END
 
+" Sane Ignore For ctrlp
+let g:ctrlp_custom_ignore = {
+\ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|tmp$',
+\ }
+
+" Set some syntastic options
+let g:syntastic_check_on_open=1
+let g:syntastic_enable_signs=1
+let g:syntastic_cpp_config_file = '.syntastic_c_config'
+map <Leader>c :SyntasticCheck<CR>
+
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow
 let g:ruby_path = system('rvm current')
+
+" New shortcuts to create snippets, list all snippets
+" and open it snippet files vertically
+noremap <Leader>m :UltiSnipsEdit<CR>
+let g:UltiSnipsEditSplit='vertical'
 
 execute pathogen#infect()
