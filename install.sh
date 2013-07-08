@@ -51,9 +51,7 @@ function set_git_config() {
 }
 
 function install_pathogen() {
-    if [[ -r $VIMDIR/autoload/pathogen.vim ]]; then
-        info "pathogen.vim already installed\n"
-    else
+    if [[ ! -r $VIMDIR/autoload/pathogen.vim ]]; then
         mkdir -p $VIMDIR/autoload
         mkdir -p $VIMDIR/bundle
         curl -Sso $VIMDIR/autoload/pathogen.vim $PATHOGEN
@@ -76,10 +74,18 @@ function install_vim_plugin() {
 
 ensure_installed "ctags"
 
-setup_symlink ".vim" $VIMDIR
+setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
+setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
+setup_symlink ".vim" $VIMDIR
 
 set_git_config 'init.templatedir' "$HOME/.git_template"
 set_git_config 'alias.ctags' '!.git/hooks/ctags'
+set_git_config 'alias.graph' 'log --all --graph --oneline --decorate=short'
+set_git_config 'color.diff' 'auto'
+set_git_config 'color.ui' 'auto'
 
-install_vim_plugin "fugitive.vim" "https://github.com/tpope/vim-fugitive.git"
+install_vim_plugin "ctrlp.vim" https://github.com/kien/ctrlp.vim.git
+install_vim_plugin "fugitive.vim" https://github.com/tpope/vim-fugitive.git
+install_vim_plugin "syntastic" https://github.com/scrooloose/syntastic.git
+install_vim_plugin "ultisnips" https://github.com/SirVer/ultisnips.git
