@@ -39,9 +39,9 @@ function setup_symlink() {
 function set_git_config() {
     # Test if the alias already exists
     if git config --global "$1" > /dev/null; then
-        warn "git config $1 already configured\n"
+        info "git config $1 already configured\n"
     else
-        git config --global "$1" "$@"
+        git config --global "$1" "$2"
         info "git configured $1\n"
     fi
 }
