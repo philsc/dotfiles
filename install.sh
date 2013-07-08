@@ -6,6 +6,10 @@ PATHOGEN=https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 ROOTDIR=$(readlink -f $0)
 ROOTDIR=${ROOTDIR%/*}
 
+function new() {
+    echo -ne NEW "$@"
+}
+
 function warn() {
     echo -ne WARNING "$@"
 }
@@ -31,7 +35,7 @@ function setup_symlink() {
     elif [[ -e "$2" ]]; then
         warn "$2 already exists, but is not a symlink\n"
     else
-        info "Installing symlink $2\n"
+        new "Installing symlink $2\n"
         ln -s "$ROOTDIR/$1" "$2"
     fi
 }
@@ -42,7 +46,7 @@ function set_git_config() {
         info "git config $1 already configured\n"
     else
         git config --global "$1" "$2"
-        info "git configured $1\n"
+        new "git configured $1\n"
     fi
 }
 
@@ -53,7 +57,7 @@ function install_pathogen() {
         mkdir -p $VIMDIR/autoload
         mkdir -p $VIMDIR/bundle
         curl -Sso $VIMDIR/autoload/pathogen.vim $PATHOGEN
-        info "Installed pathogen.vim\n"
+        new "Installed pathogen.vim\n"
     fi
 }
 
@@ -64,9 +68,9 @@ function install_vim_plugin() {
     if [[ -d $VIMDIR/bundle/"$1" ]]; then
         info "Vim plugin $1 already installed\n"
     else
-        info -n "Installing vim plugin $1... "
+        new "Installing vim plugin $1... "
         git clone "$2" $VIMDIR/bundle/"$1" > /dev/null 2>&1
-        info "done\n"
+        echo "done"
     fi
 }
 
