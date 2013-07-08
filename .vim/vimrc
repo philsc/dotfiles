@@ -7,7 +7,7 @@
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.lst,*.pdf
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a,*d
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a,*.d
 set title                " change the terminal's title
 
 " Set to auto read when a file is changed from the outside
