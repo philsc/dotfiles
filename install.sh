@@ -73,6 +73,7 @@ function install_vim_plugin() {
 }
 
 ensure_installed "ctags"
+ensure_installed "ack"
 
 setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
@@ -89,3 +90,5 @@ install_vim_plugin "ctrlp.vim" https://github.com/kien/ctrlp.vim.git
 install_vim_plugin "fugitive.vim" https://github.com/tpope/vim-fugitive.git
 install_vim_plugin "syntastic" https://github.com/scrooloose/syntastic.git
 install_vim_plugin "ultisnips" https://github.com/SirVer/ultisnips.git
+install_vim_plugin "surround" https://github.com/tpope/vim-surround.git
+install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git

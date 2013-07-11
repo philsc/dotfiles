@@ -13,6 +13,9 @@ set title                " change the terminal's title
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set ttimeout
+set ttimeoutlen=50
+
 " Use other ways to track changes to files
 set nobackup
 set noswapfile
@@ -59,6 +62,7 @@ set showcmd
 " Show relative line numbers and cursor position (rows and cols)
 set relativenumber
 set ruler
+set scrolloff=2
 
 " Error bells are the worst
 set noerrorbells
@@ -125,6 +129,9 @@ filetype plugin indent on
 " navigated as independent lines
 noremap j gj
 noremap k gk
+
+" Make Y consistent with C and D. See :help Y.
+nnoremap Y y$
 
 " Use C-i to toggle paste mode
 noremap <silent> <C-x> :set paste!<cr>
