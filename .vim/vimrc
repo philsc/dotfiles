@@ -125,6 +125,9 @@ let g:load_doxygen_syntax=1
 " Detect different filetypes, and load appropriate plugins and indent files
 filetype plugin indent on
 
+" Use comma instead of back-slash as the leader
+let mapleader=","
+
 " Remap the default motion keys so long, wrapped, but unsplit lines can be
 " navigated as independent lines
 noremap j gj
@@ -134,7 +137,7 @@ noremap k gk
 nnoremap Y y$
 
 " Use C-i to toggle paste mode
-noremap <silent> <C-x> :set paste!<cr>
+noremap <Leader>p :set paste!<cr>
 
 " Make insert mode a bit more emacs-like
 inoremap <C-a>  <Home>
@@ -155,10 +158,7 @@ noremap <silent> <C-o> :set spell!<cr>
 cmap w!! w !sudo tee % >/dev/null
 
 " Clear the highlighted searches
-nmap ,/ :nohlsearch<CR>
-
-" Use comma instead of back-slash as the leader
-let mapleader=","
+nmap <Leader>/ :nohlsearch<CR>
 
 " Make splits easier to use
 map <C-j> <C-w>j
