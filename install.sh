@@ -74,6 +74,7 @@ function install_vim_plugin() {
 
 ensure_installed "ctags"
 ensure_installed "ack"
+ensure_installed "git"
 
 setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
