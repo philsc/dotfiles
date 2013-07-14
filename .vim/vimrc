@@ -160,6 +160,9 @@ cmap w!! w !sudo tee % >/dev/null
 " Clear the highlighted searches
 nmap <Leader>/ :nohlsearch<CR>
 
+" Shortcut for opening the gundo window
+nnoremap <Leader>g :GundoToggle<CR>
+
 " Make splits easier to use
 map <C-j> <C-w>j
 map <C-k> <C-w>k
