@@ -55,7 +55,7 @@ function install_pathogen() {
         mkdir -p $VIMDIR/autoload
         mkdir -p $VIMDIR/bundle
         curl -Sso $VIMDIR/autoload/pathogen.vim $PATHOGEN
-        if (($?)); then
+        if (($? == 0)); then
             new "Installed pathogen.vim\n"
         else
             error "Failed to install pathogen.vim\n"
@@ -72,7 +72,7 @@ function install_vim_plugin() {
     else
         new "Installing vim plugin $1... "
         git clone "$2" $VIMDIR/bundle/"$1" > /dev/null 2>&1
-        if (($?)); then
+        if (($? == 0)); then
             echo "done"
         else
             echo "failed"
