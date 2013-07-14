@@ -59,6 +59,7 @@ function install_pathogen() {
             new "Installed pathogen.vim\n"
         else
             error "Failed to install pathogen.vim\n"
+            exit 1
         fi
     fi
 }
