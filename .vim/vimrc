@@ -117,7 +117,7 @@ set splitbelow
 " File completion
 set wildmenu
 set wildmode=list:full
-cabbr <expr> %% expand('%:p:h')
+cabbr <expr> %% expand('%:h')
 
 " Highlight doxygen comments
 let g:load_doxygen_syntax=1

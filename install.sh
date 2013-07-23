@@ -24,8 +24,7 @@ function error() {
 
 function ensure_installed() {
     if ! builtin type "$1" >/dev/null 2>&1; then
-        error "$1 is not installed\n"
-        exit 1
+        warn "$1 is not installed\n"
     fi
 }
 
