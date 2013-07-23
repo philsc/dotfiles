@@ -251,4 +251,8 @@ let g:ruby_path = system('rvm current')
 noremap <Leader>m :UltiSnipsEdit<CR>
 let g:UltiSnipsEditSplit='vertical'
 
+" Trigger EasyMotion with the space bar
+nmap <SPACE> <Leader><Leader>s
+vmap <SPACE> <Leader><Leader>s
+
 execute pathogen#infect()
