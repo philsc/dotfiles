@@ -92,6 +92,7 @@ setup_symlink ".vim" $VIMDIR
 set_git_config 'init.templatedir' "$HOME/.git_template"
 set_git_config 'alias.ctags' '!.git/hooks/ctags'
 set_git_config 'alias.graph' 'log --all --graph --oneline --decorate=short'
+set_git_config 'alias.lgraph' 'log --graph --oneline --decorate=short HEAD'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 
