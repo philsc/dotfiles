@@ -106,6 +106,26 @@ set formatoptions+=tcwa2
 set wrap
 set textwidth=79
 
+" Function to let me toggle the automatic newline insertion after
+" hitting the textwidth number of characters on a given line.
+function ToggleAutoWrap()
+    if &formatoptions =~# '.*t.*'
+        setlocal formatoptions-=t
+        setlocal formatoptions-=c
+        setlocal formatoptions-=a
+        echo 'Auto wrapping disabled'
+    else
+        setlocal formatoptions+=t
+        setlocal formatoptions+=c
+        setlocal formatoptions+=a
+        echo 'Auto wrapping enabled'
+    endif
+endfunction
+
+" ex command for toggling text and comment wrapping
+command -bar AutoWrap call ToggleAutoWrap()
+nmap <Leader>r :AutoWrap<CR>
+
 " I really don't want anything to get folded
 "set nofoldenable
 set foldmethod=syntax
@@ -136,8 +156,11 @@ noremap k gk
 " Make Y consistent with C and D. See :help Y.
 nnoremap Y y$
 
-" Use C-i to toggle paste mode
+" Use ,p to toggle paste mode
 noremap <Leader>p :set paste!<cr>
+
+" Use ,w to toggle line wrap
+noremap <Leader>w :setlocal wrap!<CR>:setlocal wrap?<CR>
 
 " Make insert mode a bit more emacs-like
 inoremap <C-a>  <Home>
@@ -145,14 +168,22 @@ inoremap <C-e>  <End>
 inoremap <C-b>  <Left>
 inoremap <C-f>  <Right>
 inoremap <C-d>  <Delete>
-"inoremap <Esc>b <S-Left>
-"inoremap <Esc>f <S-Right>
-"inoremap <M-d>  <S-right><Delete>
-"inoremap <Esc>d <S-right><Delete>
-"inoremap <C-g>  <C-c>
+inoremap <M-b>  <S-Left>
+inoremap <M-f>  <S-Right>
+inoremap <M-d>  <S-right><Delete>
+
+" Make vim's command line more emacs-like
+cnoremap <C-a>  <Home>
+cnoremap <C-e>  <End>
+cnoremap <C-b>  <Left>
+cnoremap <C-f>  <Right>
+cnoremap <C-d>  <Delete>
+cnoremap <M-b>  <S-Left>
+cnoremap <M-f>  <S-Right>
+cnoremap <M-d>  <S-right><Delete>
 
 " Use C-o to toggle spellcheck
-noremap <silent> <C-o> :set spell!<cr>
+noremap <silent> <Leader>o :set spell!<cr>
 
 " If we ever forget to open a file with root privileges
 cmap w!! w !sudo tee % >/dev/null
@@ -171,9 +202,8 @@ map <C-l> <C-w>l
 set wmh=0
 
 " Shortcuts for entering/leaving hex mode
-nnoremap <C-c> :Hexmode<CR>
-inoremap <C-c> <Esc>:Hexmode<CR>
-vnoremap <C-c> :<C-U>Hexmode<CR>
+nnoremap <Leader>h :Hexmode<CR>
+vnoremap <Leader>h :<C-U>Hexmode<CR>
 
 " ex command for toggling hex mode - define mapping if desired
 command -bar Hexmode call ToggleHex()
