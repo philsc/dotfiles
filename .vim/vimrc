@@ -261,6 +261,11 @@ augroup filetype_make
     autocmd FileType make setlocal noexpandtab
 augroup END
 
+augroup git
+    autocmd!
+    autocmd FileType gitcommit setlocal textwidth=73
+augroup END
+
 " Sane Ignore For ctrlp
 let g:ctrlp_custom_ignore = {
 \ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|tmp$',
