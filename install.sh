@@ -103,5 +103,5 @@ install_vim_plugin "ultisnips" https://github.com/SirVer/ultisnips.git
 install_vim_plugin "surround" https://github.com/tpope/vim-surround.git
 install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git
 install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
-install_vim_plugin "vim-easymotion" https://github.com/svermeulen/vim-easymotion.git
 install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
+install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
