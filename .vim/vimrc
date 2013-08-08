@@ -10,6 +10,9 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,*.lst,*.pdf
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a,*.d
 set title                " change the terminal's title
 
+" Use comma instead of back-slash as the leader
+let mapleader=","
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -144,9 +147,6 @@ let g:load_doxygen_syntax=1
 
 " Detect different filetypes, and load appropriate plugins and indent files
 filetype plugin indent on
-
-" Use comma instead of back-slash as the leader
-let mapleader=","
 
 " Remap the default motion keys so long, wrapped, but unsplit lines can be
 " navigated as independent lines
