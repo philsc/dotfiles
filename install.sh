@@ -88,6 +88,7 @@ setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
 setup_symlink ".vim" $VIMDIR
+setup_symlink ".irbrc" "$HOME/.irbrc"
 
 set_git_config 'init.templatedir' "$HOME/.git_template"
 set_git_config 'alias.ctags' '!.git/hooks/ctags'
