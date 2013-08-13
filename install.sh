@@ -63,6 +63,27 @@ function install_pathogen() {
     fi
 }
 
+function install_vim_colorscheme() {
+    mkdir -p $VIMDIR/colors
+
+    if [[ -r $VIMDIR/colors/"$1.vim" ]]; then
+        info "Color scheme $1 already installed\n"
+        return
+    else
+        new "Installing color scheme $1... "
+    fi
+
+    TMPDIR="$(mktemp -d)"
+    git clone "$2" "$TMPDIR" > /dev/null 2>&1
+    if (($? == 0)); then
+        echo "done"
+        cp -ra "$TMPDIR/colors/." $VIMDIR/colors/.
+    else
+        echo "failed"
+    fi
+    rm -rf "$TMPDIR"
+}
+
 function install_vim_plugin() {
     # Ensure that pathogen is installed
     install_pathogen
@@ -97,6 +118,8 @@ set_git_config 'alias.lgraph' 'log --graph --oneline --decorate=short HEAD'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 
+install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
+
 install_vim_plugin "ctrlp.vim" https://github.com/kien/ctrlp.vim.git
 install_vim_plugin "fugitive.vim" https://github.com/tpope/vim-fugitive.git
 install_vim_plugin "syntastic" https://github.com/scrooloose/syntastic.git
@@ -106,3 +129,4 @@ install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git
 install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
 install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
 install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
+install_vim_plugin "vim-space" https://github.com/spiiph/vim-space.git
