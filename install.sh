@@ -74,8 +74,13 @@ function install_vim_colorscheme() {
     fi
 
     TMPDIR="$(mktemp -d)"
-    git clone "$2" "$TMPDIR"
-    cp -ra "$TMPDIR/colors/." $VIMDIR/colors/.
+    git clone "$2" "$TMPDIR" > /dev/null 2>&1
+    if (($? == 0)); then
+        echo "done"
+        cp -ra "$TMPDIR/colors/." $VIMDIR/colors/.
+    else
+        echo "failed"
+    fi
     rm -rf "$TMPDIR"
 }
 
