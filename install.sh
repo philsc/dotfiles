@@ -70,11 +70,11 @@ function install_vim_colorscheme() {
         info "Color scheme $1 already installed\n"
         return
     else
-        new "Installing color scheme $2"
+        new "Installing color scheme $1"
     fi
 
     TMPDIR="$(mktemp -d)"
-    git clone "$1" "$TMPDIR"
+    git clone "$2" "$TMPDIR"
     cp -ra "$TMPDIR/colors/." $VIMDIR/colors/.
     rm -rf "$TMPDIR"
 }
