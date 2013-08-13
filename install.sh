@@ -70,7 +70,7 @@ function install_vim_colorscheme() {
         info "Color scheme $1 already installed\n"
         return
     else
-        new "Installing color scheme $1"
+        new "Installing color scheme $1... "
     fi
 
     TMPDIR="$(mktemp -d)"
