@@ -39,6 +39,20 @@ function setup_symlink() {
     fi
 }
 
+function download_file() {
+    if [[ -r "$1" ]]; then
+        info "File $1 already installed\n"
+        return
+    fi
+    new "Downloading $1"
+    curl "$2" > "$1" 2>/dev/null
+    if (($? == 0)); then
+        echo "done"
+    else
+        echo "failed"
+    fi
+}
+
 function set_git_config() {
     # Test if the alias already exists
     if git config --global "$1" > /dev/null; then
@@ -110,6 +124,8 @@ setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
 setup_symlink ".vim" $VIMDIR
 setup_symlink ".irbrc" "$HOME/.irbrc"
+
+download_file "$HOME/.bash/git-prompt.sh" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
 set_git_config 'init.templatedir' "$HOME/.git_template"
 set_git_config 'alias.ctags' '!.git/hooks/ctags'
