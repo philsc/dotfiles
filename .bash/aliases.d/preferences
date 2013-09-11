@@ -3,6 +3,7 @@ alias ls='ls --color=auto --group-directories-first --file-type'
 alias ll='ls -l'
 alias lh='ls -lh'
 alias la='ls -A'
+alias lla='ls -lA'
 alias l='ls -CF'
 
 # Colourize grep output for easier usage.
