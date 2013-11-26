@@ -6,6 +6,9 @@ PATHOGEN=https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 ROOTDIR=$(readlink -f $0)
 ROOTDIR=${ROOTDIR%/*}
 
+MIN_VIMRC="source ~/$VIMDIR/vimrc"
+MIN_BASHRC=". ~/.bash/bashrc"
+
 function new() {
     echo -ne NEW "$@"
 }
@@ -41,10 +44,10 @@ function setup_symlink() {
 
 function setup_file_if_non_existant() {
     if [[ -r "$1" ]]; then
-        warn "Skipping default install for $1"
+        warn "Skipping default install for $1\n"
     else
         echo "$2" > "$1"
-        new "Installed file $1 with default content"
+        new "Installed file $1 with default content\n"
     fi
 }
 
@@ -133,6 +136,9 @@ setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
 setup_symlink ".vim" $VIMDIR
 setup_symlink ".irbrc" "$HOME/.irbrc"
+
+setup_file_if_non_existant "$HOME/.vimrc" "$MIN_VIMRC"
+setup_file_if_non_existant "$HOME/.bashrc" "$MIN_BASHRC"
 
 download_file "$HOME/.bash/git-prompt.sh" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
