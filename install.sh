@@ -39,6 +39,15 @@ function setup_symlink() {
     fi
 }
 
+function setup_file_if_non_existant() {
+    if [[ -r "$1" ]]; then
+        warn "Skipping default install for $1"
+    else
+        echo "$2" > "$1"
+        new "Installed file $1 with default content"
+    fi
+}
+
 function download_file() {
     if [[ -r "$1" ]]; then
         info "File $1 already installed\n"
