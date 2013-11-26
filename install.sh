@@ -44,7 +44,7 @@ function download_file() {
         info "File $1 already installed\n"
         return
     fi
-    new "Downloading $1"
+    new "Downloading $1... "
     curl "$2" > "$1" 2>/dev/null
     if (($? == 0)); then
         echo "done"
