@@ -42,7 +42,7 @@ function setup_symlink() {
     fi
 }
 
-function setup_file_if_non_existant() {
+function setup_file_if_non_existent() {
     overwrite=true
 
     if [[ -r "$1" ]]; then
@@ -151,8 +151,8 @@ setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
 setup_symlink ".vim" $VIMDIR
 setup_symlink ".irbrc" "$HOME/.irbrc"
 
-setup_file_if_non_existant "$HOME/.vimrc" "$MIN_VIMRC"
-setup_file_if_non_existant "$HOME/.bashrc" "$MIN_BASHRC"
+setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
+setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
 
 download_file "$HOME/.bash/git-prompt.sh" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
