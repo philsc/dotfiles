@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Custom command to join PDFs together.
 function pdfjoin() {
   OUTPUTFILE=$1;
@@ -18,3 +20,10 @@ function flashvids() {
 
 alias fc='grep -rnI --include=*.{c,cpp,h,hh,hpp}'
 alias fh='grep -rnI --include=*.{h,hh,hpp}'
+
+function fcreplace() {
+    local search="$1"
+    local replace="$2"
+    shift 2
+    sed -i "s/${search}/${replace}/g" $(fc "${search}" "$@" -l)
+}
