@@ -39,7 +39,11 @@ __setps1() {
   local d=""
 
   if g="$(git rev-parse --show-toplevel 2>/dev/null)"; then
-    s="$(__git_ps1 "($TXTRED%s$TXTRST)") "
+    if [[ -r "$g/.git/no_prompt_status" ]]; then
+      s="($TXTRED$(git rev-parse  --abbrev-ref HEAD 2>/dev/null)$TXTRST) "
+    else
+      s="$(__git_ps1 "($TXTRED%s$TXTRST)") "
+    fi
     d="${PWD#$(dirname ${g:--})/}"
   elif g="$(svn info 2>/dev/null)"; then
     url="$(sed -ne 's#^URL: ##p' <<<"$g")"
