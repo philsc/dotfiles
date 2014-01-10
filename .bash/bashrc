@@ -65,6 +65,9 @@ PROMPT_COMMAND='__setps1'
 # Better ls colors
 eval $(dircolors -b)
 
+# Load RVM into a shell session *as a function*
+sourcefile "$HOME/.rvm/scripts/rvm"
+
 # Alias definitions and exports.
 loadrcdir() { for f in "$1"/*; do . $f; done 2>/dev/null; }
 loadrcdir ~/.bash/aliases.d
