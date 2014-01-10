@@ -38,3 +38,5 @@ setup_gnu_symlink rm
 setup_gnu_symlink cp
 setup_gnu_symlink ls
 setup_gnu_symlink mktemp
+setup_gnu_symlink chmod
+setup_gnu_symlink chown
