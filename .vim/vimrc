@@ -182,6 +182,12 @@ set wildmenu
 set wildmode=list:full
 cabbr <expr> %% expand('%:h')
 
+" Strip all trailing whitespace from a file, using ,W
+nnoremap <leader>W :%s/\s\+$//<CR>:let @/=''<CR>
+
+" Reselect text that was just pasted with ,v
+nnoremap <leader>v V`]
+
 " Highlight doxygen comments
 let g:load_doxygen_syntax=1
 
@@ -243,6 +249,10 @@ cmap w!! w !sudo tee % >/dev/null
 " See http://stevelosh.com/blog/2010/09/coming-home-to-vim
 nnoremap / /\v
 vnoremap / /\v
+
+" Underline headings for markup languages
+nnoremap <leader>= yypVr=
+nnoremap <leader>- yypVr-
 
 " Clear the highlighted searches
 nmap <Leader>/ :nohlsearch<CR>
