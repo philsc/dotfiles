@@ -198,6 +198,10 @@ noremap k gk
 " Make Y consistent with C and D. See :help Y.
 nnoremap Y y$
 
+" Speed up scrolling of the viewport slightly
+nnoremap <C-e> 2<C-e>
+nnoremap <C-y> 2<C-y>
+
 " Use ,p to toggle paste mode
 noremap <Leader>p :set paste!<cr>
 
@@ -214,6 +218,10 @@ inoremap <M-b>  <S-Left>
 inoremap <M-f>  <S-Right>
 inoremap <M-d>  <S-right><Delete>
 
+" Complete whole filenames/lines with a quicker shortcut key in insert mode
+inoremap <C-e> <C-x><C-f>
+inoremap <C-y> <C-x><C-l>
+
 " Make vim's command line more emacs-like
 cnoremap <C-a>  <Home>
 cnoremap <C-e>  <End>
@@ -229,6 +237,12 @@ noremap <silent> <Leader>o :set spell!<cr>
 
 " If we ever forget to open a file with root privileges
 cmap w!! w !sudo tee % >/dev/null
+
+" Use Perl-style regexes by default
+" Thanks to Steve Losh for this liberating tip
+" See http://stevelosh.com/blog/2010/09/coming-home-to-vim
+nnoremap / /\v
+vnoremap / /\v
 
 " Clear the highlighted searches
 nmap <Leader>/ :nohlsearch<CR>
