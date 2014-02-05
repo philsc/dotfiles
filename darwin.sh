@@ -40,3 +40,4 @@ setup_gnu_symlink ls
 setup_gnu_symlink mktemp
 setup_gnu_symlink chmod
 setup_gnu_symlink chown
+setup_gnu_symlink sed
