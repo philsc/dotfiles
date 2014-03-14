@@ -39,10 +39,10 @@ __setps1() {
   local d=""
 
   if g="$(git rev-parse --show-toplevel 2>/dev/null)"; then
-    if [[ -r "$g/.git/no_prompt_status" ]]; then
-      s="($TXTRED$(git rev-parse  --abbrev-ref HEAD 2>/dev/null)$TXTRST) "
-    else
+    if [[ "$(git config prompt.fancy)" == "true" ]]; then
       s="$(__git_ps1 "($TXTRED%s$TXTRST)") "
+    else
+      s="($TXTRED$(git rev-parse  --abbrev-ref HEAD 2>/dev/null)$TXTRST) "
     fi
     d="${PWD#$(dirname ${g:--})/}"
   elif g="$(svn info 2>/dev/null)"; then
