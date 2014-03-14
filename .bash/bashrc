@@ -33,10 +33,21 @@ sourcefile ~/.bash/git-completion.sh
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
-# Possibly overcomplicated parsing of git/svn branch names
+__timer_start() {
+    timer=${timer:-$SECONDS}
+}
+
+__timer_stop() {
+    timer_show=$((SECONDS - timer))
+    unset timer
+}
+
 __setps1() {
   local s=""
   local d=""
+
+  # Stop the timer so that we know how long the last command took to execute
+  __timer_stop
 
   if g="$(git rev-parse --show-toplevel 2>/dev/null)"; then
     if [[ "$(git config prompt.fancy)" == "true" ]]; then
@@ -46,6 +57,7 @@ __setps1() {
     fi
     d="${PWD#$(dirname ${g:--})/}"
   elif g="$(svn info 2>/dev/null)"; then
+    # Possibly overcomplicated parsing of git/svn branch names
     url="$(sed -ne 's#^URL: ##p' <<<"$g")"
     root="$(sed -ne 's#^Repository Root: ##p' <<<"$g")"
     s="$(sed -e 's#^'"$root"'##g' <<<"$url" | egrep -o \
@@ -56,10 +68,11 @@ __setps1() {
     d='\w'
   fi
 
-  PS1="${TXTBLU}\u${TXTRST} $s[${TXTGRN}$d${TXTRST}] r\$?,j\j\n\$ "
+  PS1="${TXTBLU}\u${TXTRST} $s[${TXTGRN}$d${TXTRST}] r\$?,j\j,t$timer_show\n\$ "
 }
 
 # Set the command prompt.
+trap __timer_start DEBUG
 PROMPT_COMMAND='__setps1'
 
 # Better ls colors
