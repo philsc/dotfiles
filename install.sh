@@ -163,6 +163,7 @@ set_git_config 'alias.lgraph' 'log --graph --oneline --decorate=short HEAD'
 set_git_config 'alias.compress' 'repack -a -d --depth=250 --window=250'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
+set_git_config 'credential.helper' 'cache --timeout=3600'
 
 install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
 
