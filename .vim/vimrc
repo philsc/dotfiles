@@ -109,6 +109,23 @@ set formatoptions+=tcwa2
 set wrap
 set textwidth=79
 
+" Function to let me toggle tab expansion.
+function ToggleTabExpansion()
+    if &expandtab
+        set noexpandtab
+        set nosmarttab
+        echo 'Tab expansion disabled'
+    else
+        set expandtab
+        set smarttab
+        echo 'Tab expansion enabled'
+    endif
+endfunction
+
+" ex command for toggling text and comment wrapping
+command -bar TabExpansion call ToggleTabExpansion()
+nmap <Leader>t :TabExpansion<CR>
+
 " Function to let me toggle the automatic newline insertion after
 " hitting the textwidth number of characters on a given line.
 function ToggleAutoWrap()
