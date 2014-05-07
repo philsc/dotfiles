@@ -156,6 +156,10 @@ setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
 
 download_file "$HOME/.bash/git-prompt.sh" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
+touch "$HOME/.bash/paths.local"
+touch "$HOME/.bash/exports.d/local"
+touch "$HOME/.bash/aliases.d/local"
+
 set_git_config 'init.templatedir' "$HOME/.git_template"
 set_git_config 'alias.ctags' '!.git/hooks/ctags'
 set_git_config 'alias.graph' 'log --all --graph --oneline --decorate=short'

@@ -5,3 +5,5 @@
 /.vim/UltiSnips
 /awesome/prefs.lua
 /.bash/git-*.sh
+/.bash/paths.local
+/.bash/*.d/local
