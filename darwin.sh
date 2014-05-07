@@ -41,3 +41,6 @@ setup_gnu_symlink mktemp
 setup_gnu_symlink chmod
 setup_gnu_symlink chown
 setup_gnu_symlink sed
+
+# Disable the Dashboard
+defaults write com.apple.dashboard mcx-disabled -boolean true
