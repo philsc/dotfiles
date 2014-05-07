@@ -63,6 +63,7 @@ set showmode
 set showcmd
 
 " Show relative line numbers and cursor position (rows and cols)
+set number
 set relativenumber
 set ruler
 set scrolloff=2
