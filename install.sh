@@ -71,7 +71,7 @@ function download_file() {
         return
     fi
     new "Downloading $1... "
-    curl "$2" > "$1" 2>/dev/null
+    curl -L "$2" > "$1" 2>/dev/null
     if (($? == 0)); then
         echo "done"
     else
@@ -93,7 +93,7 @@ function install_pathogen() {
     if [[ ! -r $VIMDIR/autoload/pathogen.vim ]]; then
         mkdir -p $VIMDIR/autoload
         mkdir -p $VIMDIR/bundle
-        curl -Sso $VIMDIR/autoload/pathogen.vim $PATHOGEN
+        curl -SsLo $VIMDIR/autoload/pathogen.vim $PATHOGEN
         if (($? == 0)); then
             new "Installed pathogen.vim\n"
         else
