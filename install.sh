@@ -141,6 +141,41 @@ function install_vim_plugin() {
     fi
 }
 
+function install_vim_docker_plugin() {
+    # Ensure pathogen is installed
+    install_pathogen
+
+    local log="$(mktemp)"
+
+    # Because the dockerfile plugin is inside the official docker git repo, we
+    # need to clone it and extract just the part that we want.
+    local dest_dir="$VIMDIR"/bundle/docker
+
+    if [[ -d $dest_dir ]]; then
+        info "Vim plugin docker already installed\n"
+    else
+        new "Installing vim plugin docker... "
+        local temp="$(mktemp -d)"
+        git clone "https://github.com/dotcloud/docker.git" "$temp" &> "$log"
+        if (($? != 0)); then
+            echo "failed"
+            cat "$log"
+        else
+            command cp -r "$temp"/contrib/syntax/vim/ $dest_dir &>> "$log"
+            if (($? == 0)); then
+                echo "done"
+            else
+                echo "failed"
+                cat "$log"
+            fi
+        fi
+
+        rm -rf "$temp"
+    fi
+
+    rm -rf "$log"
+}
+
 ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
@@ -180,3 +215,4 @@ install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git
 install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
 install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
 install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
+install_vim_docker_plugin

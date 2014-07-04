@@ -286,6 +286,21 @@ function ToggleHex()
   let &modifiable=l:oldmodifiable
 endfunction
 
+augroup vagrant
+    autocmd!
+    autocmd BufRead,BufNewFile Vagrantfile setfiletype ruby
+    autocmd BufRead,BufNewFile Vagrantfile set tabstop=2
+    autocmd BufRead,BufNewFile Vagrantfile set shiftwidth=2
+    autocmd BufRead,BufNewFile Vagrantfile set softtabstop=2
+augroup END
+
+augroup docker
+    autocmd!
+    autocmd FileType dockerfile setlocal formatoptions-=t
+    autocmd FileType dockerfile setlocal formatoptions-=c
+    autocmd FileType dockerfile setlocal formatoptions-=a
+augroup END
+
 " C-style abbreviations and shortcuts
 augroup filetype_c
     autocmd!
