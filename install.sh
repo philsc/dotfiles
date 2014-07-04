@@ -145,6 +145,8 @@ function install_vim_docker_plugin() {
     # Ensure pathogen is installed
     install_pathogen
 
+    local log="$(mktemp)"
+
     # Because the dockerfile plugin is inside the official docker git repo, we
     # need to clone it and extract just the part that we want.
     local dest_dir="$VIMDIR"/bundle/docker
@@ -154,18 +156,24 @@ function install_vim_docker_plugin() {
     else
         new "Installing vim plugin docker... "
         local temp="$(mktemp -d)"
-        git clone "https://github.com/dotcloud/docker.git" "$temp" > /dev/null 2>&1
+        git clone "https://github.com/dotcloud/docker.git" "$temp" &> "$log"
         if (($? != 0)); then
             echo "failed"
+            cat "$log"
         else
-            command cp -r "$temp"/contrib/syntax/vim/ $dest_dir
+            command cp -r "$temp"/contrib/syntax/vim/ $dest_dir &>> "$log"
             if (($? == 0)); then
                 echo "done"
             else
                 echo "failed"
+                cat "$log"
             fi
         fi
+
+        rm -rf "$temp"
     fi
+
+    rm -rf "$log"
 }
 
 ensure_installed "ctags"
