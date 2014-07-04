@@ -318,6 +318,7 @@ augroup END
 
 augroup git
     autocmd!
+    autocmd BufRead,BufNewFile MERGE_MSG setfiletype gitcommit
     autocmd FileType gitcommit setlocal textwidth=73
 augroup END
 
