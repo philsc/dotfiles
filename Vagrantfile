@@ -60,11 +60,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     SH
 
   # Set up a personal new user
-  config.vm.provision :shell, inline: <<-SH.unindent
-    useradd -m -s /bin/bash #{USERNAME}
-    (echo #{PASSWORD}; echo #{PASSWORD}) | passwd #{USERNAME}
-    usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout #{USERNAME}
-    SH
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user"
 
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent

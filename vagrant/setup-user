@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+readonly USERNAME="$USER"
+readonly PASSWORD="default"
+
+if grep -q "\\<${USERNAME}\\>" /etc/passwd; then
+    echo "User ${USERNAME} already set up."
+    exit 0
+fi
+
+useradd -m -s /bin/bash ${USERNAME}
+(echo ${PASSWORD}; echo ${PASSWORD}) | passwd ${USERNAME}
+usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout ${USERNAME}
