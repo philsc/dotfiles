@@ -9,7 +9,7 @@ class String
   # Leaves _additional_ indentation on later lines intact.
   # SEE: http://stackoverflow.com/a/5638187/504018
   def unindent
-    gsub /^#{self[/\A\s*/]}/, ''
+    gsub(/^#{self[/\A\s*/]}/, '')
   end
 end
 
