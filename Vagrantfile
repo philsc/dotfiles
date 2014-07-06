@@ -1,4 +1,6 @@
-HOSTNAME = 'philsc-dev'
+USERNAME = ENV['USER'] || 'user'
+PASSWORD = 'default'
+HOSTNAME = USERNAME + 'dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -48,15 +50,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     service hostname restart
     SH
 
+  # Install essentials like git and the 32-bit compatiblity libraries.
   config.vm.provision :shell, inline: <<-SH.unindent
     export DEBIAN_FRONTEND=noninteractive
     apt-get update -q
     apt-get upgrade -q -y
     apt-get install -q -y subversion git
-    apt-get install -q -y libc6:i386 libstdc++6:i386 zlib1g:i386
+    apt-get install -q -y lib32z1 lib32ncurses5 lib32bz2-1.0
     SH
 
-  # Remove Nuvation's apt-cache.
+  # Set up a personal new user
+  config.vm.provision :shell, inline: <<-SH.unindent
+    useradd -m -s /bin/bash #{USERNAME}
+    (echo #{PASSWORD}; echo #{PASSWORD}) | passwd #{USERNAME}
+    usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout #{USERNAME}
+    SH
+
+  # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent
     apt-get remove -q -y cups
     apt-get clean -q -y
