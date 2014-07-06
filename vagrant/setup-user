@@ -2,7 +2,7 @@
 
 set -e
 
-readonly USERNAME="$USER"
+readonly USERNAME="$1"
 readonly PASSWORD="default"
 
 if grep -q "\\<${USERNAME}\\>" /etc/passwd; then
@@ -10,6 +10,17 @@ if grep -q "\\<${USERNAME}\\>" /etc/passwd; then
     exit 0
 fi
 
+# Add the user.
 useradd -m -s /bin/bash ${USERNAME}
 (echo ${PASSWORD}; echo ${PASSWORD}) | passwd ${USERNAME}
 usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout ${USERNAME}
+
+# Install the latest dotfiles.
+# We are copying the git repo instead of cloning it so that we can easily
+# retain the remotes. Otherwise the remote would be file:///vagrant.
+su - "${USERNAME}" -c "mkdir -p repos/dotfiles \
+    && cd repos/dotfiles \
+    && cp -r /vagrant/.git/ ./.git \
+    && git checkout master \
+    && git checkout -- . \
+    && yes | ./install.sh"

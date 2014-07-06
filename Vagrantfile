@@ -1,4 +1,5 @@
-HOSTNAME = ENV['USER'] + '-dev'
+USERNAME = ENV['USER']
+HOSTNAME = USERNAME + '-dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
@@ -58,7 +59,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     SH
 
   # Set up a personal new user
-  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user"
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user #{USERNAME}"
 
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent
