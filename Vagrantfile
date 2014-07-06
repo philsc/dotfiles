@@ -1,6 +1,4 @@
-USERNAME = ENV['USER'] || 'user'
-PASSWORD = 'default'
-HOSTNAME = USERNAME + 'dev'
+HOSTNAME = ENV['USER'] + '-dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
