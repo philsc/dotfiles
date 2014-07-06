@@ -289,9 +289,9 @@ endfunction
 augroup vagrant
     autocmd!
     autocmd BufRead,BufNewFile Vagrantfile setfiletype ruby
-    autocmd BufRead,BufNewFile Vagrantfile set tabstop=2
-    autocmd BufRead,BufNewFile Vagrantfile set shiftwidth=2
-    autocmd BufRead,BufNewFile Vagrantfile set softtabstop=2
+    autocmd BufRead,BufNewFile Vagrantfile setlocal tabstop=2
+    autocmd BufRead,BufNewFile Vagrantfile setlocal shiftwidth=2
+    autocmd BufRead,BufNewFile Vagrantfile setlocal softtabstop=2
 augroup END
 
 augroup docker
