@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+apt-get install -qy docker.io
+
+# Because Ubuntu has another package called "docker", it's renamed the 
+# container solution to docker.io. The binary is also called this. So for ease 
+# of use let's symlink to just plain old "docker".
+ln -sf /usr/bin/docker.io /usr/local/bin/docker
+
+# Also enable auto-completion for the new docker symlink.
+sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
