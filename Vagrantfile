@@ -58,8 +58,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     apt-get install -q -y lib32z1 lib32ncurses5 lib32bz2-1.0
     SH
 
-  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user #{USERNAME}"
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user #{USERNAME}"
 
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent

@@ -13,7 +13,7 @@ fi
 # Add the user.
 useradd -m -s /bin/bash ${USERNAME}
 (echo ${PASSWORD}; echo ${PASSWORD}) | passwd ${USERNAME}
-usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout ${USERNAME}
+usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout,docker ${USERNAME}
 
 # Install the latest dotfiles.
 # We are copying the git repo instead of cloning it so that we can easily
