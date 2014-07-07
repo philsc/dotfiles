@@ -9,3 +9,6 @@ ln -sf /usr/bin/docker.io /usr/local/bin/docker
 
 # Also enable auto-completion for the new docker symlink.
 sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
+
+# Set up nsenter so that we can enter running containers.
+docker run -v /usr/local/bin:/target jpetazzo/nsenter
