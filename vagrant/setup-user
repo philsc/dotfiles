@@ -24,3 +24,7 @@ su - "${USERNAME}" -c "mkdir -p repos/dotfiles \
     && git checkout master \
     && git checkout -- . \
     && yes | ./install.sh"
+
+su - "${USERNAME}" -c "ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa \
+    && echo 'The following public key was generated for ${USERNAME}:' \
+    && cat ~/.ssh/id_rsa"
