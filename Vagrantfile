@@ -63,7 +63,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent
-    apt-get remove -q -y cups
     apt-get clean -q -y
     SH
 
