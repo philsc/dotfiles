@@ -58,18 +58,18 @@ __setps1() {
     fi
     d="${PWD#$(dirname ${g:--})/}"
   elif g="$(svn info 2>/dev/null)"; then
-    # Possibly overcomplicated parsing of git/svn branch names
+    # Possibly overcomplicated parsing of svn branch names
     url="$(sed -ne 's#^URL: ##p' <<<"$g")"
     root="$(sed -ne 's#^Repository Root: ##p' <<<"$g")"
     s="$(sed -e 's#^'"$root"'##g' <<<"$url" | egrep -o \
     '(tags|branches)/[^/]+|trunk' | egrep -o '[^/]+$' | awk '{print $1}')"
-    s="($TXTRED$s$TXTRST) "
+    s=" ($TXTRED$s$TXTRST)"
     d='\w'
   else
     d='\w'
   fi
 
-  PS1="${TXTBLU}\u${TXTRST} $s[${TXTGRN}$d${TXTRST}] r\$?,j\j,t$timer_show\n\$ "
+  PS1="${TXTBLU}\h/\u${TXTRST} [${TXTGRN}$d${TXTRST}]$s r\$?,j\j,t$timer_show\n\$ "
 }
 
 # Set the command prompt.
