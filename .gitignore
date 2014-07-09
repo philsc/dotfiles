@@ -7,3 +7,4 @@
 /.bash/git-*.sh
 /.bash/paths.local
 /.bash/*.d/local
+/.vagrant/
