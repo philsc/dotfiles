@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
-apt-get install -qy docker.io
+# We want to install the Ubuntu packages from the docker.io mirrors. This 
+# allows us to get much more updated packages.
+apt-key adv \
+    --keyserver hkp://keyserver.ubuntu.com:80 \
+    --recv-keys 36A1D7869245C8950F966E92D8576A8BA88D21E9
 
-# Because Ubuntu has another package called "docker", it's renamed the 
-# container solution to docker.io. The binary is also called this. So for ease 
-# of use let's symlink to just plain old "docker".
-ln -sf /usr/bin/docker.io /usr/local/bin/docker
+echo "deb https://get.docker.io/ubuntu docker main" \
+    > /etc/apt/sources.list.d/docker.list
 
-# Also enable auto-completion for the new docker symlink.
-sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
+# The docker.io package has a different name so as not to interfere with the 
+# official package names.
+apt-get install -qy lxc-docker
 
 # Set up nsenter so that we can enter running containers.
 docker run -v /usr/local/bin:/target jpetazzo/nsenter
