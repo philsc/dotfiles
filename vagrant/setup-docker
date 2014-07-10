@@ -11,6 +11,7 @@ echo "deb https://get.docker.io/ubuntu docker main" \
 
 # The docker.io package has a different name so as not to interfere with the 
 # official package names.
+apt-get update
 apt-get install -qy lxc-docker
 
 # Set up nsenter so that we can enter running containers.
