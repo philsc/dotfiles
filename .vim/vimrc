@@ -42,6 +42,9 @@ set smartindent
 set autowrite
 set confirm
 
+" Speed up macros by not redrawing the screen unnecessarily
+set lazyredraw
+
 " Incrementally search through the file as you type, highlighting as you go
 " Searches are also case insensitive if entered in lower-case
 " Searches wrap at EOF
@@ -266,6 +269,10 @@ map <C-k> <C-w>k
 map <C-h> <C-w>h
 map <C-l> <C-w>l
 set wmh=0
+
+" Change tabs more easily
+nnoremap <silent> <C-m> :tabnext<CR>
+nnoremap <silent> <C-n> :tabprevious<CR>
 
 " Shortcuts for entering/leaving hex mode
 nnoremap <Leader>h :Hexmode<CR>
