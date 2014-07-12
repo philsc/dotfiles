@@ -62,6 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     SH
 
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-packages"
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user '#{USERNAME}' '#{NAME}' '#{EMAIL}'"
 
   # Remove unneeded packages.
