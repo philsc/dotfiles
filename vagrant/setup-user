@@ -3,6 +3,8 @@
 set -e
 
 readonly USERNAME="$1"
+readonly NAME="$2"
+readonly EMAIL="$3"
 readonly PASSWORD="default"
 
 if grep -q "\\<${USERNAME}\\>" /etc/passwd; then
@@ -18,13 +20,19 @@ usermod -a -G adm,cdrom,sudo,dip,plugdev,dialout,docker ${USERNAME}
 # Install the latest dotfiles.
 # We are copying the git repo instead of cloning it so that we can easily
 # retain the remotes. Otherwise the remote would be file:///vagrant.
-su - "${USERNAME}" -c "mkdir -p repos/dotfiles \
+su - "${USERNAME}" <<EOT
+mkdir -p repos/dotfiles \
     && cd repos/dotfiles \
     && cp -r /vagrant/.git/ ./.git \
     && git checkout master \
     && git checkout -- . \
-    && yes | ./install.sh"
+    && yes | ./install.sh
 
-su - "${USERNAME}" -c "ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa \
+ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa \
     && echo 'The following public key was generated for ${USERNAME}:' \
-    && cat ~/.ssh/id_rsa"
+    && cat ~/.ssh/id_rsa.pub
+
+git config --global user.name "${NAME}"
+git config --global user.email "${EMAIL}"
+EOT
+
