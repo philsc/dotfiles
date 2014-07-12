@@ -1,4 +1,7 @@
 USERNAME = ENV['USER']
+NAME = %x< git config --global user.name >
+EMAIL = %x< git config --global user.email >
+
 HOSTNAME = USERNAME + '-dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -59,7 +62,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     SH
 
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
-  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user #{USERNAME}"
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user #{USERNAME} #{NAME} #{EMAIL}"
 
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent
