@@ -1,8 +1,8 @@
 USERNAME = ENV['USER']
-NAME = %x< git config --global user.name >
-EMAIL = %x< git config --global user.email >
+NAME = %x< git config --global user.name >.strip
+EMAIL = %x< git config --global user.email >.strip
 
-HOSTNAME = %x< hostname > + '-dev'
+HOSTNAME = %x< hostname >.strip + '-dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
