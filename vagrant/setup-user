@@ -30,7 +30,7 @@ mkdir -p repos/dotfiles \
 
 ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa \
     && echo 'The following public key was generated for ${USERNAME}:' \
-    && cat ~/.ssh/id_rsa
+    && cat ~/.ssh/id_rsa.pub
 
 git config --global user.name "${NAME}"
 git config --global user.email "${EMAIL}"
