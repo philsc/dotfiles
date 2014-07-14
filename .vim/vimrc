@@ -62,11 +62,13 @@ set softtabstop=4
 set showmode
 set showcmd
 
-" Show relative line numbers and cursor position (rows and cols)
+" Show relative line numbers and cursor position (rows and cols) and highlight 
+" the current line in the editor.
 set number
 set relativenumber
 set ruler
 set scrolloff=2
+set cursorline
 
 " Error bells are the worst
 set noerrorbells
