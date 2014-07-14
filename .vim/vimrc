@@ -362,4 +362,7 @@ let g:UltiSnipsEditSplit='vertical'
 nmap <SPACE> <Leader><Leader>s
 vmap <SPACE> <Leader><Leader>s
 
+" Make riv.vim use a leader other than Ctrl+e.
+let g:riv_global_leader='<Leader>v'
+
 execute pathogen#infect()
