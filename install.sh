@@ -208,6 +208,16 @@ function setup_rvm() {
     rm -f "$log"
 }
 
+function install_gem() {
+    local gem_name="$1"
+
+    if ! type -p gem > /dev/null; then
+        error "gem tool is not in the PATH.\n"
+    else
+        gem install "$gem_name"
+    fi
+}
+
 ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
@@ -252,3 +262,5 @@ install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
 setup_rvm
+
+install_gem "gollum"
