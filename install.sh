@@ -176,6 +176,24 @@ function install_vim_docker_plugin() {
     rm -rf "$log"
 }
 
+function setup_rvm() {
+    local log="$(mktemp)"
+
+    if ! type -p rvm; then
+        new "Installing RVM... "
+        command curl -sSL https://get.rvm.io | bash -s stable &> "$log"
+
+        if (($? != 0)); then
+            echo "failed"
+            cat "$log"
+        else
+            echo "done"
+        fi
+    fi
+
+    rm -f "$log"
+}
+
 ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
@@ -217,3 +235,5 @@ install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
 install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
+
+setup_rvm
