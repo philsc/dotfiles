@@ -215,6 +215,7 @@ setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
 setup_symlink ".vim" $VIMDIR
 setup_symlink ".irbrc" "$HOME/.irbrc"
+setup_symlink ".rvmrc" "$HOME/.rvmrc"
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
