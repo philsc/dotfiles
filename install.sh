@@ -179,7 +179,9 @@ function install_vim_docker_plugin() {
 function setup_rvm() {
     local log="$(mktemp)"
 
-    if ! type -p rvm > /dev/null; then
+    if type -p rvm > /dev/null; then
+        info "RVM already installed\n"
+    else
         new "Installing RVM... "
 
         rvm_installer="$(mktemp)"
