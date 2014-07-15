@@ -52,17 +52,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     service hostname restart
     SH
 
-  # Install essentials like git and the 32-bit compatiblity libraries.
-  config.vm.provision :shell, inline: <<-SH.unindent
-    export DEBIAN_FRONTEND=noninteractive
-    apt-get update -q
-    apt-get upgrade -q -y
-    apt-get install -q -y subversion git
-    apt-get install -q -y lib32z1 lib32ncurses5 lib32bz2-1.0
-    SH
-
-  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-packages"
+  config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-user '#{USERNAME}' '#{NAME}' '#{EMAIL}'"
 
   # Remove unneeded packages.
