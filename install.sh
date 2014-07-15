@@ -208,6 +208,28 @@ function setup_rvm() {
     rm -f "$log"
 }
 
+function install_ruby() {
+    if ! type -p rvm > /dev/null; then
+        error "RVM not installed\n"
+        return
+    fi
+
+    local version="$1"
+    local log="$(mktemp)"
+
+    new "Install ruby version $version... "
+    rvm install "$version" &>"$log"
+
+    if (($? != 0)); then
+        echo "failed"
+        cat "$log"
+    else
+        echo "done"
+    fi
+
+    rm -f "$log"
+}
+
 function install_gem() {
     local gem_name="$1"
 
@@ -262,5 +284,5 @@ install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
 setup_rvm
-
+install_ruby "2.1"
 install_gem "gollum"
