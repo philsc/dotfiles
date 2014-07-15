@@ -179,15 +179,27 @@ function install_vim_docker_plugin() {
 function setup_rvm() {
     local log="$(mktemp)"
 
-    if ! type -p rvm; then
+    if ! type -p rvm > /dev/null; then
         new "Installing RVM... "
-        command curl -sSL https://get.rvm.io | bash -s stable &> "$log"
+
+        rvm_installer="$(mktemp)"
+        command curl -sSL https://get.rvm.io > "$rvm_installer" 2>>"$log"
 
         if (($? != 0)); then
             echo "failed"
             cat "$log"
         else
-            echo "done"
+            bash "$rvm_installer" \
+                -s stable \
+                --ignore_dotfiles \
+                &> "$log"
+
+            if (($? != 0)); then
+                echo "failed"
+                cat "$log"
+            else
+                echo "done"
+            fi
         fi
     fi
 
