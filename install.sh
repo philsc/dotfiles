@@ -263,11 +263,23 @@ function install_gem() {
     fi
 
     if [[ "$(gem list "$gem_name" -i)" == true ]]; then
-        info "Ruby gem $gem_name already installed"
+        info "Ruby gem $gem_name already installed\n"
         return
     fi
 
-    gem install "$gem_name"
+    local log="$(mktemp)"
+
+    new "Installing ruby gem $gem_name... "
+    gem install "$gem_name" &>"$log"
+
+    if (($? == 0)); then
+        echo "done"
+    else
+        echo "failed"
+        cat "$log"
+    fi
+
+    rm -f "$log"
 }
 
 ensure_installed "ctags"
