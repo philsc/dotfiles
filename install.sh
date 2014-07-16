@@ -201,6 +201,7 @@ function setup_rvm() {
                 cat "$log"
             else
                 echo "done"
+                rvm reload
             fi
         fi
     fi
@@ -218,7 +219,7 @@ function install_ruby() {
     local log="$(mktemp)"
 
     new "Install ruby version $version... "
-    rvm install "$version" &>"$log"
+    rvm install "$version" --binary &>"$log"
 
     if (($? != 0)); then
         echo "failed"
@@ -233,11 +234,12 @@ function install_ruby() {
 function install_gem() {
     local gem_name="$1"
 
-    if ! type -p gem > /dev/null; then
+    if ! (type -p rvm && type -p gem) > /dev/null; then
         error "gem tool is not in the PATH.\n"
-    else
-        gem install "$gem_name"
+        return
     fi
+
+    gem install "$gem_name"
 }
 
 ensure_installed "ctags"
@@ -284,5 +286,5 @@ install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
 setup_rvm
-install_ruby "2.1"
+install_ruby "ruby-2.1.2"
 install_gem "gollum"
