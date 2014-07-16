@@ -194,6 +194,7 @@ function setup_rvm() {
             bash "$rvm_installer" \
                 -s stable \
                 --ignore_dotfiles \
+                --autolibs=read-fail \
                 &> "$log"
 
             if (($? != 0)); then
