@@ -9,6 +9,8 @@ ROOTDIR=${ROOTDIR%/*}
 MIN_VIMRC="source $VIMDIR/vimrc"
 MIN_BASHRC=". ~/.bash/bashrc"
 
+use_binary_ruby='no'
+
 function new() {
     echo -ne NEW "$@"
 }
@@ -23,6 +25,44 @@ function info() {
 
 function error() {
     echo -ne ERROR "$@"
+}
+
+function usage() {
+    cat <<EOT
+Usage:
+    $0 [-h | --help] [-b | --use-binary-ruby]
+
+ -h | --help        Print this help and exit.
+
+ -b, --use-binary-ruby
+                    Only install binary rubies. This prevents RVM
+                    from downloading and compiling any rubies. This
+                    is useful for automation since it prevents the
+                    installation from prompting for the user's
+                    password if more packages are needed.
+EOT
+}
+
+function parse_args() {
+    while (($# > 0)); do
+        case "$1" in
+            -h | --help)
+                usage
+                exit 0
+                ;;
+            -b | --use-binary-ruby)
+                use_binary_ruby='yes'
+                shift
+                ;;
+            *)
+                echo -n "Unknown option '$1'. " >&2
+                echo -n "Run with -h to see the help. " >&2
+                echo "Exiting..." >&2
+                exit 1
+                break
+                ;;
+        esac
+    done
 }
 
 function ensure_installed() {
@@ -281,6 +321,8 @@ function install_gem() {
 
     rm -f "$log"
 }
+
+parse_args "$@"
 
 ensure_installed "ctags"
 ensure_installed "ack"
