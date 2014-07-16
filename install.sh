@@ -178,6 +178,7 @@ function install_vim_docker_plugin() {
 
 function setup_rvm() {
     local log="$(mktemp)"
+    local result=0
 
     export PATH="~/.rvm/bin:$PATH"
 
@@ -189,24 +190,30 @@ function setup_rvm() {
         rvm_installer="$(mktemp)"
         command curl -sSL https://get.rvm.io > "$rvm_installer" 2>>"$log"
 
-        if (($? != 0)); then
-            echo "failed"
-            cat "$log"
-        else
+        result=$?
+
+        if ((result == 0)); then
             bash "$rvm_installer" \
                 stable \
                 --ignore-dotfiles \
                 --autolibs=read-fail \
                 &> "$log"
 
-            if (($? != 0)); then
-                echo "failed"
-                cat "$log"
-            else
-                echo "done"
-                rvm reload
-            fi
+            result=$?
         fi
+
+        if ((result == 0)); then
+            echo "done"
+        else
+            echo "failed"
+            cat "$log"
+        fi
+    fi
+
+    # Set up the RVM environment properly.
+    if ((result == 0)); then
+        rvm rvmrc warning ignore all.rvmrcs
+        rvm reload
     fi
 
     rm -f "$log"
@@ -299,6 +306,6 @@ install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
-setup_rvm && rvm reload
+setup_rvm
 install_ruby "ruby-2.1.2"
 install_gem "bundler"
