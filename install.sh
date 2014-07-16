@@ -231,8 +231,8 @@ function install_ruby() {
         return
     fi
 
-    new "Install ruby version $version...\n"
-    rvm install "$version" --binary
+    new "Installing ruby version $version...\n"
+    rvm install "$version"
 
     if (($? != 0)); then
         echo "failed"
