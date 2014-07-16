@@ -180,6 +180,7 @@ function install_vim_docker_plugin() {
 function install_tool() {
     local git_repo="$1"
     local git_repo_name="$(basename "$git_repo" .git)"
+    local log="$(mktemp)"
 
     shift
 
@@ -189,18 +190,23 @@ function install_tool() {
         info "Tools $@ already installed\n"
     else
         new "Installing tools $@... "
-        git clone "$git_repo" "$BINDIR/__tool_$git_repo_name" > /dev/null 2>&2
+        git clone "$git_repo" "$BINDIR/__tool_$git_repo_name" &>"$log"
         if (($? == 0)); then
             while (($# > 0)); do
-                ln -sf "$BINDIR/$1" "$BINDIR/__tool_$git_repo_name/$1"
+                ln -sf \
+                    "$BINDIR/__tool_$git_repo_name/$1" \
+                    "$BINDIR/$(basename "$1")"
                 shift
             done
 
             echo "done"
         else
             echo "failed"
+            cat "$log"
         fi
     fi
+
+    rm -f "$log"
 }
 
 ensure_installed "ctags"
@@ -245,5 +251,5 @@ install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
-install_tool https://github.com/harelba/q "q"
+install_tool https://github.com/harelba/q "bin/q"
 install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
