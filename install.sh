@@ -300,4 +300,3 @@ install_vim_docker_plugin
 setup_rvm
 install_ruby "ruby-2.1.2"
 install_gem "bundler"
-install_gem "gollum"
