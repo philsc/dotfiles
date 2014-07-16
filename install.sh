@@ -212,6 +212,7 @@ function setup_rvm() {
 
     # Set up the RVM environment properly.
     if ((result == 0)); then
+        source ~/.rvm/scripts/rvm
         rvm rvmrc warning ignore all.rvmrcs
         rvm reload
     fi
@@ -230,24 +231,25 @@ function install_ruby() {
     #Check to see if it's already installed.
     if rvm list | grep -q "$version"; then
         info "Ruby version $version already installed\n"
-        return
-    fi
-
-    read -r -n 1 -p "Install ruby version $version? " answer
-    echo
-
-    if [[ $answer =~ ^[nN] ]]; then
-        return
-    fi
-
-    new "Installing ruby version $version...\n"
-    rvm install "$version"
-
-    if (($? != 0)); then
-        echo "failed"
     else
-        echo "done"
+        read -r -n 1 -p "Install ruby version $version? " answer
+        echo
+
+        if [[ $answer =~ ^[nN] ]]; then
+            return
+        fi
+
+        new "Installing ruby version $version...\n"
+        rvm install "$version"
+
+        if (($? != 0)); then
+            echo "failed"
+        else
+            echo "done"
+        fi
     fi
+
+    rvm --default use "$version"
 }
 
 function install_gem() {
