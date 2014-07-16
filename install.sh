@@ -2,6 +2,7 @@
 
 VIMDIR=~/.vim
 PATHOGEN=https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+BINDIR=~/.bin
 
 ROOTDIR=$(readlink -f $0)
 ROOTDIR=${ROOTDIR%/*}
@@ -176,6 +177,38 @@ function install_vim_docker_plugin() {
     rm -rf "$log"
 }
 
+function install_tool() {
+    local git_repo="$1"
+    local git_repo_name="$(basename "$git_repo" .git)"
+    local log="$(mktemp)"
+
+    shift
+
+    mkdir -p "$BINDIR"
+
+    if [[ -d "$BINDIR/__tool_$git_repo_name" ]]; then
+        info "Tools $@ already installed\n"
+    else
+        new "Installing tools $@... "
+        git clone "$git_repo" "$BINDIR/__tool_$git_repo_name" &>"$log"
+        if (($? == 0)); then
+            while (($# > 0)); do
+                ln -sf \
+                    "$BINDIR/__tool_$git_repo_name/$1" \
+                    "$BINDIR/$(basename "$1")"
+                shift
+            done
+
+            echo "done"
+        else
+            echo "failed"
+            cat "$log"
+        fi
+    fi
+
+    rm -f "$log"
+}
+
 ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
@@ -217,3 +250,6 @@ install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
 install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
+
+install_tool https://github.com/harelba/q "bin/q"
+install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
