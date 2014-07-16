@@ -37,4 +37,5 @@ apt-get install -q -y \
 
 # Install extra packages.
 apt-get install -q -y \
-    markdown
+    markdown \
+    colordiff
