@@ -90,10 +90,10 @@ function setup_file_if_non_existent() {
             info "Skipping default install for $1\n"
             overwrite=false
         else
-            read -r -n 1 -p "Overwrite $1 with default? " answer
+            read -r -p "Overwrite $1 with default? " answer
             echo
 
-            if [[ $answer =~ ^[nN] ]]; then
+            if ! [[ $answer =~ ^[yY] ]]; then
                 overwrite=false
             fi
         fi
@@ -273,10 +273,10 @@ function install_ruby() {
     if rvm list | grep -q "$version"; then
         info "Ruby version $version already installed\n"
     else
-        read -r -n 1 -p "Install ruby version $version? " answer
+        read -r -p "Install ruby version $version? " answer
         echo
 
-        if [[ $answer =~ ^[nN] ]]; then
+        if ! [[ $answer =~ ^[yY] ]]; then
             return
         fi
 
