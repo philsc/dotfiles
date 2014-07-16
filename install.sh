@@ -192,7 +192,7 @@ function setup_rvm() {
             cat "$log"
         else
             bash "$rvm_installer" \
-                -s stable \
+                stable \
                 --ignore_dotfiles \
                 --autolibs=read-fail \
                 &> "$log"
