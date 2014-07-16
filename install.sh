@@ -179,6 +179,8 @@ function install_vim_docker_plugin() {
 function setup_rvm() {
     local log="$(mktemp)"
 
+    export PATH="~/.rvm/bin:$PATH"
+
     if type -p rvm > /dev/null; then
         info "RVM already installed\n"
     else
@@ -297,6 +299,6 @@ install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
 install_vim_docker_plugin
 
-setup_rvm
+setup_rvm && rvm reload
 install_ruby "ruby-2.1.2"
 install_gem "bundler"
