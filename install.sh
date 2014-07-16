@@ -217,19 +217,22 @@ function install_ruby() {
     fi
 
     local version="$1"
-    local log="$(mktemp)"
 
-    new "Install ruby version $version... "
-    rvm install "$version" --binary &>"$log"
+    read -r -n 1 -p "Install ruby version $version? " answer
+    echo
+
+    if [[ $answer =~ ^[nN] ]]; then
+        return
+    fi
+
+    new "Install ruby version $version...\n"
+    rvm install "$version" --binary
 
     if (($? != 0)); then
         echo "failed"
-        cat "$log"
     else
         echo "done"
     fi
-
-    rm -f "$log"
 }
 
 function install_gem() {
