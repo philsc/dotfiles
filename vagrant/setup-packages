@@ -17,6 +17,24 @@ apt-get install -q -y \
 apt-get install -q -y \
     samba
 
+# Install packages necessary for custom ruby versions.
+apt-get install -q -y \
+    g++ \
+    libreadline6-dev \
+    zlib1g-dev \
+    libssl-dev \
+    libyaml-dev \
+    libsqlite3-dev \
+    sqlite3 \
+    autoconf \
+    libgdbm-dev \
+    libncurses5-dev \
+    automake \
+    libtool \
+    bison \
+    pkg-config \
+    libffi-dev
+
 # Install extra packages.
 apt-get install -q -y \
     markdown
