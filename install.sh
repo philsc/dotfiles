@@ -262,6 +262,11 @@ function install_gem() {
         return
     fi
 
+    if [[ "$(gem list "$gem_name" -i)" == true ]]; then
+        info "Ruby gem $gem_name already installed"
+        return
+    fi
+
     gem install "$gem_name"
 }
 
