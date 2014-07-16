@@ -244,8 +244,10 @@ function install_ruby() {
 function install_gem() {
     local gem_name="$1"
 
-    if ! (type -p rvm && type -p gem) > /dev/null; then
-        error "gem tool is not in the PATH.\n"
+    if ! (type -p rvm \
+            && type -p gem \
+            && ! rvm list | grep -q 'No rvm rubies installed') > /dev/null; then
+        error "RVM gem tool is not in the PATH.\n"
         return
     fi
 
