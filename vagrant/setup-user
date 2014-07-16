@@ -24,7 +24,6 @@ su - "${USERNAME}" <<EOT
 mkdir -p repos/dotfiles \
     && cd repos/dotfiles \
     && cp -r /vagrant/.git/ ./.git \
-    && git checkout master \
     && git checkout -- . \
     && yes | ./install.sh
 
