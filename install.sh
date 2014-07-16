@@ -218,6 +218,12 @@ function install_ruby() {
 
     local version="$1"
 
+    #Check to see if it's already installed.
+    if rvm list | grep -q "$version"; then
+        info "Ruby version $version already installed\n"
+        return
+    fi
+
     read -r -n 1 -p "Install ruby version $version? " answer
     echo
 
