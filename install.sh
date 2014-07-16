@@ -267,8 +267,9 @@ function install_ruby() {
     fi
 
     local version="$1"
+    local extra_opts=""
 
-    #Check to see if it's already installed.
+    # Check to see if it's already installed.
     if rvm list | grep -q "$version"; then
         info "Ruby version $version already installed\n"
     else
@@ -279,8 +280,13 @@ function install_ruby() {
             return
         fi
 
+        # Set the appropriate install options
+        if [[ $use_binary_ruby == 'yes' ]]; then
+            extra_opts="$extra_opts --binary"
+        fi
+
         new "Installing ruby version $version...\n"
-        rvm install "$version"
+        rvm install "$version" $extra_opts
 
         if (($? != 0)); then
             echo "failed"
