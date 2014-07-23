@@ -2,7 +2,6 @@
 /.vim/autoload
 /.vim/bundle
 /.vim/colors
-/.vim/UltiSnips
 /awesome/prefs.lua
 /.bash/git-*.sh
 /.bash/paths.local

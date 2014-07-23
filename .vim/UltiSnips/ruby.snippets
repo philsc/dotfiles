@@ -1,0 +1,5 @@
+snippet shell "Insert a shell provision statement" !b
+config.vm.provision :shell, inline: <<-SH.unindent
+  ${1:echo Provisioning with shell.}
+  SH
+endsnippet
