@@ -31,6 +31,9 @@ set undofile
 " Use the semi-colon to start commands, in addition to the colon
 nnoremap ; :
 
+" Use spacebar to repeat the most recent motion
+nnoremap <space> ;
+
 " Let backspace work normally, i.e. allow deleting everything
 set backspace=indent,eol,start
 
@@ -359,10 +362,6 @@ let g:ruby_path = system('rvm current')
 " and open it snippet files vertically
 noremap <Leader>m :UltiSnipsEdit<CR>
 let g:UltiSnipsEditSplit='vertical'
-
-" Trigger EasyMotion with the space bar
-nmap <SPACE> <Leader><Leader>s
-vmap <SPACE> <Leader><Leader>s
 
 " Make riv.vim use a leader other than Ctrl+e.
 let g:riv_global_leader='<Leader>v'
