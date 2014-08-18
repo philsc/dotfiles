@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 VIMDIR=~/.vim
-PATHOGEN=https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 BINDIR=~/.bin
 
 ROOTDIR=$(readlink -f $0)
@@ -131,20 +130,6 @@ function set_git_config() {
     fi
 }
 
-function install_pathogen() {
-    if [[ ! -r $VIMDIR/autoload/pathogen.vim ]]; then
-        mkdir -p $VIMDIR/autoload
-        mkdir -p $VIMDIR/bundle
-        curl -SsLo $VIMDIR/autoload/pathogen.vim $PATHOGEN
-        if (($? == 0)); then
-            new "Installed pathogen.vim\n"
-        else
-            error "Failed to install pathogen.vim\n"
-            exit 1
-        fi
-    fi
-}
-
 function install_vim_colorscheme() {
     mkdir -p $VIMDIR/colors
 
@@ -167,9 +152,6 @@ function install_vim_colorscheme() {
 }
 
 function install_vim_docker_plugin() {
-    # Ensure pathogen is installed
-    install_pathogen
-
     local log="$(mktemp)"
 
     # Because the dockerfile plugin is inside the official docker git repo, we
