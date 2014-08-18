@@ -130,27 +130,6 @@ function set_git_config() {
     fi
 }
 
-function install_vim_colorscheme() {
-    mkdir -p $VIMDIR/colors
-
-    if [[ -r $VIMDIR/colors/"$1.vim" ]]; then
-        info "Color scheme $1 already installed\n"
-        return
-    else
-        new "Installing color scheme $1... "
-    fi
-
-    TMPDIR="$(mktemp -d)"
-    git clone "$2" "$TMPDIR" > /dev/null 2>&1
-    if (($? == 0)); then
-        echo "done"
-        cp -a "$TMPDIR/colors/." $VIMDIR/colors/.
-    else
-        echo "failed"
-    fi
-    rm -rf "$TMPDIR"
-}
-
 function install_tool() {
     local git_repo="$1"
     local git_repo_name="$(basename "$git_repo" .git)"
@@ -328,8 +307,6 @@ set_git_config 'alias.compress' 'repack -a -d --depth=250 --window=250'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 set_git_config 'credential.helper' 'cache --timeout=3600'
-
-install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
 
 install_tool https://github.com/harelba/q "bin/q"
 install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
