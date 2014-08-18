@@ -1,0 +1,60 @@
+# In your muttrc.local file, set the following:
+#
+#set from = "user@domain.tld"
+#set realname = "First Last"
+#set my_server = server_url.tld
+#set my_user = "user@domain.tld"
+#set my_pass = "password"
+source ~/.mutt/muttrc.local
+
+# Account Information
+set smtp_url = "smtp://$my_user:$my_pass@$my_server:587"
+set smtp_pass = $my_pass
+set imap_user = $my_user
+set imap_pass = $my_pass
+
+# Mailboxes
+set folder = "imaps://$my_server:992"
+set spoolfile = "="
+set record = "=Sent Items"
+set postponed = "=Drafts"
+set trash = "=Trash"
+mailboxes = "="
+
+# AutoComplete Addresses
+# Customize in muttrc.local with:
+#set query_command = "your-command-here.sh '%s'"
+bind editor <Tab> complete-query
+bind editor ^T complete
+
+# Cache
+set header_cache = "~/.mutt/cache/headers"
+set message_cachedir = "~/.mutt/cache/bodies"
+set certificate_file = "~/.mutt/certificates"
+
+# Options
+set index_format = "%3C %Z %[%b %d %R] %-18.18L (%4c) %s"
+set pager_format  = "%4C %Z %[!%b %e at %I:%M %p]  %.20n  %s%* -- (%P)"
+set imap_idle=yes
+unset imap_passive
+set timeout=15
+set mail_check = 5
+set imap_keepalive = 900
+set sort = threads
+set sort_browser=date
+set sort_aux=reverse-last-date-received
+set editor = "vim %s"
+set pager_index_lines = 10
+set pager_context = 5
+unset markers
+set delete=yes
+set noconfirmappend
+set edit_headers
+unset mark_old
+set pager_stop
+set strict_threads = yes
+set forward_format="Fw: %s"
+set charset = 'utf-8'
+
+# Theme
+source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
