@@ -369,4 +369,5 @@ let g:riv_global_leader='<Leader>v'
 " Use gpg2 for gnupg.vim
 let g:GPGExecutable="gpg2 --trust-model always"
 
+runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
