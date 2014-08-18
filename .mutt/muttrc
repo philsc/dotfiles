@@ -34,6 +34,7 @@ set certificate_file = "~/.mutt/certificates"
 
 # Options
 set index_format = "%3C %Z %[%b %d %R] %-18.18L (%4c) %s"
+set pager_format  = "%4C %Z %[!%b %e at %I:%M %p]  %.20n  %s%* -- (%P)"
 set imap_idle=yes
 unset imap_passive
 set timeout=15
@@ -52,6 +53,8 @@ set edit_headers
 unset mark_old
 set pager_stop
 set strict_threads = yes
+set forward_format="Fw: %s"
+set charset = 'utf-8'
 
 # Theme
 source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
