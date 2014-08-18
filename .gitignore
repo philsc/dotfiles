@@ -9,3 +9,4 @@
 /.vagrant/
 /.mutt/cache/
 /.mutt/muttrc.local
+/.mutt/*.gpg
