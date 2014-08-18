@@ -130,38 +130,6 @@ function set_git_config() {
     fi
 }
 
-function install_tool() {
-    local git_repo="$1"
-    local git_repo_name="$(basename "$git_repo" .git)"
-    local log="$(mktemp)"
-
-    shift
-
-    mkdir -p "$BINDIR"
-
-    if [[ -d "$BINDIR/__tool_$git_repo_name" ]]; then
-        info "Tools $@ already installed\n"
-    else
-        new "Installing tools $@... "
-        git clone "$git_repo" "$BINDIR/__tool_$git_repo_name" &>"$log"
-        if (($? == 0)); then
-            while (($# > 0)); do
-                ln -sf \
-                    "$BINDIR/__tool_$git_repo_name/$1" \
-                    "$BINDIR/$(basename "$1")"
-                shift
-            done
-
-            echo "done"
-        else
-            echo "failed"
-            cat "$log"
-        fi
-    fi
-
-    rm -f "$log"
-}
-
 function setup_rvm() {
     local log="$(mktemp)"
     local result=0
@@ -280,6 +248,8 @@ ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
 
+mkdir -p "$HOME/.bin"
+
 setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
@@ -288,6 +258,9 @@ setup_symlink ".irbrc" "$HOME/.irbrc"
 setup_symlink ".rvmrc" "$HOME/.rvmrc"
 setup_symlink ".colordiffrc" "$HOME/.colordiffrc"
 setup_symlink ".mutt" "$HOME/.mutt"
+setup_symlink ".tools/q/bin/q" "$HOME/.bin/q"
+setup_symlink ".tools/vimpager/vimcat" "$HOME/.bin/vimcat"
+setup_symlink ".tools/vimpager/vimpager" "$HOME/.bin/vimpager"
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
@@ -307,9 +280,6 @@ set_git_config 'alias.compress' 'repack -a -d --depth=250 --window=250'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 set_git_config 'credential.helper' 'cache --timeout=3600'
-
-install_tool https://github.com/harelba/q "bin/q"
-install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
 
 setup_rvm
 install_ruby "ruby-2.1.2"

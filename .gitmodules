@@ -40,3 +40,9 @@
 [submodule ".vim/bundle/Zenburn"]
 	path = .vim/bundle/Zenburn
 	url = https://github.com/jnurmine/Zenburn.git
+[submodule "tools/q"]
+	path = tools/q
+	url = https://github.com/harelba/q
+[submodule "tools/vimpager"]
+	path = tools/vimpager
+	url = https://github.com/rkitover/vimpager
