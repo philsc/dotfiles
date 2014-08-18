@@ -408,6 +408,7 @@ install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
 install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
 install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
 install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
+install_vim_plugin "vim-gnupg" https://github.com/jamessan/vim-gnupg.git
 install_vim_docker_plugin
 
 install_tool https://github.com/harelba/q "bin/q"
