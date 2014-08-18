@@ -8,3 +8,4 @@
 /.bash/*.d/local
 /.vagrant/
 /.mutt/cache/
+/.mutt/muttrc.local
