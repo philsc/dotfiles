@@ -166,23 +166,6 @@ function install_vim_colorscheme() {
     rm -rf "$TMPDIR"
 }
 
-function install_vim_plugin() {
-    # Ensure that pathogen is installed
-    install_pathogen
-
-    if [[ -d $VIMDIR/bundle/"$1" ]]; then
-        info "Vim plugin $1 already installed\n"
-    else
-        new "Installing vim plugin $1... "
-        git clone "$2" $VIMDIR/bundle/"$1" > /dev/null 2>&1
-        if (($? == 0)); then
-            echo "done"
-        else
-            echo "failed"
-        fi
-    fi
-}
-
 function install_vim_docker_plugin() {
     # Ensure pathogen is installed
     install_pathogen
@@ -398,17 +381,6 @@ set_git_config 'credential.helper' 'cache --timeout=3600'
 
 install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
 
-install_vim_plugin "ctrlp.vim" https://github.com/kien/ctrlp.vim.git
-install_vim_plugin "fugitive.vim" https://github.com/tpope/vim-fugitive.git
-install_vim_plugin "syntastic" https://github.com/scrooloose/syntastic.git
-install_vim_plugin "ultisnips" https://github.com/SirVer/ultisnips.git
-install_vim_plugin "surround" https://github.com/tpope/vim-surround.git
-install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git
-install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
-install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
-install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
-install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
-install_vim_plugin "vim-gnupg" https://github.com/jamessan/vim-gnupg.git
 install_vim_docker_plugin
 
 install_tool https://github.com/harelba/q "bin/q"
