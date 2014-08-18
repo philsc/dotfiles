@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 VIMDIR=~/.vim
-PATHOGEN=https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 BINDIR=~/.bin
 
 ROOTDIR=$(readlink -f $0)
@@ -131,125 +130,6 @@ function set_git_config() {
     fi
 }
 
-function install_pathogen() {
-    if [[ ! -r $VIMDIR/autoload/pathogen.vim ]]; then
-        mkdir -p $VIMDIR/autoload
-        mkdir -p $VIMDIR/bundle
-        curl -SsLo $VIMDIR/autoload/pathogen.vim $PATHOGEN
-        if (($? == 0)); then
-            new "Installed pathogen.vim\n"
-        else
-            error "Failed to install pathogen.vim\n"
-            exit 1
-        fi
-    fi
-}
-
-function install_vim_colorscheme() {
-    mkdir -p $VIMDIR/colors
-
-    if [[ -r $VIMDIR/colors/"$1.vim" ]]; then
-        info "Color scheme $1 already installed\n"
-        return
-    else
-        new "Installing color scheme $1... "
-    fi
-
-    TMPDIR="$(mktemp -d)"
-    git clone "$2" "$TMPDIR" > /dev/null 2>&1
-    if (($? == 0)); then
-        echo "done"
-        cp -a "$TMPDIR/colors/." $VIMDIR/colors/.
-    else
-        echo "failed"
-    fi
-    rm -rf "$TMPDIR"
-}
-
-function install_vim_plugin() {
-    # Ensure that pathogen is installed
-    install_pathogen
-
-    if [[ -d $VIMDIR/bundle/"$1" ]]; then
-        info "Vim plugin $1 already installed\n"
-    else
-        new "Installing vim plugin $1... "
-        git clone "$2" $VIMDIR/bundle/"$1" > /dev/null 2>&1
-        if (($? == 0)); then
-            echo "done"
-        else
-            echo "failed"
-        fi
-    fi
-}
-
-function install_vim_docker_plugin() {
-    # Ensure pathogen is installed
-    install_pathogen
-
-    local log="$(mktemp)"
-
-    # Because the dockerfile plugin is inside the official docker git repo, we
-    # need to clone it and extract just the part that we want.
-    local dest_dir="$VIMDIR"/bundle/docker
-
-    if [[ -d $dest_dir ]]; then
-        info "Vim plugin docker already installed\n"
-    else
-        new "Installing vim plugin docker... "
-        local temp="$(mktemp -d)"
-        git clone "https://github.com/dotcloud/docker.git" "$temp" &> "$log"
-        if (($? != 0)); then
-            echo "failed"
-            cat "$log"
-        else
-            command cp -r "$temp"/contrib/syntax/vim/ $dest_dir &>> "$log"
-            if (($? == 0)); then
-                echo "done"
-            else
-                echo "failed"
-                cat "$log"
-            fi
-        fi
-
-        rm -rf "$temp"
-    fi
-
-    rm -rf "$log"
-}
-
-function install_tool() {
-    local git_repo="$1"
-    local git_repo_name="$(basename "$git_repo" .git)"
-    local log="$(mktemp)"
-
-    shift
-
-    mkdir -p "$BINDIR"
-
-    if [[ -d "$BINDIR/__tool_$git_repo_name" ]]; then
-        info "Tools $@ already installed\n"
-    else
-        new "Installing tools $@... "
-        git clone "$git_repo" "$BINDIR/__tool_$git_repo_name" &>"$log"
-        if (($? == 0)); then
-            while (($# > 0)); do
-                ln -sf \
-                    "$BINDIR/__tool_$git_repo_name/$1" \
-                    "$BINDIR/$(basename "$1")"
-                shift
-            done
-
-            echo "done"
-        else
-            echo "failed"
-            cat "$log"
-        fi
-    fi
-
-    rm -f "$log"
-}
-
 function setup_rvm() {
     local log="$(mktemp)"
     local result=0
@@ -368,6 +248,8 @@ ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
 
+mkdir -p "$HOME/.bin"
+
 setup_symlink ".bash" "$HOME/.bash"
 setup_symlink ".git_template" "$HOME/.git_template"
 setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
@@ -376,6 +258,9 @@ setup_symlink ".irbrc" "$HOME/.irbrc"
 setup_symlink ".rvmrc" "$HOME/.rvmrc"
 setup_symlink ".colordiffrc" "$HOME/.colordiffrc"
 setup_symlink ".mutt" "$HOME/.mutt"
+setup_symlink ".tools/q/bin/q" "$HOME/.bin/q"
+setup_symlink ".tools/vimpager/vimcat" "$HOME/.bin/vimcat"
+setup_symlink ".tools/vimpager/vimpager" "$HOME/.bin/vimpager"
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
@@ -395,24 +280,6 @@ set_git_config 'alias.compress' 'repack -a -d --depth=250 --window=250'
 set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 set_git_config 'credential.helper' 'cache --timeout=3600'
-
-install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
-
-install_vim_plugin "ctrlp.vim" https://github.com/kien/ctrlp.vim.git
-install_vim_plugin "fugitive.vim" https://github.com/tpope/vim-fugitive.git
-install_vim_plugin "syntastic" https://github.com/scrooloose/syntastic.git
-install_vim_plugin "ultisnips" https://github.com/SirVer/ultisnips.git
-install_vim_plugin "surround" https://github.com/tpope/vim-surround.git
-install_vim_plugin "ack.vim" https://github.com/mileszs/ack.vim.git
-install_vim_plugin "gundo.vim" https://github.com/sjl/gundo.vim.git
-install_vim_plugin "vim-markdown" https://github.com/tpope/vim-markdown.git
-install_vim_plugin "vim-haml" https://github.com/tpope/vim-haml.git
-install_vim_plugin "riv.vim" https://github.com/Rykka/riv.vim.git
-install_vim_plugin "vim-gnupg" https://github.com/jamessan/vim-gnupg.git
-install_vim_docker_plugin
-
-install_tool https://github.com/harelba/q "bin/q"
-install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
 
 setup_rvm
 install_ruby "ruby-2.1.2"
