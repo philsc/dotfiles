@@ -4,6 +4,9 @@
 " This file is based of of Felix Crux' vimrc found at
 " http://felixcrux.com/library/files/
 
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+execute pathogen#infect()
+
 set history=1000         " remember more commands and search history
 set undolevels=1000      " use many muchos levels of undo
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.lst,*.pdf
@@ -368,6 +371,3 @@ let g:riv_global_leader='<Leader>v'
 
 " Use gpg2 for gnupg.vim
 let g:GPGExecutable="gpg2 --trust-model always"
-
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
