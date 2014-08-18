@@ -151,38 +151,6 @@ function install_vim_colorscheme() {
     rm -rf "$TMPDIR"
 }
 
-function install_vim_docker_plugin() {
-    local log="$(mktemp)"
-
-    # Because the dockerfile plugin is inside the official docker git repo, we
-    # need to clone it and extract just the part that we want.
-    local dest_dir="$VIMDIR"/bundle/docker
-
-    if [[ -d $dest_dir ]]; then
-        info "Vim plugin docker already installed\n"
-    else
-        new "Installing vim plugin docker... "
-        local temp="$(mktemp -d)"
-        git clone "https://github.com/dotcloud/docker.git" "$temp" &> "$log"
-        if (($? != 0)); then
-            echo "failed"
-            cat "$log"
-        else
-            command cp -r "$temp"/contrib/syntax/vim/ $dest_dir &>> "$log"
-            if (($? == 0)); then
-                echo "done"
-            else
-                echo "failed"
-                cat "$log"
-            fi
-        fi
-
-        rm -rf "$temp"
-    fi
-
-    rm -rf "$log"
-}
-
 function install_tool() {
     local git_repo="$1"
     local git_repo_name="$(basename "$git_repo" .git)"
@@ -362,8 +330,6 @@ set_git_config 'color.ui' 'auto'
 set_git_config 'credential.helper' 'cache --timeout=3600'
 
 install_vim_colorscheme "zenburn" https://github.com/jnurmine/Zenburn.git
-
-install_vim_docker_plugin
 
 install_tool https://github.com/harelba/q "bin/q"
 install_tool https://github.com/rkitover/vimpager "vimpager" "vimcat"
