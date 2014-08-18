@@ -9,6 +9,7 @@ ROOTDIR=${ROOTDIR%/*}
 
 MIN_VIMRC="source $VIMDIR/vimrc"
 MIN_BASHRC=". ~/.bash/bashrc"
+MIN_MUTTRC="source ~/.mutt/muttrc"
 
 use_binary_ruby='no'
 
@@ -374,9 +375,11 @@ setup_symlink ".vim" $VIMDIR
 setup_symlink ".irbrc" "$HOME/.irbrc"
 setup_symlink ".rvmrc" "$HOME/.rvmrc"
 setup_symlink ".colordiffrc" "$HOME/.colordiffrc"
+setup_symlink ".mutt" "$HOME/.mutt"
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
+setup_file_if_non_existent "$HOME/.muttrc" "$MIN_MUTTRC"
 
 download_file "$HOME/.bash/git-prompt.sh" https://raw.github.com/git/git/master/contrib/completion/git-prompt.sh
 
