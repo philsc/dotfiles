@@ -7,6 +7,9 @@
 #set my_pass = "password"
 source ~/.mutt/muttrc.local
 
+# Use GPG-made-easy library when available.
+set crypt_use_gpgme
+
 # Account Information
 set smtp_url = "smtp://$my_user:$my_pass@$my_server:587"
 set smtp_pass = $my_pass
