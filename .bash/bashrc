@@ -11,8 +11,6 @@ TXTGRN='\e[0;32m' # Green
 TXTBLU='\e[0;34m' # Blue
 TXTRST='\e[0m'    # Text Reset
 
-export HISTCONTROL=erasedups
-
 shopt -s histappend # append to the history file, don't overwrite it
 shopt -s checkwinsize # adjust terminal width dynamically
 
@@ -46,6 +44,9 @@ __timer_stop() {
 __setps1() {
   local s=""
   local d=""
+
+  # Store history to prevent any loss.
+  history -a
 
   # Stop the timer so that we know how long the last command took to execute
   __timer_stop

@@ -1,2 +1,6 @@
-export HISTIGNORE="cd:ls:pwd:history *"
+export HISTFILE=~/.bash/history
+export HISTFILESIZE=1000000
+export HISTSIZE=1000000
+export HISTCONTROL=erasedups:ignorespace
+export HISTIGNORE="ls:pwd"
 export HISTTIMEFORMAT="%T " # for a better history output
