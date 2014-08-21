@@ -91,4 +91,7 @@ loadrcdir ~/.bash/exports.d
 stty stop undef
 stty start undef
 
+# If the keychain program is installed (ssh- and gpg-agent frontend), use it.
+[[ -n "$(type -P keychain)" ]] && eval "$(keychain --eval --quiet)"
+
 true

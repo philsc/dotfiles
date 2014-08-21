@@ -1,3 +1,7 @@
+# Use GPG-made-easy library when available.
+set pgp_use_gpg_agent = yes
+set crypt_use_gpgme
+
 # In your muttrc.local file, set the following:
 #
 #set from = "user@domain.tld"
@@ -6,9 +10,6 @@
 #set my_user = "user@domain.tld"
 #set my_pass = "password"
 source ~/.mutt/muttrc.local
-
-# Use GPG-made-easy library when available.
-set crypt_use_gpgme
 
 # Account Information
 set smtp_url = "smtp://$my_user:$my_pass@$my_server:587"
