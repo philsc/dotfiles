@@ -60,5 +60,10 @@ set strict_threads = yes
 set forward_format="Fw: %s"
 set charset = 'utf-8'
 
+# View HTML automatically, but save it for last.
+set mailcap_path = ~/.mutt/mailcap
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+
 # Theme
 source ~/.mutt/mutt-colors-solarized/mutt-colors-solarized-dark-256.muttrc
