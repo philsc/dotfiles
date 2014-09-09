@@ -145,6 +145,26 @@ function set_git_config() {
     fi
 }
 
+function install_vim_plugin()
+{
+    local url="$1"
+    local subpath="$2"
+    local name="$3"
+    local temp="$(mktemp -d)"
+
+    pushd "$temp"
+
+    curl -LO "$url"
+    ls -l
+
+    unzip master.zip
+    cp -r ./"$name"-master/"$subpath" "$ROOTDIR"/.vim/bundle/"$name".vim
+
+    popd
+    rm -rf "$temp"
+}
+
+
 function setup_rvm() {
     local log="$(mktemp)"
     local result=0
@@ -319,3 +339,12 @@ if [[ $install_ruby == yes ]]; then
     install_ruby "ruby-2.1.2"
     install_gem "bundler"
 fi
+
+install_vim_plugin \
+    "https://github.com/docker/docker/archive/master.zip" \
+    "contrib/syntax/vim" \
+    "docker"
+install_vim_plugin \
+    "https://github.com/rust-lang/rust/archive/master.zip" \
+    "src/etc/vim" \
+    "rust"

@@ -1,4 +1,6 @@
 /.vim/.netrwhist
+/.vim/bundle/docker.vim/
+/.vim/bundle/rust.vim/
 /awesome/prefs.lua
 /.bash/git-*.sh
 /.bash/paths.local
