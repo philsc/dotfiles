@@ -28,6 +28,7 @@ sourcefile ~/.rvm/scripts/rvm
 sourcefile ~/.rvm/scripts/completion
 sourcefile ~/.bash/git-prompt.sh
 sourcefile ~/.bash/git-completion.sh
+sourcefile /etc/bash_completion
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
