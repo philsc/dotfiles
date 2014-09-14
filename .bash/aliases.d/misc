@@ -27,3 +27,11 @@ function fcreplace() {
     shift 2
     sed -i "s/${search}/${replace}/g" $(fc "${search}" "$@" -l)
 }
+
+function mount() {
+    if (($# == 0)); then
+        command mount | column -t
+    else
+        command mount "$@"
+    fi
+}
