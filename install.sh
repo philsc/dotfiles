@@ -107,16 +107,21 @@ function setup_file_if_non_existent() {
 }
 
 function download_file() {
-    if [[ -r "$1" ]]; then
-        info "File $1 already installed\n"
+    local file="$1"
+    local output=""
+
+    if [[ -r "$file" ]]; then
+        info "File $file already installed\n"
         return
     fi
-    new "Downloading $1... "
-    curl -L "$2" > "$1" 2>/dev/null
+    new "Downloading $file... "
+    output="$(curl -L "$2" 2>&1 > "$file")"
     if (($? == 0)); then
         echo "done"
     else
         echo "failed"
+        rm -f "$file"
+        echo "$output"
     fi
 }
 
