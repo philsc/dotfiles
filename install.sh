@@ -76,7 +76,10 @@ function parse_args() {
 function ensure_installed() {
     if ! builtin type "$1" >/dev/null 2>&1; then
         warn "$1 is not installed\n"
+        return 1
     fi
+
+    return 0
 }
 
 function setup_symlink() {
@@ -86,7 +89,7 @@ function setup_symlink() {
         warn "$2 already exists, but is not a symlink\n"
     else
         new "Installing symlink $2\n"
-        ln -s "$ROOTDIR/$1" "$2"
+        ln -s "$1" "$2"
     fi
 }
 
@@ -262,17 +265,23 @@ ensure_installed "git"
 
 mkdir -p "$HOME/.bin"
 
-setup_symlink ".bash" "$HOME/.bash"
-setup_symlink ".git_template" "$HOME/.git_template"
-setup_symlink ".tmux.conf" "$HOME/.tmux.conf"
-setup_symlink ".vim" $VIMDIR
-setup_symlink ".irbrc" "$HOME/.irbrc"
-setup_symlink ".rvmrc" "$HOME/.rvmrc"
-setup_symlink ".colordiffrc" "$HOME/.colordiffrc"
-setup_symlink ".mutt" "$HOME/.mutt"
-setup_symlink "tools/q/bin/q" "$HOME/.bin/q"
-setup_symlink "tools/vimpager/vimcat" "$HOME/.bin/vimcat"
-setup_symlink "tools/vimpager/vimpager" "$HOME/.bin/vimpager"
+setup_symlink "$ROOTDIR/.bash" "$HOME/.bash"
+setup_symlink "$ROOTDIR/.git_template" "$HOME/.git_template"
+setup_symlink "$ROOTDIR/.tmux.conf" "$HOME/.tmux.conf"
+setup_symlink "$ROOTDIR/.vim" $VIMDIR
+setup_symlink "$ROOTDIR/.irbrc" "$HOME/.irbrc"
+setup_symlink "$ROOTDIR/.rvmrc" "$HOME/.rvmrc"
+setup_symlink "$ROOTDIR/.colordiffrc" "$HOME/.colordiffrc"
+setup_symlink "$ROOTDIR/.mutt" "$HOME/.mutt"
+setup_symlink "$ROOTDIR/tools/q/bin/q" "$HOME/.bin/q"
+setup_symlink "$ROOTDIR/tools/vimpager/vimcat" "$HOME/.bin/vimcat"
+setup_symlink "$ROOTDIR/tools/vimpager/vimpager" "$HOME/.bin/vimpager"
+
+if ensure_installed "eatmydata"; then
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/apt-get"
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/aptitude"
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/dpkg"
+fi
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
