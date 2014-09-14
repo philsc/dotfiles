@@ -10,6 +10,7 @@ MIN_VIMRC="source $VIMDIR/vimrc"
 MIN_BASHRC=". ~/.bash/bashrc"
 MIN_MUTTRC="source ~/.mutt/muttrc"
 
+install_ruby='no'
 use_binary_ruby='no'
 
 function new() {
@@ -35,6 +36,8 @@ Usage:
 
  -h | --help        Print this help and exit.
 
+ -r | --ruby        Install ruby via RVM.
+
  -b, --use-binary-ruby
                     Only install binary rubies. This prevents RVM
                     from downloading and compiling any rubies. This
@@ -50,6 +53,10 @@ function parse_args() {
             -h | --help)
                 usage
                 exit 0
+                ;;
+            -r | --ruby)
+                install_ruby='yes'
+                shift
                 ;;
             -b | --use-binary-ruby)
                 use_binary_ruby='yes'
@@ -286,6 +293,8 @@ set_git_config 'color.diff' 'auto'
 set_git_config 'color.ui' 'auto'
 set_git_config 'credential.helper' 'cache --timeout=3600'
 
-setup_rvm
-install_ruby "ruby-2.1.2"
-install_gem "bundler"
+if [[ $install_ruby == yes ]]; then
+    setup_rvm
+    install_ruby "ruby-2.1.2"
+    install_gem "bundler"
+fi
