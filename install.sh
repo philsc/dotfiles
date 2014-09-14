@@ -76,7 +76,10 @@ function parse_args() {
 function ensure_installed() {
     if ! builtin type "$1" >/dev/null 2>&1; then
         warn "$1 is not installed\n"
+        return 1
     fi
+
+    return 0
 }
 
 function setup_symlink() {
@@ -273,6 +276,12 @@ setup_symlink "$ROOTDIR/.mutt" "$HOME/.mutt"
 setup_symlink "$ROOTDIR/tools/q/bin/q" "$HOME/.bin/q"
 setup_symlink "$ROOTDIR/tools/vimpager/vimcat" "$HOME/.bin/vimcat"
 setup_symlink "$ROOTDIR/tools/vimpager/vimpager" "$HOME/.bin/vimpager"
+
+if ensure_installed "eatmydata"; then
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/apt-get"
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/aptitude"
+    setup_symlink "$(type -p eatmydata)" "$HOME/.bin/dpkg"
+fi
 
 setup_file_if_non_existent "$HOME/.vimrc" "$MIN_VIMRC"
 setup_file_if_non_existent "$HOME/.bashrc" "$MIN_BASHRC"
