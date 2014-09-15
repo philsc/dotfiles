@@ -276,6 +276,7 @@ setup_symlink "$ROOTDIR/.mutt" "$HOME/.mutt"
 setup_symlink "$ROOTDIR/tools/q/bin/q" "$HOME/.bin/q"
 setup_symlink "$ROOTDIR/tools/vimpager/vimcat" "$HOME/.bin/vimcat"
 setup_symlink "$ROOTDIR/tools/vimpager/vimpager" "$HOME/.bin/vimpager"
+setup_symlink "$ROOTDIR/awesome" "$HOME/.config/awesome"
 
 if ensure_installed "eatmydata"; then
     setup_symlink "$(type -p eatmydata)" "$HOME/.bin/apt-get"
