@@ -17,4 +17,8 @@ else
     prefs.netinterface = "wlan0"
 end
 
+-- Sound configuration
+prefs.sound = {}
+prefs.sound.primary_control = 'Speaker'
+
 return prefs

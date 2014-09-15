@@ -1,7 +1,6 @@
 local awful = require("awful")
-require("awful.rules")
+awful.rules = require("awful.rules")
 require("awful.autofocus")
-local scratch = require("scratch")
 local beautiful = require("beautiful")
 require("cal")
 local naughty = require("naughty")
@@ -48,10 +47,14 @@ layouts = {
 --[[ KEY BINDINGS ]]--
 modkey = "Mod4"
 
+sound_helper = function (action)
+    awful.util.spawn("amixer -q set " .. prefs.sound.primary_control .. " " .. action, false)
+end
+
 volumebuttons = awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer -q set Master toggle", false) end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer -q set Master 2dB+", false) end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer -q set Master 2dB-", false) end)
+    awful.button({ }, 1, function () sound_helper("toggle") end),
+    awful.button({ }, 4, function () sound_helper("2dB+") end),
+    awful.button({ }, 5, function () sound_helper("2dB-") end)
 )
 
 layoutbox.buttons = awful.util.table.join(
@@ -98,7 +101,6 @@ globalkeys = awful.util.table.join(
     -- Standard programs
     awful.key({ modkey,           }, ";", function () awful.util.spawn(prefs.terminal) end),
     awful.key({ modkey,           }, "d", function () awful.util.spawn(prefs.browser) end),
-    awful.key({ modkey,           }, "/", function () scratch.drop(prefs.terminal, "top", "center", 1, 0.2, true) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -173,9 +175,9 @@ createbar = function (buttons, settings)
   bar:set_color(beautiful.fg_widget)
   bar:set_border_color(beautiful.fg_widget)
   bar:set_background_color(beautiful.fg_off_widget)
-  bar.widget:buttons(buttons)
-  awful.widget.layout.margins[bar.widget] = { top = 4, left = 4 }
-  return bar
+  bar:buttons(buttons)
+  local bar_layout = wibox.layout.margin(bar, 3, 3, 3, 3)
+  return bar, bar_layout
 end
 readcmd = function (cmd)
   local fd = io.popen(cmd, "r")
@@ -236,13 +238,8 @@ nettip.update = function () return readcmd("ifsummary") end
 
 -- Volume level
 voltext = createlabel('Vol')
-volbar = createbar(volumebuttons)
-vicious.register(volbar, vicious.widgets.volume, "$1", 2, "Master")
-
--- Weather
-weatherlbl = createlabel('Weather')
-weatherwidget = wibox.widget.textbox()
-vicious.register(weatherwidget, vicious.widgets.weather, " ${tempc}°C ${sky} &amp; ${weather}", 1800, "CYKF")
+volbar, volbar_wrapper = createbar(volumebuttons)
+vicious.register(volbar, vicious.widgets.volume, "$1", 2, prefs.sound.primary_control)
 
 musiclbl = nil
 musidwidget = nil
@@ -281,45 +278,41 @@ end
 -- Create a wibox
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
-    promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+    promptbox[s] = awful.widget.prompt()
 
     -- Create the layout box for each screen
     layoutbox[s] = awful.widget.layoutbox(s)
     layoutbox[s]:buttons(layoutbox.buttons)
 
     -- Create the tag list for each screen
-    taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
+    taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
 
     -- Create the task list for each screen
     tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist.buttons)
 
     -- Create the wibox
     winbox[s] = awful.wibox({ position = "top", screen = s })
-    winbox[s].widgets = awful.util.table.join(
-        {
-            {
-                layoutbox[s],
-                taglist[s],
-                promptbox[s],
-                layout = awful.widget.layout.horizontal.leftright
-            },
-            --[[sysbtn,]] systray,
-            separator, textclock, textclocklbl,
-            separator, weatherwidget, weatherlbl,
-            separator, volbar.widget, voltext,
-            --[[separator, netupwidget, uplbl, netdnwidget, dnlbl,]]
-        },
-        (function ()
-            if prefs.use_awesompd then
-                return { separator, musicwidget.widget, musiclbl, }
-            else
-                return {}
-            end
-        end)(),
-        {
-            tasklist[s],
-            layout = awful.widget.layout.horizontal.rightleft
-        })
+
+    local left_layout = wibox.layout.fixed.horizontal()
+    left_layout:add(layoutbox[s])
+    left_layout:add(taglist[s])
+    left_layout:add(promptbox[s])
+
+    local right_layout = wibox.layout.fixed.horizontal()
+    right_layout:add(voltext)
+    right_layout:add(volbar_wrapper)
+    right_layout:add(separator)
+    right_layout:add(textclocklbl)
+    right_layout:add(textclock)
+    right_layout:add(separator)
+    right_layout:add(systray)
+
+    local layout = wibox.layout.align.horizontal()
+    layout:set_left(left_layout)
+    layout:set_middle(tasklist[s])
+    layout:set_right(right_layout)
+
+    winbox[s]:set_widget(layout)
 end
 
 root.keys(globalkeys)
@@ -363,4 +356,3 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
