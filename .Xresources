@@ -22,7 +22,7 @@ urxvt.perl-ext:
 
 ! Theme ten obtained from http://phraktured.net/terminal-colors/
 *background: rgb:1a/1a/1a
-*foreground: rgb:d6/d6/d6
+*foreground: rgb:bb/bb/bb
 ! black
 *color0:     rgb:00/00/00
 *color8:     rgb:73/73/73
