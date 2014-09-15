@@ -2,7 +2,6 @@ local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
 local beautiful = require("beautiful")
-require("cal")
 local naughty = require("naughty")
 local vicious = require("vicious")
 local wibox = require("wibox")
@@ -67,8 +66,8 @@ taglist.buttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.client.movetotag),
     awful.button({ }, 3, awful.tag.viewtoggle),
     awful.button({ modkey }, 3, awful.client.toggletag),
-    awful.button({ }, 4, awful.tag.viewprev),
-    awful.button({ }, 5, awful.tag.viewnext)
+    awful.button({ }, 4, function(t) awful.tag.viewprev(awful.tag.getscreen(t)) end),
+    awful.button({ }, 5, function(t) awful.tag.viewnext(awful.tag.getscreen(t)) end)
 )
 
 tasklist.buttons = awful.util.table.join(
@@ -191,16 +190,10 @@ for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layou
 
 -- Reusable separator
 separator = wibox.widget.imagebox(beautiful.widget_sep)
---separator:set_image(image(beautiful.widget_sep))
-separator:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a textclock widget
 textclocklbl = createlabel("Sys")
 textclock = awful.widget.textclock()
-cal.register(textclock, "<span color='green'>%s</span>")
-systip = awful.tooltip({ objects = { textclocklbl } })
-systip.update = function () return readcmd("syssummary -p '/ /home /media/gallifrey /media/dvd /media/usb'") end
-textclock:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a systray
 systray = wibox.widget.systray()
