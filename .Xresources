@@ -6,11 +6,11 @@
 urxvt.scrollBar:            true
 urxvt.scrollBar_floating:   false
 urxvt.scrollBar_right:      true
-urxvt.scrollColor:          #202020
+urxvt.scrollColor:          #303030
 urxvt.scrollstyle:          plain
 urxvt.termName:             xterm
 urxvt.urllauncher:          luakit
-urxvt.saveLines:            2048
+urxvt.saveLines:            99999
 
 ! Make matcher a right-click
 *matcher.button: 3
