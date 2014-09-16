@@ -1,3 +1,5 @@
+local awful = require("awful")
+
 confdir = awful.util.getdir("config")
 
 prefs = {}
