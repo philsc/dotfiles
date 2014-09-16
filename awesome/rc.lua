@@ -100,6 +100,7 @@ globalkeys = awful.util.table.join(
     -- Standard programs
     awful.key({ modkey,           }, ";", function () awful.util.spawn(prefs.terminal) end),
     awful.key({ modkey,           }, "d", function () awful.util.spawn(prefs.browser) end),
+    awful.key({ modkey, "Control" }, "m", function () awful.util.spawn("xscreensaver-command -l") end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
