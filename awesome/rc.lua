@@ -167,7 +167,7 @@ createlabel = function (text)
     local label = wibox.widget.textbox()
     label:set_markup('<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>')
     --label:margin({ top = 2, left = 6 })
-    return label
+    return wibox.layout.margin(label, 3, 3, 3, 3)
   end
 createbar = function (buttons, settings)
   local bar = awful.widget.progressbar(settings or { height = 7, width = 25 })
