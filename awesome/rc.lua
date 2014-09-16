@@ -1,6 +1,6 @@
 local awful = require("awful")
 awful.rules = require("awful.rules")
-require("awful.autofocus")
+awful.autofocus = require("awful.autofocus")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
 local vicious = require("vicious")
@@ -189,7 +189,8 @@ end
 for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
 
 -- Reusable separator
-separator = wibox.widget.imagebox(beautiful.widget_sep)
+separator_raw = wibox.widget.imagebox(beautiful.widget_sep)
+separator = wibox.layout.margin(separator_raw, 3, 3, 3, 3)
 
 -- Create a textclock widget
 textclocklbl = createlabel("Sys")
