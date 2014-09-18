@@ -4,4 +4,4 @@ xrdb -merge "$HOME/.Xresources"
 urxvtd -o -f -q
 xscreensaver -no-splash &
 
-[[ -x "$HOME/.xprofile.local" ]] && "$HOME/.xprofile.local"
+[ -x "$HOME/.xprofile.local" ] && "$HOME/.xprofile.local"
