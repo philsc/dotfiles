@@ -23,4 +23,6 @@ end
 prefs.sound = {}
 prefs.sound.primary_control = 'Speaker'
 
+prefs.main_screen = 1
+
 return prefs

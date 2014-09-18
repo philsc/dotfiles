@@ -299,8 +299,10 @@ for s = 1, screen.count() do
     right_layout:add(separator)
     right_layout:add(textclocklbl)
     right_layout:add(textclock)
-    right_layout:add(separator)
-    right_layout:add(systray)
+    if s == prefs.main_screen then
+        right_layout:add(separator)
+        right_layout:add(systray)
+    end
 
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
