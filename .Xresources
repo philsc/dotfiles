@@ -1,6 +1,6 @@
 ! Use xft for drawing fonts
-!urxvt.font: xft:ProFont-20
-!urxvt.font: xft:Inconsolata-11
+urxvt.font: xft:ProFont-8
+urxvt.boldFont:
 
 ! The scrollbar will be nearly black
 urxvt.scrollBar:            true
