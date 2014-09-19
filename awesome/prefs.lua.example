@@ -1,3 +1,5 @@
+local awful = require("awful")
+
 confdir = awful.util.getdir("config")
 
 prefs = {}
@@ -16,5 +18,11 @@ if os.getenv("INSIDE_VBOX") == "1" then
 else
     prefs.netinterface = "wlan0"
 end
+
+-- Sound configuration
+prefs.sound = {}
+prefs.sound.primary_control = 'Speaker'
+
+prefs.main_screen = 1
 
 return prefs
