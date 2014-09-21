@@ -187,7 +187,7 @@ readcmd = function (cmd)
 end
 
 -- Hold the screen tags
-for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
+for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts[1]) end
 
 -- Reusable separator
 separator_raw = wibox.widget.imagebox(beautiful.widget_sep)
@@ -351,5 +351,5 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
-client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
