@@ -8,7 +8,6 @@ confdir = awful.util.getdir("config")
 
 -- Main
 theme = {}
-theme.wallpaper_cmd = { "awsetbg -r " .. confdir .. "/wallpapers" }
 
 -- Styles
 theme.font      = "Profont 8"
