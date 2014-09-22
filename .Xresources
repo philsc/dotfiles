@@ -63,5 +63,4 @@ urxvt*geometry: 80x26
 
 ! Prevent double-click selections from including characters generated
 ! by tmux and other regular utilities.
-urxvt.cutchars: "()'*<>[]{|}"
-
+urxvt.cutchars: "()<>[]{}|│,:=*`'"
