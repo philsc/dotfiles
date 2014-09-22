@@ -47,10 +47,14 @@ layouts = {
 --[[ KEY BINDINGS ]]--
 modkey = "Mod4"
 
+sound_helper = function (action)
+    awful.util.spawn("amixer -q set " .. prefs.sound.primary_control .. " " .. action, false)
+end
+
 volumebuttons = awful.util.table.join(
-    awful.button({ }, 1, function () awful.util.spawn("amixer -q set Master toggle", false) end),
-    awful.button({ }, 4, function () awful.util.spawn("amixer -q set Master 2dB+", false) end),
-    awful.button({ }, 5, function () awful.util.spawn("amixer -q set Master 2dB-", false) end)
+    awful.button({ }, 1, function () sound_helper("toggle") end),
+    awful.button({ }, 4, function () sound_helper("2dB+") end),
+    awful.button({ }, 5, function () sound_helper("2dB-") end)
 )
 
 layoutbox.buttons = awful.util.table.join(
@@ -97,7 +101,6 @@ globalkeys = awful.util.table.join(
     -- Standard programs
     awful.key({ modkey,           }, ";", function () awful.util.spawn(prefs.terminal) end),
     awful.key({ modkey,           }, "d", function () awful.util.spawn(prefs.browser) end),
-    awful.key({ modkey,           }, "/", function () scratch.drop(prefs.terminal, "top", "center", 1, 0.2, true) end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -200,7 +203,7 @@ systray = widget({ type = "systray" })
 -- Volume level
 voltext = createlabel('Vol')
 volbar = createbar(volumebuttons)
-vicious.register(volbar, vicious.widgets.volume, "$1", 2, "Master")
+vicious.register(volbar, vicious.widgets.volume, "$1", 2, prefs.sound.primary_control)
 
 musiclbl = nil
 musidwidget = nil

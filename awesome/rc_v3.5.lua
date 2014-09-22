@@ -187,7 +187,7 @@ readcmd = function (cmd)
 end
 
 -- Hold the screen tags
-for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts[1]) end
+for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layouts) end
 
 -- Reusable separator
 separator_raw = wibox.widget.imagebox(beautiful.widget_sep)
@@ -199,37 +199,6 @@ textclock = awful.widget.textclock()
 
 -- Create a systray
 systray = wibox.widget.systray()
-
--- Create a shutdown dialog
---[[
-sysbtnimg = image.argb32(14, 14, nil)
-sysbtnimg:draw_rectangle(0, 0, 14, 14, true, beautiful.bg_normal)
-sysbtnimg:draw_rectangle(4, 4, 6, 6, true, "#cc9393")
-shutdownmenu = awful.menu({ items = {
-  { "log off", awesome.quit, beautiful.menu_logoff },
-  { "reboot", "sudo /sbin/reboot", beautiful.menu_reboot },
-  { "halt", "sudo /sbin/halt", beautiful.menu_halt },
-  { "cancel", function () shutdownmenu:hide() end }
-}})
-sysbtn = awful.widget.launcher({ image = sysbtnimg, menu = shutdownmenu })
-sysbtn:add_signal("mouse::enter", function () shutdownmenu:show() end)
-]]
-
--- Network usage
---[[
-dnlbl = createlabel('Down')
-uplbl = createlabel('Up')
-netdnwidget = wibox.widget.textbox()
-netupwidget = wibox.widget.textbox()
-netdnwidget.width, netupwidget.width = 36, 36
-netdnwidget.align, netupwidget.align = "right", "right"
-vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${' .. prefs.netinterface .. ' down_kb}</span>', 3)
-vicious.register(netupwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netup_widget ..'">${' .. prefs.netinterface .. ' up_kb}</span>', 3)
-nettip = awful.tooltip({ objects = { dnlbl, uplbl, netdnwidget, netupwidget } })
-nettip.update = function () return readcmd("ifsummary") end
-]]
 
 -- Volume level
 voltext = createlabel('Vol')
