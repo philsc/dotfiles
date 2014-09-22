@@ -164,7 +164,7 @@ clientfocus = function (delta)
 createlabel = function (text)
     local label = widget({ type = "textbox" })
     label.text = '<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>'
-    --label:margin({ top = 2, left = 6 })
+    label:margin({ top = 2, left = 6 })
     return label
   end
 createbar = function (buttons, settings)
@@ -189,8 +189,6 @@ for s = 1, screen.count() do screentags[s] = awful.tag(tags.names, s, tags.layou
 -- Reusable separator
 separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
---separator:set_image(image(beautiful.widget_sep))
-separator:add_signal("mouse::enter", function () shutdownmenu:hide() end)
 
 -- Create a textclock widget
 textclocklbl = createlabel("Sys")
@@ -198,37 +196,6 @@ textclock = awful.widget.textclock()
 
 -- Create a systray
 systray = widget({ type = "systray" })
-
--- Create a shutdown dialog
---[[
-sysbtnimg = image.argb32(14, 14, nil)
-sysbtnimg:draw_rectangle(0, 0, 14, 14, true, beautiful.bg_normal)
-sysbtnimg:draw_rectangle(4, 4, 6, 6, true, "#cc9393")
-shutdownmenu = awful.menu({ items = {
-  { "log off", awesome.quit, beautiful.menu_logoff },
-  { "reboot", "sudo /sbin/reboot", beautiful.menu_reboot },
-  { "halt", "sudo /sbin/halt", beautiful.menu_halt },
-  { "cancel", function () shutdownmenu:hide() end }
-}})
-sysbtn = awful.widget.launcher({ image = sysbtnimg, menu = shutdownmenu })
-sysbtn:add_signal("mouse::enter", function () shutdownmenu:show() end)
-]]
-
--- Network usage
---[[
-dnlbl = createlabel('Down')
-uplbl = createlabel('Up')
-netdnwidget = wibox.widget.textbox()
-netupwidget = wibox.widget.textbox()
-netdnwidget.width, netupwidget.width = 36, 36
-netdnwidget.align, netupwidget.align = "right", "right"
-vicious.register(netdnwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${' .. prefs.netinterface .. ' down_kb}</span>', 3)
-vicious.register(netupwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netup_widget ..'">${' .. prefs.netinterface .. ' up_kb}</span>', 3)
-nettip = awful.tooltip({ objects = { dnlbl, uplbl, netdnwidget, netupwidget } })
-nettip.update = function () return readcmd("ifsummary") end
-]]
 
 -- Volume level
 voltext = createlabel('Vol')
@@ -296,10 +263,9 @@ for s = 1, screen.count() do
                 promptbox[s],
                 layout = awful.widget.layout.horizontal.leftright
             },
-            --[[sysbtn,]] systray,
+            systray,
             separator, textclock, textclocklbl,
             separator, volbar.widget, voltext,
-            --[[separator, netupwidget, uplbl, netdnwidget, dnlbl,]]
         },
         (function ()
             if prefs.use_awesompd then
