@@ -18,7 +18,7 @@ urxvt.saveLines:            99999
 ! Use no urxvt extensions
 ! Options are default, matcher, tabbed
 urxvt.perl-ext-common:
-urxvt.perl-ext:
+urxvt.perl-ext:     selection
 
 ! Theme ten obtained from http://phraktured.net/terminal-colors/
 *background: rgb:1a/1a/1a
