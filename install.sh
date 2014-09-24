@@ -264,6 +264,7 @@ ensure_installed "ack"
 ensure_installed "git"
 
 mkdir -p "$HOME/.bin"
+mkdir -p "$HOME/.config"
 
 setup_symlink "$ROOTDIR/.bash" "$HOME/.bash"
 setup_symlink "$ROOTDIR/.git_template" "$HOME/.git_template"
