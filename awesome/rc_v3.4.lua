@@ -48,13 +48,14 @@ layouts = {
 modkey = "Mod4"
 
 sound_helper = function (action)
-    awful.util.spawn("amixer -q set " .. prefs.sound.primary_control .. " " .. action, false)
+    awful.util.spawn("amixer " .. prefs.sound.extra_options .. " set " ..
+            prefs.sound.primary_control .. " " .. action, false)
 end
 
 volumebuttons = awful.util.table.join(
     awful.button({ }, 1, function () sound_helper("toggle") end),
-    awful.button({ }, 4, function () sound_helper("2dB+") end),
-    awful.button({ }, 5, function () sound_helper("2dB-") end)
+    awful.button({ }, 4, function () sound_helper("2%+ unmute") end),
+    awful.button({ }, 5, function () sound_helper("2%- unmute") end)
 )
 
 layoutbox.buttons = awful.util.table.join(
@@ -266,7 +267,7 @@ for s = 1, screen.count() do
                 promptbox[s],
                 layout = awful.widget.layout.horizontal.leftright
             },
-            systray,
+            s == prefs.main_screen and systray or nil,
             separator, textclock, textclocklbl,
             separator, volbar.widget, voltext,
         },

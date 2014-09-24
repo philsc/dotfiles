@@ -7,20 +7,12 @@ prefs.terminal = "urxvt"
 prefs.browser = "firefox"
 prefs.editor = "vim"
 
--- Other configurations
-
--- NOTE: I set this environment variable in my .xinitrc when I boot my linux box 
--- inside a VM instead of on real hardware.
-if os.getenv("INSIDE_VBOX") == "1" then
-    prefs.netinterface = "eth0"
-else
-    prefs.netinterface = "wlan0"
-end
-
 -- Sound configuration
 prefs.sound = {}
-prefs.sound.primary_control = 'Speaker'
+prefs.sound.extra_options = '-D pulse'
+prefs.sound.primary_control = 'Master 1+'
 
+-- Screen preferences
 prefs.main_screen = 1
 
 return prefs
