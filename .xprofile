@@ -3,5 +3,6 @@
 xrdb -merge "$HOME/.Xresources"
 urxvtd -o -f -q
 xscreensaver -no-splash &
+autocutsel -selection PRIMARY -fork
 
 [ -x "$HOME/.xprofile.local" ] && "$HOME/.xprofile.local"
