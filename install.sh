@@ -262,6 +262,8 @@ parse_args "$@"
 ensure_installed "ctags"
 ensure_installed "ack"
 ensure_installed "git"
+ensure_installed "xsel"
+ensure_installed "autocutsel"
 
 mkdir -p "$HOME/.bin"
 mkdir -p "$HOME/.config"
