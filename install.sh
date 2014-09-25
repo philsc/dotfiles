@@ -285,6 +285,7 @@ setup_symlink "$ROOTDIR/.gtkrc-2.0" "$HOME/.gtkrc-2.0"
 setup_symlink "$ROOTDIR/.fonts" "$HOME/.fonts"
 setup_symlink "$ROOTDIR/fontconfig" "$HOME/.config/fontconfig"
 setup_symlink "$HOME/.config/fontconfig/fonts.conf" "$HOME/.fonts.conf"
+setup_symlink "$ROOTDIR/.urxvt" "$HOME/.urxvt"
 
 if ensure_installed "eatmydata"; then
     setup_symlink "$(type -p eatmydata)" "$HOME/.bin/apt-get"
