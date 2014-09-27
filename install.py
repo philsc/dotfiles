@@ -10,7 +10,7 @@ MIN_FILES = {
         'muttrc': "source ~/.mutt/muttrc\n",
         }
 
-ROOTDIR = os.path.dirname(os.path.realpath(__file__))
+ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
 
 
@@ -30,7 +30,7 @@ def ensure_installed(program):
     pass
 
 
-def setup_symlink(origin, target):
+def symlink(origin, target):
     if os.path.islink(target):
         info("Symlink %s already installed\n" % target)
     elif os.path.exists(target):
@@ -60,12 +60,9 @@ def setup_min_file(min_file_index, target):
         new("Installed file %s with default content\n" % target)
 
 
-def main(arguments):
-    parser = argparse.ArgumentParser(description='Install dotfiles.')
-
-    args = parser.parse_args(arguments[1:])
-
-    direct_links = [
+def create_links():
+    # Create symbolic links to various dotfiles.
+    direct = [
             '.bash',
             '.git_template',
             '.tmux.conf',
@@ -81,26 +78,29 @@ def main(arguments):
             '.fonts',
             '.urxvt',
             ]
-    config_links = [
+    config = [
             'awesome',
             'fontconfig',
             ]
-    misc_links = [
+    misc = [
             ('tools/q/bin/q', '.bin/q'),
             ('tools/vimpager/vimcat', '.bin/vimcat'),
             ('tools/vimpager/vimpager', '.bin/vimpager'),
-            ('fontconfig/fonts.conf', 'fonts.conf'),
+            ('fontconfig/fonts.conf', '.fonts.conf'),
             ]
 
-    for link in direct_links:
-        setup_symlink(os.path.join(ROOTDIR, link), os.path.join(HOME, link))
+    links = [(l, l) for l in direct] + \
+            [(l, join('.config', l)) for l in config] + \
+            misc
 
-    for link in config_links:
-        setup_symlink(os.path.join(ROOTDIR, link), os.path.join(HOME, '.config', link))
+    from os.path import join
+    for link in links:
+        symlink(join(ROOT, link[0]), join(HOME, link[1]))
 
-    for link in misc_links:
-        setup_symlink(os.path.join(ROOTDIR, link[0]), os.path.join(HOME, link[1]))
 
+def create_min_files():
+    # Create certain "minimum" files that will source the dotfiles symlinked 
+    # earlier. The idea is to keep the configuration all within the dotfiles.
     min_files = [
             ('vimrc', '.vimrc'),
             ('bashrc', '.bashrc'),
@@ -109,6 +109,14 @@ def main(arguments):
 
     for min_file in min_files:
         setup_min_file(min_file[0], os.path.join(HOME, min_file[1]))
+
+
+def main(arguments):
+    parser = argparse.ArgumentParser(description='Install dotfiles.')
+    args = parser.parse_args(arguments[1:])
+
+    create_links()
+    create_min_files()
 
 
 main(sys.argv)
