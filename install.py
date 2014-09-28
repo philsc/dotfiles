@@ -181,15 +181,11 @@ def install_vim_plugins():
         # Download the zip file and save it as a temporary file.
         new("Installing vim plugin for %s..." % plugin[2])
 
-        dl_file = urllib.request.urlopen(plugin[0])
-        (temp_file, temp_file_path) = tempfile.mkstemp(suffix='.zip')
-        os.write(temp_file, dl_file.read())
-        os.close(temp_file)
-        dl_file.close()
+        (temp_file, _) = urllib.request.urlretrieve(plugin[0])
 
-        print("Temporary file %s" % temp_file_path)
+        print("Temporary file %s" % temp_file)
 
-        with zipfile.ZipFile(temp_file_path) as zip_file:
+        with zipfile.ZipFile(temp_file) as zip_file:
             temp_dir = tempfile.mkdtemp()
             zip_file.extractall(temp_dir)
             shutil.move(os.path.join(temp_dir, plugin[1]), \
