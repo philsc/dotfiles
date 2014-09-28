@@ -6,9 +6,10 @@ import argparse
 import errno
 import subprocess
 import errno
-import urllib
+import urllib.request
 import zipfile
 import tempfile
+import shutil
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
@@ -20,6 +21,7 @@ def make_printer(prefix):
 info = make_printer('INFO')
 warn = make_printer('WARNING')
 new = make_printer('NEW')
+done = make_printer('')
 
 
 def ensure_installed(program):
@@ -168,16 +170,35 @@ def install_vim_plugins():
                     'src/etc/vim', 'rust'),
             ]
 
-    downloader = urllib.request.URLopener()
-
     for plugin in plugins:
-        (filename, _) = downloader.retrieve(plugin[0])
-        with zipfile.ZipFile(filename) as zip_file:
+
+        target = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
+
+        if os.path.isdir(target):
+            info("vim plugin for %s already installed\n" % plugin[2])
+            continue
+
+        # Download the zip file and save it as a temporary file.
+        new("Installing vim plugin for %s..." % plugin[2])
+
+        dl_file = urllib.request.urlopen(plugin[0])
+        (temp_file, temp_file_path) = tempfile.mkstemp(suffix='.zip')
+        os.write(temp_file, dl_file.read())
+        os.close(temp_file)
+        dl_file.close()
+
+        print("Temporary file %s" % temp_file_path)
+
+        with zipfile.ZipFile(temp_file_path) as zip_file:
             temp_dir = tempfile.mkdtemp()
             zip_file.extractall(temp_dir)
             shutil.move(os.path.join(temp_dir, plugin[1]), \
                     os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim'))
             shutil.rmtree(temp_dir)
+
+        shutil.rm(temp_file)
+
+        done("done\n" % plugin[2])
 
 
 def main(arguments):
