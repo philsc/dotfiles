@@ -148,10 +148,15 @@ def create_git_configs():
             ('credential.helper', 'cache --timeout=3600'),
             ]
 
-    for config in configs:
-        cmd = 'git config --global'.split(' ') + [config[0]]
-        if subprocess.call(cmd, stdout=subprocess.DEVNULL) == 0:
-            info('git config %s already configured\n' % config[0])
+    with open(os.devnull, 'wb') as devnull:
+        for config in configs:
+            cmd = 'git config --global'.split(' ') + [config[0]]
+
+            if subprocess.call(cmd, stdout=devnull) == 0:
+                info('git config %s already configured\n' % config[0])
+            else:
+                subprocess.call(cmd + [config[1]], stdout=devnull)
+                new('git configured %s\n' % config[0])
 
 
 def main(arguments):
