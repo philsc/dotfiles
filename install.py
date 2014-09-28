@@ -6,26 +6,16 @@ import argparse
 import errno
 import subprocess
 
-MIN_FILES = {
-        'vimrc': "source ~/.vim/vimrc\n",
-        'bashrc': "source ~/.bash/bashrc\n",
-        'muttrc': "source ~/.mutt/muttrc\n",
-        }
-
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
 
 
-def info(message):
-    sys.stdout.write("INFO " + message)
+def make_printer(prefix):
+    return lambda message: sys.stdout.write("%s %s" % (prefix, message))
 
-
-def warn(message):
-    sys.stdout.write("WARNING " + message)
-
-
-def new(message):
-    sys.stdout.write("NEW " + message)
+info = make_printer('INFO')
+warn = make_printer('WARNING')
+new = make_printer('NEW')
 
 
 def ensure_installed(program):
@@ -42,24 +32,24 @@ def symlink(origin, target):
         os.symlink(origin, target)
 
 
-def setup_min_file(min_file_index, target):
-    overwrite_file = True
-
+def setup_min_file(target, min_file_content):
     if os.path.exists(target):
         with open(target, 'r') as content_file:
             content = content_file.read()
 
-        if content == MIN_FILES[min_file_index]:
+        if content == min_file_content:
             info("Skipping default install for %s\n" % target)
-            overwrite_file = False
-        else:
-            answer = input('Overwrite %s with default? ' % target)
-            overwrite_file = (answer[0].lower() == 'y')
+            return
 
-    if overwrite_file:
-        with open(target, 'w') as min_file:
-            min_file.write(MIN_FILES[min_file_index])
-        new("Installed file %s with default content\n" % target)
+        answer = input('Overwrite %s with default? ' % target)
+
+        if answer[0].lower() != 'y':
+            return
+
+    with open(target, 'w') as min_file:
+        min_file.write(min_file_content)
+
+    new("Installed file %s with default content\n" % target)
 
 
 def create_folders():
@@ -114,13 +104,13 @@ def create_min_files():
     # Create certain "minimum" files that will source the dotfiles symlinked 
     # earlier. The idea is to keep the configuration all within the dotfiles.
     min_files = [
-            ('vimrc', '.vimrc'),
-            ('bashrc', '.bashrc'),
-            ('muttrc', '.muttrc'),
+            ('.vimrc', "source ~/.vim/vimrc\n"),
+            ('.bashrc', "source ~/.bash/bashrc\n"),
+            ('.muttrc', "source ~/.mutt/muttrc\n"),
             ]
 
     for min_file in min_files:
-        setup_min_file(min_file[0], os.path.join(HOME, min_file[1]))
+        setup_min_file(os.path.join(HOME, min_file[0]), min_file[1])
 
 
 def create_empty_files():
