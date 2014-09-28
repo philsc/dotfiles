@@ -26,9 +26,8 @@ shopt -s checkwinsize # adjust terminal width dynamically
 sourcefile() { [[ -s "$1" ]] && . "$1"; }
 sourcefile ~/.rvm/scripts/rvm
 sourcefile ~/.rvm/scripts/completion
-sourcefile ~/.bash/git-prompt.sh
-sourcefile ~/.bash/git-completion.sh
 sourcefile /etc/bash_completion
+sourcefile /usr/lib/git-core/git-sh-prompt
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
