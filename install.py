@@ -53,8 +53,8 @@ def setup_min_file(min_file_index, target):
             info("Skipping default install for %s\n" % target)
             overwrite_file = False
         else:
-            input = raw_input('Overwrite %s with default? ' % target)
-            overwrite_file = (input[0].lower() == 'y')
+            answer = input('Overwrite %s with default? ' % target)
+            overwrite_file = (answer[0].lower() == 'y')
 
     if overwrite_file:
         with open(target, 'w') as min_file:
