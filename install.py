@@ -188,8 +188,10 @@ def install_vim_plugins():
         with zipfile.ZipFile(temp_file) as zip_file:
             temp_dir = tempfile.mkdtemp()
             zip_file.extractall(temp_dir)
-            shutil.move(os.path.join(temp_dir, plugin[1]), \
-                    os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim'))
+
+            src = os.path.join(temp_dir, plugin[1], plugin[2] + '-master')
+            dest = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
+            shutil.move(src, dest)
             shutil.rmtree(temp_dir)
 
         shutil.rm(temp_file)
