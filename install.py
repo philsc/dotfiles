@@ -3,6 +3,7 @@
 import os
 import sys
 import argparse
+import errno
 
 MIN_FILES = {
         'vimrc': "source ~/.vim/vimrc\n",
@@ -60,6 +61,20 @@ def setup_min_file(min_file_index, target):
         new("Installed file %s with default content\n" % target)
 
 
+def create_folders():
+    # Create a certain set of folders that are needed by the dotfiles.
+    dirs = [
+            '.bin',
+            '.config',
+            ]
+
+    for directory in [os.path.join(HOME, d) for d in dirs]:
+        try:
+            os.mkdir(directory)
+        except OSError as exc:
+            if exc.errno == errno.EEXIST and os.path.isdir(directory): pass
+            else: raise
+
 def create_links():
     # Create symbolic links to various dotfiles.
     direct = [
@@ -89,11 +104,11 @@ def create_links():
             ('fontconfig/fonts.conf', '.fonts.conf'),
             ]
 
+    from os.path import join
     links = [(l, l) for l in direct] + \
             [(l, join('.config', l)) for l in config] + \
             misc
 
-    from os.path import join
     for link in links:
         symlink(join(ROOT, link[0]), join(HOME, link[1]))
 
@@ -115,6 +130,7 @@ def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
 
+    create_folders()
     create_links()
     create_min_files()
 
