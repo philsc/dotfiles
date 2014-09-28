@@ -1,9 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os
 import sys
 import argparse
 import errno
+import subprocess
 
 MIN_FILES = {
         'vimrc': "source ~/.vim/vimrc\n",
@@ -69,11 +70,7 @@ def create_folders():
             ]
 
     for directory in [os.path.join(HOME, d) for d in dirs]:
-        try:
-            os.mkdir(directory)
-        except OSError as exc:
-            if exc.errno == errno.EEXIST and os.path.isdir(directory): pass
-            else: raise
+        os.makedirs(directory, exist_ok=True)
 
 def create_links():
     # Create symbolic links to various dotfiles.
@@ -126,6 +123,37 @@ def create_min_files():
         setup_min_file(min_file[0], os.path.join(HOME, min_file[1]))
 
 
+def create_empty_files():
+    # Some dotfiles are ignored by git so that local configuration can be done.
+    # If the files already exist, then we should simply do nothing.
+    local_rc = [
+            '.bash/paths.local',
+            '.bash/exports.d/local',
+            '.bash/aliases.d/local',
+            ]
+
+    for rc in local_rc:
+        with open(rc, 'a+') as rc_file: pass
+
+
+def create_git_configs():
+    configs = [
+            ('init.templatedir', os.path.join(HOME, '.git_template')),
+            ('alias.ctags', '!.git/hooks/ctags'),
+            ('alias.graph', 'log --all --graph --oneline --decorate=short'),
+            ('alias.lgraph', 'log --graph --oneline --decorate=short HEAD'),
+            ('alias.compress', 'repack -a -d --depth=250 --window=250'),
+            ('color.diff', 'auto'),
+            ('color.ui', 'auto'),
+            ('credential.helper', 'cache --timeout=3600'),
+            ]
+
+    for config in configs:
+        cmd = 'git config --global'.split(' ') + [config[0]]
+        if subprocess.call(cmd, stdout=subprocess.DEVNULL) == 0:
+            info('git config %s already configured\n' % config[0])
+
+
 def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
@@ -133,6 +161,8 @@ def main(arguments):
     create_folders()
     create_links()
     create_min_files()
+    create_empty_files()
+    create_git_configs()
 
 
 main(sys.argv)
