@@ -195,7 +195,7 @@ def install_vim_plugins():
 
         os.remove(temp_file)
 
-        done("done\n" % plugin[2])
+        done("done\n")
 
 
 def main(arguments):
