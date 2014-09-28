@@ -5,6 +5,10 @@ import sys
 import argparse
 import errno
 import subprocess
+import errno
+import urllib
+import zipfile
+import tempfile
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
@@ -60,7 +64,14 @@ def create_folders():
             ]
 
     for directory in [os.path.join(HOME, d) for d in dirs]:
-        os.makedirs(directory, exist_ok=True)
+        try:
+            os.makedirs(directory, exist_ok=True)
+        except OSError as exc:
+            # Because makedirs will raise an error when the mode is different, 
+            # we will simply ignore the corresponding exception when it is 
+            # raised.
+            if exc.errno != errno.EEXIST: raise
+            else: pass
 
 def create_links():
     # Create symbolic links to various dotfiles.
@@ -149,6 +160,26 @@ def create_git_configs():
                 new('git configured %s\n' % config[0])
 
 
+def install_vim_plugins():
+    plugins = [
+            ('https://github.com/docker/docker/archive/master.zip', \
+                    'contrib/syntax/vim', 'docker'),
+            ('https://github.com/rust-lang/rust/archive/master.zip', \
+                    'src/etc/vim', 'rust'),
+            ]
+
+    downloader = urllib.request.URLopener()
+
+    for plugin in plugins:
+        (filename, _) = downloader.retrieve(plugin[0])
+        with zipfile.ZipFile(filename) as zip_file:
+            temp_dir = tempfile.mkdtemp()
+            zip_file.extractall(temp_dir)
+            shutil.move(os.path.join(temp_dir, plugin[1]), \
+                    os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim'))
+            shutil.rmtree(temp_dir)
+
+
 def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
@@ -158,6 +189,7 @@ def main(arguments):
     create_min_files()
     create_empty_files()
     create_git_configs()
+    install_vim_plugins()
 
 
 main(sys.argv)
