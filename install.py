@@ -183,8 +183,7 @@ def install_vim_plugins():
 
         (temp_file, _) = urllib.request.urlretrieve(plugin[0])
 
-        print("Temporary file %s" % temp_file)
-
+        # Unzip the zipfile and copy the right folder into the .vim structure.
         with zipfile.ZipFile(temp_file) as zip_file:
             temp_dir = tempfile.mkdtemp()
             zip_file.extractall(temp_dir)
@@ -194,7 +193,7 @@ def install_vim_plugins():
             shutil.move(src, dest)
             shutil.rmtree(temp_dir)
 
-        shutil.rm(temp_file)
+        os.remove(temp_file)
 
         done("done\n" % plugin[2])
 
