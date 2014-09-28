@@ -5,6 +5,11 @@ import sys
 import argparse
 import errno
 import subprocess
+import errno
+import urllib.request
+import zipfile
+import tempfile
+import shutil
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
@@ -16,6 +21,7 @@ def make_printer(prefix):
 info = make_printer('INFO')
 warn = make_printer('WARNING')
 new = make_printer('NEW')
+done = make_printer('')
 
 
 def ensure_installed(program):
@@ -60,7 +66,14 @@ def create_folders():
             ]
 
     for directory in [os.path.join(HOME, d) for d in dirs]:
-        os.makedirs(directory, exist_ok=True)
+        try:
+            os.makedirs(directory, exist_ok=True)
+        except OSError as exc:
+            # Because makedirs will raise an error when the mode is different, 
+            # we will simply ignore the corresponding exception when it is 
+            # raised.
+            if exc.errno != errno.EEXIST: raise
+            else: pass
 
 def create_links():
     # Create symbolic links to various dotfiles.
@@ -149,6 +162,42 @@ def create_git_configs():
                 new('git configured %s\n' % config[0])
 
 
+def install_vim_plugins():
+    plugins = [
+            ('https://github.com/docker/docker/archive/master.zip', \
+                    'contrib/syntax/vim', 'docker'),
+            ('https://github.com/rust-lang/rust/archive/master.zip', \
+                    'src/etc/vim', 'rust'),
+            ]
+
+    for plugin in plugins:
+
+        target = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
+
+        if os.path.isdir(target):
+            info("vim plugin for %s already installed\n" % plugin[2])
+            continue
+
+        # Download the zip file and save it as a temporary file.
+        new("Installing vim plugin for %s..." % plugin[2])
+
+        (temp_file, _) = urllib.request.urlretrieve(plugin[0])
+
+        # Unzip the zipfile and copy the right folder into the .vim structure.
+        with zipfile.ZipFile(temp_file) as zip_file:
+            temp_dir = tempfile.mkdtemp()
+            zip_file.extractall(temp_dir)
+
+            src = os.path.join(temp_dir, plugin[2] + '-master', plugin[1])
+            dest = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
+            shutil.move(src, dest)
+            shutil.rmtree(temp_dir)
+
+        os.remove(temp_file)
+
+        done("done\n")
+
+
 def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
@@ -158,6 +207,7 @@ def main(arguments):
     create_min_files()
     create_empty_files()
     create_git_configs()
+    install_vim_plugins()
 
 
 main(sys.argv)
