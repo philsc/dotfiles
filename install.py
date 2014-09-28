@@ -58,6 +58,16 @@ def setup_min_file(target, min_file_content):
     new("Installed file %s with default content\n" % target)
 
 
+def warn_missing_programs():
+    # TODO Add warnings for
+    # - ctags
+    # - ack
+    # - git
+    # - xsel
+    # - autocutsel
+    pass
+
+
 def create_folders():
     # Create a certain set of folders that are needed by the dotfiles.
     dirs = [
@@ -202,6 +212,7 @@ def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
 
+    warn_missing_programs()
     create_folders()
     create_links()
     create_min_files()
