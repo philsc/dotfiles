@@ -102,6 +102,7 @@ def create_links():
             '.gtkrc-2.0',
             '.fonts',
             '.urxvt',
+            '.pythonrc.py',
             ]
     config = [
             'awesome',
