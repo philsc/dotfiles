@@ -32,7 +32,7 @@ def symlink(origin, target):
     if os.path.islink(target):
         info("Symlink %s already installed\n" % target)
     elif os.path.exists(target):
-        warn("%s already exists, but is a symlink\n" % target)
+        warn("%s already exists, but not a symlink\n" % target)
     else:
         new("Installing symlink %s\n" % target)
         os.symlink(origin, target)
@@ -113,6 +113,7 @@ def create_links():
             ('tools/vimpager/vimcat', '.bin/vimcat'),
             ('tools/vimpager/vimpager', '.bin/vimpager'),
             ('fontconfig/fonts.conf', '.fonts.conf'),
+            ('gpg.conf', '.gnupg/gpg.conf'),
             ]
 
     from os.path import join
