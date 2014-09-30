@@ -25,7 +25,7 @@ mkdir -p repos/dotfiles \
     && cd repos/dotfiles \
     && cp -r /vagrant/.git/ ./.git \
     && git checkout -- . \
-    && yes | ./install.sh
+    && yes | ./install.py
 
 ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa \
     && echo 'The following public key was generated for ${USERNAME}:' \
