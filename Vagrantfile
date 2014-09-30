@@ -1,7 +1,9 @@
+# User information
 USERNAME = ENV['USER']
-NAME = %x< git config --global user.name >.strip
-EMAIL = %x< git config --global user.email >.strip
+NAME = %x< git config user.name >.strip
+EMAIL = %x< git config user.email >.strip
 
+# Machine information
 HOSTNAME = %x< hostname >.strip + '-dev'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -23,7 +25,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
-  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/#{config.vm.box}.box"
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -50,7 +52,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     sed -i "s/$(hostname)/#{HOSTNAME}/g" /etc/hosts
     echo #{HOSTNAME} > /etc/hostname
     service hostname restart
-    SH
+  SH
 
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-packages"
   config.vm.provision :shell, inline: "/vagrant/vagrant/setup-docker"
@@ -59,6 +61,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Remove unneeded packages.
   config.vm.provision :shell, inline: <<-SH.unindent
     apt-get clean -q -y
-    SH
+  SH
 
 end
