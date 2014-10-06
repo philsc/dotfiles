@@ -46,3 +46,6 @@
 [submodule "tools/vimpager"]
 	path = tools/vimpager
 	url = https://github.com/rkitover/vimpager
+[submodule ".vim/bundle/vim-sleuth"]
+	path = .vim/bundle/vim-sleuth
+	url = https://github.com/tpope/vim-sleuth.git
