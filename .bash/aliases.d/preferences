@@ -20,7 +20,7 @@ alias gdb='gdb -quiet'
 alias o='xdg-open'
 
 alias dirs='dirs -v -l'
-alias less='less -r'
+alias less='less -R'
 
 # Easier clipboard
 alias cb='xclip -o -selection clipboard'
