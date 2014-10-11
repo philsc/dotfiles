@@ -255,6 +255,9 @@ set wmh=0
 nnoremap <Leader>h :Hexmode<CR>
 vnoremap <Leader>h :<C-U>Hexmode<CR>
 
+" Shortcut(s) for inserting date/time stamps.
+inoremap <F5> <C-R>=strftime("%FT%T%z")<CR>
+
 " ex command for toggling hex mode - define mapping if desired
 command -bar Hexmode call ToggleHex()
 
@@ -367,7 +370,8 @@ noremap <Leader>m :UltiSnipsEdit<CR>
 let g:UltiSnipsEditSplit='vertical'
 
 " Make riv.vim use a leader other than Ctrl+e.
-let g:riv_global_leader='<Leader>v'
+let g:riv_global_leader='<C-G>'
+let g:riv_highlight_code='lua,cpp,javascript,vim,sh,python,ruby,c,rust'
 
 " Use gpg2 for gnupg.vim
 let g:GPGExecutable="gpg2 --trust-model always"
