@@ -32,7 +32,7 @@ def symlink(origin, target):
     if os.path.islink(target):
         info("Symlink %s already installed\n" % target)
     elif os.path.exists(target):
-        warn("%s already exists, but is a symlink\n" % target)
+        warn("%s already exists, but not a symlink\n" % target)
     else:
         new("Installing symlink %s\n" % target)
         os.symlink(origin, target)
@@ -113,6 +113,7 @@ def create_links():
             ('tools/vimpager/vimcat', '.bin/vimcat'),
             ('tools/vimpager/vimpager', '.bin/vimpager'),
             ('fontconfig/fonts.conf', '.fonts.conf'),
+            ('gpg.conf', '.gnupg/gpg.conf'),
             ]
 
     from os.path import join
@@ -209,6 +210,24 @@ def install_vim_plugins():
         done("done\n")
 
 
+def install_certificates():
+    certs = [
+            ('https://sks-keyservers.net/sks-keyservers.netCA.pem',
+                '.gnupg/sks-keyservers.netCA.pem'),
+            ]
+
+    for (url, target) in certs:
+        dest = os.path.join(HOME, target)
+
+        if os.path.exists(dest):
+            info("Skipping certificate install for %s\n" % dest)
+        else:
+            new("Installing certificate for %s..." % dest)
+            (temp_file, _) = urllib.request.urlretrieve(url)
+            shutil.move(temp_file, dest)
+            done("done\n")
+
+
 def main(arguments):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     args = parser.parse_args(arguments[1:])
@@ -220,6 +239,7 @@ def main(arguments):
     create_empty_files()
     create_git_configs()
     install_vim_plugins()
+    install_certificates()
 
 
 main(sys.argv)
