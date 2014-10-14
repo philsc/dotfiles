@@ -73,6 +73,7 @@ def create_folders():
     dirs = [
             '.bin',
             '.config',
+            '.gnupg',
             ]
 
     for directory in [os.path.join(HOME, d) for d in dirs]:
