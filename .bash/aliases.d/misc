@@ -35,3 +35,12 @@ function mount() {
         command mount "$@"
     fi
 }
+
+function mcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+function mtmp() {
+    local temp="$(mktemp -d)"
+    cd "$temp"
+}
