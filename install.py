@@ -104,6 +104,7 @@ def create_links():
             '.fonts',
             '.urxvt',
             '.pythonrc.py',
+            '.tmux',
             ]
     config = [
             'awesome',
