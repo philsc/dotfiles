@@ -375,3 +375,7 @@ let g:riv_highlight_code='lua,cpp,javascript,vim,sh,python,ruby,c,rust'
 
 " Use gpg2 for gnupg.vim
 let g:GPGExecutable="gpg2 --trust-model always"
+
+" Set a custom color for the indentation highlight plugin.
+let g:indentLine_color_term = 17
+let g:indentLine_char = "|"
