@@ -16,3 +16,11 @@ class String
   end
 end
 endsnippet
+
+snippet salt "Insert a saltstack provision statement" !
+config.vm.provision :salt do |salt|
+  salt.minion_config = "salt/minion"
+  salt.run_highstate = true
+  salt.log_level = "all"
+end
+endsnippet
