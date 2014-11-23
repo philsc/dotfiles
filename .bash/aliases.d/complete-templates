@@ -5,9 +5,10 @@
 function _template()
 {
     if ((COMP_CWORD == 1)); then
-        COMPREPLY=( \
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=( $(compgen -W "-h --help -l --list \
                 $(find "$HOME"/.templates/ -mindepth 1 -maxdepth 1 -type d \
-                        | sed "s#$HOME/.templates//##") )
+                | sed "s#$HOME/.templates//##")" -- $cur ) )
     else
         :
     fi
