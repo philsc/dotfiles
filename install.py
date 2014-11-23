@@ -114,8 +114,10 @@ def create_links():
             ('tools/q/bin/q', '.bin/q'),
             ('tools/vimpager/vimcat', '.bin/vimcat'),
             ('tools/vimpager/vimpager', '.bin/vimpager'),
+            ('tools/template.py', '.bin/template.py'),
             ('fontconfig/fonts.conf', '.fonts.conf'),
             ('gpg.conf', '.gnupg/gpg.conf'),
+            ('templates', '.templates'),
             ]
 
     from os.path import join
