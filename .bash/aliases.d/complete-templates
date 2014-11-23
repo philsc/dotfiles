@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# Programmable completion for the templates.py script.
+
+function _template()
+{
+    if ((COMP_CWORD == 1)); then
+        cur=${COMP_WORDS[COMP_CWORD]}
+        COMPREPLY=( $(compgen -W "-h --help -l --list \
+                $(find "$HOME"/.templates/ -mindepth 1 -maxdepth 1 -type d \
+                | sed "s#$HOME/.templates//##")" -- $cur ) )
+    else
+        :
+    fi
+}
+
+complete -F _template template.py
