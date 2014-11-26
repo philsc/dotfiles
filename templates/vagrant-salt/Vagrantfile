@@ -4,6 +4,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "trusty-server-cloudimg-amd64-vagrant-disk1"
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/trusty/current/#{config.vm.box}.box"
 
   config.vm.network "public_network"
 
@@ -19,5 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     salt.minion_config = "salt/minion"
     salt.run_highstate = true
     salt.log_level = "debug"
+    salt.verbose = true
+    salt.colorize = true
   end
 end
