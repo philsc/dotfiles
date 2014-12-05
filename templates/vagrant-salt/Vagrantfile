@@ -14,6 +14,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.gui = true
     vb.cpus = 1
     vb.memory = 512
+    vb.customize ["modifyvm", :id, "--usb", "on"]
   end
 
   config.vm.provision :salt do |salt|
