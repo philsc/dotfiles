@@ -377,5 +377,5 @@ let g:riv_highlight_code='lua,cpp,javascript,vim,sh,python,ruby,c,rust'
 let g:GPGExecutable="gpg2 --trust-model always"
 
 " Set a custom color for the indentation highlight plugin.
-let g:indentLine_color_term = 17
+let g:indentLine_color_term = 240
 let g:indentLine_char = "|"
