@@ -105,6 +105,7 @@ def create_links():
             '.urxvt',
             '.pythonrc.py',
             '.tmux',
+            '.gdbinit',
             ]
     config = [
             'awesome',
