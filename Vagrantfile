@@ -3,6 +3,9 @@ USERNAME = ENV['USER']
 FULLNAME = %x< git config user.name >.strip
 EMAIL = %x< git config user.email >.strip
 
+# Repo information
+BRANCH = %x< git rev-parse  --abbrev-ref HEAD 2\>/dev/null >.strip
+
 # Machine information
 HOSTNAME = %x< hostname >.strip + '-dev'
 
