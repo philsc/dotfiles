@@ -74,7 +74,9 @@ set number
 set relativenumber
 set ruler
 set scrolloff=2
-set cursorline
+set cursorline cursorcolumn
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
 
 " Error bells are the worst
 set noerrorbells
