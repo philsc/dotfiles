@@ -113,6 +113,7 @@ def create_links():
             ]
     misc = [
             ('tools/q/bin/q', '.bin/q'),
+            ('tools/nsenter/docker-enter', '.bin/docker-enter'),
             ('tools/vimpager/vimcat', '.bin/vimcat'),
             ('tools/vimpager/vimpager', '.bin/vimpager'),
             ('tools/template.py', '.bin/template.py'),

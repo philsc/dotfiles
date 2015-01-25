@@ -58,3 +58,6 @@
 [submodule ".vim/bundle/salt-vim"]
 	path = .vim/bundle/salt-vim
 	url = https://github.com/saltstack/salt-vim.git
+[submodule "tools/nsenter"]
+	path = tools/nsenter
+	url = https://github.com/jpetazzo/nsenter.git
