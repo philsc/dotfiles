@@ -61,3 +61,6 @@
 [submodule "tools/nsenter"]
 	path = tools/nsenter
 	url = https://github.com/jpetazzo/nsenter.git
+[submodule ".vim/bundle/vim-clang-format"]
+	path = .vim/bundle/vim-clang-format
+	url = https://github.com/rhysd/vim-clang-format.git

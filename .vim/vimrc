@@ -351,6 +351,16 @@ augroup checktime
     endif
 augroup END
 
+augroup clang_format
+  autocmd!
+  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+  autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
+augroup END
+
+" Tell clang-format to use the Google style.
+let g:clang_format#code_style = 'google'
+
 " Sane Ignore For ctrlp
 let g:ctrlp_custom_ignore = {
 \ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|tmp$',
