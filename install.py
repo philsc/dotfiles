@@ -184,8 +184,6 @@ def install_vim_plugins():
     plugins = [
             ('https://github.com/docker/docker/archive/master.zip', \
                     'contrib/syntax/vim', 'docker'),
-            ('https://github.com/rust-lang/rust/archive/master.zip', \
-                    'src/etc/vim', 'rust'),
             ]
 
     for plugin in plugins:
