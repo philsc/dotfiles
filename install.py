@@ -163,6 +163,7 @@ def create_git_configs():
             ('alias.ctags', '!.git/hooks/ctags'),
             ('alias.graph', 'log --all --graph --oneline --decorate=short'),
             ('alias.lgraph', 'log --graph --oneline --decorate=short HEAD'),
+            ('alias.lg', "log --all --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"),
             ('alias.compress', 'repack -a -d --depth=250 --window=250'),
             ('color.diff', 'auto'),
             ('color.ui', 'auto'),
