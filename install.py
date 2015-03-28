@@ -171,6 +171,7 @@ def create_git_configs():
             ('alias.serve', "!git daemon --reuseaddr --verbose  --base-path=. --export-all ./.git"),
             ('color.diff', 'auto'),
             ('color.ui', 'auto'),
+            ('color.diff.whitespace', 'red reverse'),
             ('credential.helper', 'cache --timeout=3600'),
             ('merge.tool', 'vimdiff'),
             ]
