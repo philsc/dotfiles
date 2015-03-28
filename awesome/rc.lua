@@ -3,7 +3,9 @@
 --]]
 
 local awful = require("awful")
-local awesome = require("awesome")
+if not awesome then
+  local awesome = require("awesome")
+end
 
 -- Figure out where the awesome configs are stored.
 local confdir = awful.util.getdir("config")

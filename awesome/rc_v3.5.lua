@@ -123,8 +123,11 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     -- Prompt
-    awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end)
+    awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end),
     -- TODO Add more here, such as an ssh prompt
+
+    awful.key({                   }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 5") end),
+    awful.key({                   }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 5") end)
 )
 
 clientkeys = awful.util.table.join(

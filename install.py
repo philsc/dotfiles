@@ -167,6 +167,7 @@ def create_git_configs():
             ('color.diff', 'auto'),
             ('color.ui', 'auto'),
             ('credential.helper', 'cache --timeout=3600'),
+            ('merge.tool', 'vimdiff'),
             ]
 
     with open(os.devnull, 'wb') as devnull:

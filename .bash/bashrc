@@ -28,6 +28,7 @@ sourcefile ~/.rvm/scripts/rvm
 sourcefile ~/.rvm/scripts/completion
 sourcefile /etc/bash_completion                 # Ubuntu version
 sourcefile /opt/local/etc/bash_completion       # Macports version
+sourcefile /usr/share/bash-completion/bash_completion   # Fedora version
 sourcefile /usr/lib/git-core/git-sh-prompt      # Ubuntu version
 sourcefile /opt/local/share/git/git-prompt.sh   # Macports version
 
@@ -97,4 +98,5 @@ stty start undef
 # If the keychain program is installed (ssh- and gpg-agent frontend), use it.
 [[ -n "$(type -P keychain)" ]] && eval "$(keychain --eval --quiet)"
 
+unset SSH_ASKPASS
 true
