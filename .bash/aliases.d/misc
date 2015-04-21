@@ -44,3 +44,6 @@ function mtmp() {
     local temp="$(mktemp -d)"
     cd "$temp"
 }
+
+alias pbcopy='xsel --clipboard --input'
+alias pbpaste='xsel --clipboard --output'
