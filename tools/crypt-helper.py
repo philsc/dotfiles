@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 
+# TODO list:
+# - Make it so that mounting the file system and not changing any of its 
+# contents do not change the image itself. Otherwise, git always notes changes 
+# in the file system.
+
 import os
 import sys
 import argparse
