@@ -14,7 +14,15 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.o,*.a,*.d
 set title                " change the terminal's title
 
 " Use comma instead of back-slash as the leader
-let mapleader=","
+let mapleader="\<Space>"
+
+"Type <Space>w to save file which is a lot faster than :w<Enter>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>x :x<CR>
+nnoremap <Leader>q :q<CR>
+
+" Type <Space>s to open a ready-to-go substitution
+nnoremap <Leader>s :%s/
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -30,12 +38,6 @@ set nowb
 " Persistent undo
 set undodir=~/.vim/undodir
 set undofile
-
-" Use the semi-colon to start commands, in addition to the colon
-nnoremap ; :
-
-" Use spacebar to repeat the most recent motion
-nnoremap <space> ;
 
 " Let backspace work normally, i.e. allow deleting everything
 set backspace=indent,eol,start
@@ -212,7 +214,7 @@ nnoremap Y y$
 noremap <Leader>p :set paste!<cr>
 
 " Use ,w to toggle line wrap
-noremap <Leader>w :setlocal wrap!<CR>:setlocal wrap?<CR>
+noremap <Leader>R :setlocal wrap!<CR>:setlocal wrap?<CR>
 
 " Make insert mode a bit more emacs-like
 inoremap <C-a>  <Home>
@@ -370,7 +372,6 @@ let g:ctrlp_custom_ignore = {
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_cpp_config_file = '.syntastic_c_config'
-map <Leader>s :SyntasticCheck<CR>
 
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow
