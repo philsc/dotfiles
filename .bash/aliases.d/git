@@ -1,0 +1,7 @@
+function branchcopy() {
+    local branch="$1"
+    local file="$2"
+
+    mkdir -p "$(dirname "$file")"
+    git show "$branch:$file" > "$file"
+}

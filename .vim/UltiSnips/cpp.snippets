@@ -1,0 +1,15 @@
+snippet todo "Add a TODO" b
+// TODO(pschrader): $1
+endsnippet
+
+snippet an "Insert an anonymous namespace" b
+namespace {
+$1
+}  // namespace
+endsnippet
+
+snippet nn "Insert a named namespace" b
+namespace ${1:foo} {
+$2
+}  // namespace $1
+endsnippet
