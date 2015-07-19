@@ -311,6 +311,12 @@ augroup vagrant
     autocmd BufRead,BufNewFile [vV]agrantfile setlocal softtabstop=2
 augroup END
 
+augroup yaml
+    autocmd FileType yaml setlocal tabstop=2
+    autocmd FileType yaml setlocal shiftwidth=2
+    autocmd FileType yaml setlocal softtabstop=2
+augroup END
+
 augroup docker
     autocmd!
     autocmd FileType dockerfile setlocal formatoptions-=t
