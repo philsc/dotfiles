@@ -47,6 +47,7 @@ __timer_stop() {
 __setps1() {
   local s=""
   local d=""
+  local chroot=""
 
   # Store history to prevent any loss.
   history -a
@@ -73,7 +74,11 @@ __setps1() {
     d='\w'
   fi
 
-  PS1="${TXTBLU}\h/\u${TXTRST} [${TXTGRN}$d${TXTRST}]$s r\$?,j\j,t$timer_show\n\$ "
+  if [[ -r /etc/debian_chroot ]]; then
+    chroot="$(cat /etc/debian_chroot)/"
+  fi
+
+  PS1="${TXTBLU}\h/$chroot\u${TXTRST} [${TXTGRN}$d${TXTRST}]$s r\$?,j\j,t$timer_show\n\$ "
 }
 
 # Set the command prompt.
