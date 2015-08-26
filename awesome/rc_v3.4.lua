@@ -95,6 +95,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "p", awful.tag.viewprev ),
     awful.key({ modkey,           }, "n", awful.tag.viewnext ),
 
+    awful.key({ modkey, "Shift"   }, "p", function () awful.screen.focus_relative(-1) end),
+    awful.key({ modkey, "Shift"   }, "n", function () awful.screen.focus_relative(1) end),
+
     -- Client selection
     awful.key({ modkey,           }, "j", function () clientfocus(1) end),
     awful.key({ modkey,           }, "k", function () clientfocus(-1) end),
@@ -123,6 +126,15 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
+    -- Brightness Adjustments
+    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 10") end),
+    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end),
+
+    -- Volume Keys
+    awful.key({ }, "XF86AudioMute", function () sound_helper("toggle") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("3%+ unmute") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("3%- unmute") end),
+
     -- Prompt
     awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end)
     -- TODO Add more here, such as an ssh prompt
@@ -132,8 +144,9 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f", function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c", function (c) c:kill()                         end),
     awful.key({ modkey,           }, "t", awful.client.floating.toggle                     ),
-    awful.key({ modkey, "Shift"   }, "r", function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "g", function (c) c.ontop = not c.ontop            end),
+    awful.key({ modkey, "Control" }, "p", function (c) awful.client.movetoscreen(c, c.screen-1) end),
+    awful.key({ modkey, "Control" }, "n", function (c) awful.client.movetoscreen(c, c.screen+1) end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
@@ -325,4 +338,3 @@ end)
 
 client.add_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.add_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
-
