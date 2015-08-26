@@ -138,6 +138,7 @@ def create_min_files():
     min_files = [
             ('.vimrc', "source ~/.vim/vimrc\n"),
             ('.bashrc', "source ~/.bash/bashrc\n"),
+            ('.bash_profile', "source ~/.bash/bashrc\n"),
             ('.muttrc', "source ~/.mutt/muttrc\n"),
             ]
 
