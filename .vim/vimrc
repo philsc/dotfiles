@@ -339,6 +339,11 @@ augroup git
     autocmd FileType gitcommit setlocal textwidth=73
 augroup END
 
+augroup bazel
+  autocmd!
+  autocmd BufRead,BufNewFile *.bzl set filetype=python
+augroup END
+
 augroup checktime
     autocmd!
     if !has("gui_running")
