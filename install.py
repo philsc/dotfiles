@@ -178,6 +178,7 @@ def create_git_configs():
             ('color.ui', 'auto'),
             ('color.diff.whitespace', 'red reverse'),
             ('credential.helper', 'cache --timeout=3600'),
+            ('core.pager', 'less -S'),
             ('merge.tool', 'vimdiff'),
             ]
 
