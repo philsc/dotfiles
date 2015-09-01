@@ -132,8 +132,8 @@ globalkeys = awful.util.table.join(
 
     -- Volume Keys
     awful.key({ }, "XF86AudioMute", function () sound_helper("toggle") end),
-    awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("3%+ unmute") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("3%- unmute") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("3%- unmute") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("3%+ unmute") end),
 
     -- Prompt
     awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end)
