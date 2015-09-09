@@ -70,3 +70,6 @@
 [submodule ".vim/bundle/robotframework-vim"]
 	path = .vim/bundle/robotframework-vim
 	url = https://github.com/mfukar/robotframework-vim.git
+[submodule ".vim/bundle/vim-autopep8"]
+	path = .vim/bundle/vim-autopep8
+	url = https://github.com/tell-k/vim-autopep8

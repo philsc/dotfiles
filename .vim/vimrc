@@ -397,3 +397,8 @@ let g:GPGExecutable="gpg2 --trust-model always"
 " Set a custom color for the indentation highlight plugin.
 let g:indentLine_color_term = 240
 let g:indentLine_char = "|"
+
+" Set pep8 spacing, line length.
+let g:autopep8_indent_size=2
+let g:autopep8_max_line_length=79
+let g:autopep8_aggressive=1
