@@ -1,7 +1,13 @@
 # Check for an interactive session
 [ -z "$PS1" ] && return
 
-loadpaths() { [[ -r "$1" ]] && while read d; do PATH="$d:$PATH"; done < "$1"; }
+loadpaths() {
+  if [[ -r "$1" ]]; then
+    while read d; do
+      PATH="$(eval "echo $d"):$PATH"
+    done < "$1";
+  fi
+}
 loadpaths ~/.bash/paths
 loadpaths ~/.bash/paths.local
 
