@@ -73,3 +73,6 @@
 [submodule ".vim/bundle/vim-autopep8"]
 	path = .vim/bundle/vim-autopep8
 	url = https://github.com/tell-k/vim-autopep8
+[submodule ".vim/bundle/vim-unimpaired"]
+	path = .vim/bundle/vim-unimpaired
+	url = git@github.com:tpope/vim-unimpaired.git
