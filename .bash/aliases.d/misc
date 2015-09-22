@@ -45,6 +45,10 @@ function mtmp() {
     cd "$temp"
 }
 
+vumeter() {
+  arecord -f cd -d 0 -vv /dev/null
+}
+
 alias pbcopy='xsel --clipboard --input'
 alias pbselect='xsel --primary --input'
 alias pbpaste='xsel --clipboard --output'
