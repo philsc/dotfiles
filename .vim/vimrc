@@ -24,6 +24,9 @@ nnoremap <Leader>q :q<CR>
 " Type <Space>s to open a ready-to-go substitution
 nnoremap <Leader>s :%s/
 
+" Type <Space>cl to delete all superfluous whitespace at the end of a line.
+nnoremap <Leader>cl :%s/\s\+$//g<CR>
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
