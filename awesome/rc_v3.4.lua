@@ -223,6 +223,19 @@ voltext = createlabel('Vol')
 volbar = createbar(volumebuttons)
 vicious.register(volbar, vicious.widgets.volume, "$1", 2, prefs.sound.primary_control)
 
+batwidgets = {}
+-- Battery level
+for bat, settings in pairs(prefs.battery) do
+  batwidgets[bat] = {
+    text = createlabel(bat),
+    bar = createbar(),
+    remaining = widget({ type = "textbox" }),
+  }
+  batwidgets[bat].remaining:margin({ left = 6 })
+  vicious.register(batwidgets[bat].bar, vicious.widgets.bat, "$2", settings.refresh_rate, bat)
+  vicious.register(batwidgets[bat].remaining, vicious.widgets.bat, "$1 $3", settings.refresh_rate, bat)
+end
+
 musiclbl = nil
 musidwidget = nil
 
@@ -288,6 +301,18 @@ for s = 1, screen.count() do
             separator, textclock, textclocklbl,
             separator, volbar.widget, voltext,
         },
+        (function ()
+            widgets = {}
+            for bat,_ in pairs(prefs.battery) do
+                widgets = awful.util.table.join(widgets, {
+                    separator,
+                    batwidgets[bat].remaining,
+                    batwidgets[bat].bar.widget,
+                    batwidgets[bat].text,
+                })
+            end
+            return widgets
+        end)(),
         (function ()
             if prefs.use_awesompd then
                 return { separator, musicwidget.widget, musiclbl, }

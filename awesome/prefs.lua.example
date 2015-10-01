@@ -16,4 +16,8 @@ prefs.sound.primary_control = 'Master 1+'
 prefs.main_screen = 1
 prefs.brightness_step = 5
 
+-- Battery preferences
+prefs.battery = {}
+--prefs.battery['BAT0'] = { refresh_rate = 10 }
+
 return prefs
