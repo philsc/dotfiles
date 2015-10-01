@@ -47,6 +47,10 @@ layouts = {
 --[[ KEY BINDINGS ]]--
 modkey = "Mod4"
 
+brightness_helper = function (multiplier)
+    awful.util.spawn("xbacklight -inc " .. (multiplier * prefs.brightness_step))
+end
+
 sound_helper = function (action)
     awful.util.spawn("amixer " .. prefs.sound.extra_options .. " set " ..
             prefs.sound.primary_control .. " " .. action, false)
@@ -127,8 +131,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
     -- Brightness Adjustments
-    awful.key({ }, "XF86MonBrightnessDown", function () awful.util.spawn("xbacklight -dec 10") end),
-    awful.key({ }, "XF86MonBrightnessUp", function () awful.util.spawn("xbacklight -inc 10") end),
+    awful.key({ }, "XF86MonBrightnessDown", function () brightness_helper(-1) end),
+    awful.key({ }, "XF86MonBrightnessUp", function () brightness_helper(1) end),
 
     -- Volume Keys
     awful.key({ }, "XF86AudioMute", function () sound_helper("toggle") end),

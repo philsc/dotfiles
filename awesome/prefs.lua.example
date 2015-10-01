@@ -14,5 +14,6 @@ prefs.sound.primary_control = 'Master 1+'
 
 -- Screen preferences
 prefs.main_screen = 1
+prefs.brightness_step = 5
 
 return prefs
