@@ -1,0 +1,9 @@
+Git Hooks
+================================================================================
+This folder can be used to automatically add functionality whenever you perform
+an action in the git repository.
+
+For a while I had Tim Pope's ctags hook installed, but I decided to remove it
+because ctags tend to cause more errors in vim than I am happy with.
+See here for the setup:
+http://tbaggery.com/2011/08/08/effortless-ctags-with-git.html
