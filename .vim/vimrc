@@ -436,3 +436,8 @@ let g:clang_conceal_snippets=1
 let g:clang_snippets_engine='clang_complete'
 " Give the user know some information if libclang.so is not found.
 let g:clang_debug=1
+
+" Let the user load some computer-specific settings.
+if filereadable(expand('~/.vim/vimrc.local'))
+  source ~/.vim/vimrc.local
+endif

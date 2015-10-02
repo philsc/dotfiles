@@ -1,0 +1,2 @@
+" Edit this path to match your local libclang.so.1.
+let g:clang_library_path='/usr/lib/llvm-3.6/lib/libclang.so.1'

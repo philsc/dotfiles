@@ -38,12 +38,21 @@ def symlink(origin, target):
     os.symlink(origin, target)
 
 
-def setup_min_file(target, min_file_content):
-  if os.path.exists(target):
-    with open(target, 'r') as content_file:
-      content = content_file.read()
+def setup_default_file(target, default, skip_if_exists=False):
+  file_exists = os.path.exists(target)
 
-    if content == min_file_content:
+  with open(os.path.join('defaults', default), 'r') as default_file:
+    default_content = default_file.read()
+
+  if file_exists:
+    if skip_if_exists:
+      info("Skipping default install for %s\n" % target)
+      return
+
+    with open(target, 'r') as content_file:
+      current_content = content_file.read()
+
+    if current_content == default_content:
       info("Skipping default install for %s\n" % target)
       return
 
@@ -52,8 +61,8 @@ def setup_min_file(target, min_file_content):
     if answer[0].lower() != 'y':
       return
 
-  with open(target, 'w') as min_file:
-    min_file.write(min_file_content)
+  with open(target, 'w') as f:
+    f.write(default_content)
 
   new("Installed file %s with default content\n" % target)
 
@@ -135,18 +144,27 @@ def create_links():
     symlink(join(ROOT, link[0]), join(HOME, link[1]))
 
 
+def create_default_files():
+  default_files = [
+      ('.vim/vimrc.local', 'vimrc.local')
+  ]
+
+  for f in default_files:
+    setup_default_file(os.path.join(HOME, f[0]), f[1], skip_if_exists=True)
+
+
 def create_min_files():
   # Create certain "minimum" files that will source the dotfiles symlinked
   # earlier. The idea is to keep the configuration all within the dotfiles.
   min_files = [
-      ('.vimrc', "source ~/.vim/vimrc\n"),
-      ('.bashrc', "source ~/.bash/bashrc\n"),
-      ('.bash_profile', "source ~/.bash/bashrc\n"),
-      ('.muttrc', "source ~/.mutt/muttrc\n"),
+      ('.vimrc', '.vimrc'),
+      ('.bashrc', '.bashrc'),
+      ('.bash_profile', '.bash_profile'),
+      ('.muttrc', '.muttrc'),
   ]
 
-  for min_file in min_files:
-    setup_min_file(os.path.join(HOME, min_file[0]), min_file[1])
+  for f in min_files:
+    setup_default_file(os.path.join(HOME, f[0]), f[1])
 
 
 def create_empty_files():
@@ -258,6 +276,7 @@ def main(arguments):
   warn_missing_programs()
   create_folders()
   create_links()
+  create_default_files()
   create_min_files()
   create_empty_files()
   create_git_configs()
