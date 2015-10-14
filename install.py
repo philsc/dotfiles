@@ -188,6 +188,7 @@ def create_git_configs():
       ('alias.graph', 'log --all --graph --oneline --decorate=short'),
       ('alias.lgraph', 'log --graph --oneline --decorate=short HEAD'),
       ('alias.lg', "log --all --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"),
+      ('alias.llg', "log --graph --pretty=format:'%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"),
       ('alias.compress', 'repack -a -d --depth=250 --window=250'),
       ('alias.abbr', "!sh -c 'git rev-list --all | grep ^$1 | while read commit; do git --no-pager log -n1 --pretty=format:\"%H %ci %an %s%n\" $commit; done' -"),
       ('alias.aliases',
