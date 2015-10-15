@@ -193,7 +193,7 @@ createbar = function (buttons, settings)
   bar:set_color(beautiful.fg_widget)
   bar:set_border_color(beautiful.fg_widget)
   bar:set_background_color(beautiful.fg_off_widget)
-  bar.widget:buttons(buttons)
+  bar.widget:buttons(buttons or {})
   awful.widget.layout.margins[bar.widget] = { top = 4, left = 4 }
   return bar
 end
