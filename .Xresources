@@ -69,3 +69,6 @@ urxvt.cutchars: "()<>[]{}|│,:=*`'"
 xscreensaver.timeout: 0:10:00
 xscreensaver.lock: True
 xscreensaver.lockTimeout: 0:01:00
+
+! Enable Alt-f and Alt-b in xterm
+xterm*eightBitInput: false
