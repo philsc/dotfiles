@@ -161,6 +161,7 @@ def create_min_files():
       ('.bashrc', '.bashrc'),
       ('.bash_profile', '.bash_profile'),
       ('.muttrc', '.muttrc'),
+      ('.xsessionrc', '.xsessionrc'),
   ]
 
   for f in min_files:
