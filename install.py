@@ -103,6 +103,7 @@ def create_links():
   direct = [
       '.bash',
       '.git_template',
+      '.git_global_ignore',
       '.tmux.conf',
       '.vim',
       '.irbrc',
@@ -205,6 +206,7 @@ def create_git_configs():
       ('color.diff.whitespace', 'red reverse'),
       ('credential.helper', 'cache --timeout=3600'),
       ('core.pager', 'less -S'),
+      ('core.excludesfile', os.path.join(HOME, '.git_global_ignore')),
       ('merge.tool', 'vimdiff'),
   ]
 
