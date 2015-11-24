@@ -147,7 +147,8 @@ def create_links():
 
 def create_default_files():
   default_files = [
-      ('.vim/vimrc.local', 'vimrc.local')
+      ('.vim/vimrc.local', 'vimrc.local'),
+      ('.config/awesome/prefs.lua', 'prefs.lua'),
   ]
 
   for f in default_files:
