@@ -11,7 +11,7 @@ urxvt.scrollColor:          #303030
 urxvt.scrollstyle:          plain
 urxvt.termName:             xterm
 urxvt.urllauncher:          luakit
-urxvt.saveLines:            99999
+*.saveLines:            99999
 
 ! Make matcher a right-click
 *matcher.button: 3
@@ -20,6 +20,37 @@ urxvt.saveLines:            99999
 ! Options are default, matcher, tabbed
 urxvt.perl-ext-common:
 urxvt.perl-ext: clipboard,selection
+
+*VT100*colorMode: on
+*VT100*dynamicColors: on
+
+! Theme ten obtained from http://phraktured.net/terminal-colors/
+*VT100*background: rgb:1a/1a/1a
+*VT100*foreground: rgb:bb/bb/bb
+! black
+*VT100*color0:     rgb:00/00/00
+*VT100*color8:     rgb:73/73/73
+! red
+*VT100*color1:     rgb:98/56/5e
+*VT100*color9:     rgb:cf/a3/a9
+! green
+*VT100*color2:     rgb:66/82/5d
+*VT100*color10:    rgb:ca/f7/bb
+! brown/yellow
+*VT100*color3:     rgb:96/91/76
+*VT100*color11:    rgb:ff/f8/bc
+! blue
+*VT100*color4:     rgb:4d/65/85
+*VT100*color12:    rgb:83/a3/be
+! magenta
+*VT100*color5:     rgb:96/73/95
+*VT100*color13:    rgb:bb/a9/cf
+! cyan
+*VT100*color6:     rgb:5f/7f/7b
+*VT100*color14:    rgb:96/cc/cc
+! white
+*VT100*color7:     rgb:b3/b3/b3
+*VT100*color15:    rgb:ff/ff/ff
 
 ! Theme ten obtained from http://phraktured.net/terminal-colors/
 *background: rgb:1a/1a/1a
@@ -65,6 +96,13 @@ urxvt*geometry: 80x26
 ! Prevent double-click selections from including characters generated
 ! by tmux and other regular utilities.
 urxvt.cutchars: "()<>[]{}|│,:=*`'"
+
+XTerm*utf8: 1
+XTerm*selectToClipboard: true
+
+! use Alt+/ to expand what you typed to anything that is visible on the screen
+UXTerm*VT100.Translations: #override \n\
+     Meta <Key>/:dabbrev-expand() \n\`
 
 xscreensaver.timeout: 0:10:00
 xscreensaver.lock: True
