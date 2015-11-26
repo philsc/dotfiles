@@ -196,6 +196,7 @@ set splitbelow
 set wildmenu
 set wildmode=list:full
 cabbr <expr> %% expand('%:h')
+cabbr <expr> ^^ expand('%')
 
 " Highlight doxygen comments
 let g:load_doxygen_syntax=1
@@ -382,7 +383,7 @@ let g:ctrlp_custom_ignore = {
 " Set some syntastic options
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
-let g:syntastic_cpp_config_file = '.syntastic_c_config'
+let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow
@@ -418,8 +419,6 @@ let g:clang_complete_patterns=0
 let g:clang_complete_quickfix=0
 " Limit memory use
 let g:clang_memory_percent=70
-" Remove -std=c++11 if you don't use C++ for everything like I do.
-let g:clang_user_options=' -std=c++11 || exit 0'
 " Set this to 0 if you don't want autoselect, 1 if you want autohighlight,
 " and 2 if you want autoselect. 0 will make you arrow down to select the first
 " option, 1 will select the first option for you, but won't insert it unless you
