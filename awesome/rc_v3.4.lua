@@ -42,6 +42,7 @@ tags = {
 layouts = {
   awful.layout.suit.floating,
   awful.layout.suit.tile,
+  awful.layout.suit.max,
 }
 
 --[[ KEY BINDINGS ]]--
