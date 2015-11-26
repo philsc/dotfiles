@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Exit prematurely if this file has already been executed.
+if ((XPROFILE_IS_SOURCED == 1)); then
+  return 0 2>/dev/null || exit 0
+fi
+
 # Set up all the X resources: colors, etc...
 xrdb -merge "$HOME/.Xresources"
 
@@ -24,3 +29,5 @@ setxkbmap -option ctrl:nocaps
 #   synclient VertScrollDelta=-237
 #   synclient HorizScrollDelta=-237
 [ -x "$HOME/.xprofile.local" ] && "$HOME/.xprofile.local"
+
+export XPROFILE_IS_SOURCED=1
