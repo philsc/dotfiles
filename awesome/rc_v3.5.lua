@@ -163,16 +163,19 @@ end
 
 -- Helper functions
 cmd = function (program) return prefs.terminal .. " -e " .. program end
+
 clientfocus = function (delta)
     awful.client.focus.byidx(delta)
     if client.focus then client.focus:raise() end
   end
+
 createlabel = function (text)
     local label = wibox.widget.textbox()
     label:set_markup('<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>')
     --label:margin({ top = 2, left = 6 })
     return wibox.layout.margin(label, 3, 3, 3, 3)
   end
+
 createbar = function (buttons, settings)
   local bar = awful.widget.progressbar(settings or { height = 7, width = 25 })
   bar:set_color(beautiful.fg_widget)
@@ -182,6 +185,7 @@ createbar = function (buttons, settings)
   local bar_layout = wibox.layout.margin(bar, 3, 3, 3, 3)
   return bar, bar_layout
 end
+
 readcmd = function (cmd)
   local fd = io.popen(cmd, "r")
   local text = fd:read("*a")
@@ -207,6 +211,21 @@ systray = wibox.widget.systray()
 voltext = createlabel('Vol')
 volbar, volbar_wrapper = createbar(volumebuttons)
 vicious.register(volbar, vicious.widgets.volume, "$1", 2, prefs.sound.primary_control)
+
+batwidgets = {}
+-- Battery level
+for bat, settings in pairs(prefs.battery) do
+  batwidgets[bat] = {
+    text = createlabel(bat),
+    bar = nil,
+    bar_wrapper = nil,
+    remaining = wibox.widget.textbox(),
+  }
+  batwidgets[bat].bar, batwidgets[bat].bar_wrapper = createbar()
+  wibox.layout.margin(batwidgets[bat].remaining, 3, 3, 3, 6)
+  vicious.register(batwidgets[bat].bar, vicious.widgets.bat, "$2", settings.refresh_rate, bat)
+  vicious.register(batwidgets[bat].remaining, vicious.widgets.bat, "$1 $3", settings.refresh_rate, bat)
+end
 
 musiclbl = nil
 musidwidget = nil
@@ -266,6 +285,11 @@ for s = 1, screen.count() do
     left_layout:add(promptbox[s])
 
     local right_layout = wibox.layout.fixed.horizontal()
+    for bat,_ in pairs(prefs.battery) do
+      right_layout:add(batwidgets[bat].text)
+      right_layout:add(batwidgets[bat].bar_wrapper)
+      right_layout:add(batwidgets[bat].remaining)
+    end
     right_layout:add(voltext)
     right_layout:add(volbar_wrapper)
     right_layout:add(separator)
