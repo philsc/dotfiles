@@ -53,3 +53,9 @@ alias pbcopy='xsel --clipboard --input'
 alias pbselect='xsel --primary --input'
 alias pbpaste='xsel --clipboard --output'
 alias pbclick='xsel --primary --output'
+
+join() {
+  local IFS="$1";
+  shift
+  echo "$*"
+}
