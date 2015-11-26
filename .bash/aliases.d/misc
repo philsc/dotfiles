@@ -54,8 +54,16 @@ alias pbselect='xsel --primary --input'
 alias pbpaste='xsel --clipboard --output'
 alias pbclick='xsel --primary --output'
 
+# Join a list of arguments with a string. For example, running
+# "join , one two three" will print "one,two,three".
 join() {
   local IFS="$1";
   shift
   echo "$*"
+}
+
+# cd into the physical directory. This is useful for when you're inside a
+# symlink and want to cd into the directory that the symlink points to.
+cdp() {
+  cd "$(pwd -P)"
 }
