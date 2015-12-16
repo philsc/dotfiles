@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+(
+  while read filename; do
+    echo "$(git log -1 --format="%ai" -- "$filename") $filename";
+  done < <(git ls-tree --name-only HEAD .)
+)  | column -t

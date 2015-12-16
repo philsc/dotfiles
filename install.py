@@ -131,6 +131,7 @@ def create_links():
       ('tools/vimpager/vimpager', '.bin/vimpager'),
       ('tools/template.py', '.bin/template.py'),
       ('tools/crypt-helper.py', '.bin/crypt-helper.py'),
+      ('tools/git-ll', '.bin/git-ll'),
       ('fontconfig/fonts.conf', '.fonts.conf'),
       ('gpg.conf', '.gnupg/gpg.conf'),
       ('templates', '.templates'),
