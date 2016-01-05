@@ -98,6 +98,7 @@ set nospell     " turn off by default
 " A nice, dark colour scheme, so make things visible and highlight syntax
 set t_Co=256
 set background=dark
+set synmaxcol=120
 syntax on
 let g:zenburn_high_Contrast = 1
 let g:zenburn_old_Visual = 1
