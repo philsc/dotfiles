@@ -1,7 +1,11 @@
 ! Use xft for drawing fonts
-urxvt.font: xft:ProFont-8
+urxvt.font: xft:ProFont:size=8
 urxvt.boldFont:
 urxvt.iconFile: /usr/share/icons/Tango/32x32/apps/gnome-terminal.png
+URxvt.letterSpace:      0
+
+! Disables the insanely annoying Ctrl+Shift shortcut that enters ISO14755 mode
+URxvt.iso14755:     False
 
 ! The scrollbar will be nearly black
 urxvt.scrollBar:            true
@@ -19,7 +23,13 @@ urxvt.urllauncher:          luakit
 ! Use no urxvt extensions
 ! Options are default, matcher, tabbed
 urxvt.perl-ext-common:
-urxvt.perl-ext: clipboard,selection
+urxvt.perl-ext: clipboard,selection,resize-font
+
+! Custom key-bindings for resize-font
+URxvt.resize-font.smaller: C-minus
+URxvt.resize-font.bigger: C-plus
+URxvt.resize-font.reset: C-equal
+URxvt.resize-font.show: C-question
 
 *VT100*colorMode: on
 *VT100*dynamicColors: on
