@@ -13,7 +13,7 @@ urxvt.scrollBar_floating:   false
 urxvt.scrollBar_right:      true
 urxvt.scrollColor:          #303030
 urxvt.scrollstyle:          plain
-urxvt.termName:             xterm
+urxvt.termName:             xterm-256color
 urxvt.urllauncher:          luakit
 *.saveLines:            99999
 
