@@ -1,3 +1,82 @@
 snippet todo "Add a TODO" b
 # TODO(`whoami`): $1
 endsnippet
+
+snippet pyl "Bazel py_library" b
+py_library(
+	name = '$1',
+	srcs = [
+		'$1.py',
+	],
+	deps = [
+	],
+	imports = [
+	],
+	srcs_version = 'PY3',
+	default_python_version = 'PY3',
+)
+endsnippet
+
+snippet pyb "Bazel py_binary" b
+py_library(
+	name = '$1',
+	main = '$1.py',
+	srcs = [
+		'$1.py',
+	],
+	deps = [
+	],
+	srcs_version = 'PY3',
+	default_python_version = 'PY3',
+)
+endsnippet
+
+snippet pyt "Bazel py_test" b
+py_test(
+	name = '$1',
+	main = '$1.py',
+	srcs = [
+		'$1.py',
+	],
+	deps = [
+	],
+	srcs_version = 'PY3',
+	default_python_version = 'PY3',
+)
+endsnippet
+
+snippet ccl "Bazel cc_library" b
+cc_library(
+	name = '$1',
+	hdrs = [
+		'$1.h',
+	],
+	srcs = [
+		'$1.cc',
+	],
+	deps = [
+	],
+)
+endsnippet
+
+snippet ccb "Bazel cc_binary" b
+cc_binary(
+	name = '$1',
+	srcs = [
+		'$1.cc',
+	],
+	deps = [
+	],
+)
+endsnippet
+
+snippet cct "Bazel cc_test" b
+cc_test(
+	name = '$1',
+	srcs = [
+		'$1.cc',
+	],
+	deps = [
+	],
+)
+endsnippet
