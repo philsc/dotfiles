@@ -210,6 +210,7 @@ def create_git_configs():
       ('credential.helper', 'cache --timeout=3600'),
       ('core.pager', 'less -S'),
       ('core.excludesfile', os.path.join(HOME, '.git_global_ignore')),
+      ('diff.renameLimit', '9124'),
       ('merge.tool', 'vimdiff'),
   ]
 
