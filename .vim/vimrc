@@ -169,12 +169,10 @@ nmap <Leader>T :TabWidth<CR>
 " hitting the textwidth number of characters on a given line.
 function ToggleAutoWrap()
     if &formatoptions =~# '.*c.*'
-        setlocal formatoptions-=t
         setlocal formatoptions-=c
         setlocal formatoptions-=a
         echo 'Auto wrapping disabled'
     else
-        setlocal formatoptions+=t
         setlocal formatoptions+=c
         setlocal formatoptions+=a
         echo 'Auto wrapping enabled'
@@ -325,17 +323,32 @@ augroup END
 
 " C-style abbreviations and shortcuts
 augroup filetype_c
-    autocmd!
-    autocmd FileType c ia <buffer> #i #include
-    autocmd FileType c ia <buffer> #d #define
-    autocmd FileType cpp ia <buffer> #i #include
-    autocmd FileType cpp ia <buffer> #d #define
+  autocmd!
+  autocmd FileType c ia <buffer> #i #include
+  autocmd FileType c ia <buffer> #d #define
+  autocmd FileType cpp ia <buffer> #i #include
+  autocmd FileType cpp ia <buffer> #d #define
+  autocmd FileType c,cpp,objc setlocal fo-=t
+augroup END
+
+augroup filetype_robot
+  autocmd!
+  autocmd FileType robot setlocal fo-=t
 augroup END
 
 " Make abbreviations and shortcuts
 augroup filetype_make
     autocmd!
     autocmd FileType make setlocal noexpandtab
+augroup END
+
+augroup filetype_python
+  autocmd!
+  autocmd FileType python setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+  autocmd FileType python nnoremap <buffer><Leader>d :<C-u>Pydocstring<CR>
+  autocmd FileType python setlocal nosmartindent
+  autocmd FileType python setlocal cindent
+  autocmd FileType python setlocal fo-=t
 augroup END
 
 augroup git
