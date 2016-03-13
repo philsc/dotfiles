@@ -107,7 +107,6 @@ colorscheme zenburn
 
 " Highlight redundant whitespaces and tabs.
 highlight RedundantSpaces ctermbg=darkred guibg=red
-match RedundantSpaces /\s\+$\| \+\ze\t/
 
 " Remove the GUI toolbar, make options text instead of popups, enable the
 " mouse, and use a good font
@@ -192,8 +191,8 @@ set foldlevelstart=20
 set splitbelow
 
 " File completion
+set wildmode=longest,list,full
 set wildmenu
-set wildmode=list:full
 cabbr <expr> %% expand('%:h')
 cabbr <expr> ^^ expand('%')
 
@@ -305,6 +304,11 @@ function ToggleHex()
   let &readonly=l:oldreadonly
   let &modifiable=l:oldmodifiable
 endfunction
+
+augroup all_files
+  autocmd!
+  autocmd BufRead,BufNewFile * match RedundantSpaces /\s\+$\| \+\ze\t/
+augroup END
 
 augroup vagrant
     autocmd!
