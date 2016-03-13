@@ -396,6 +396,7 @@ let g:clang_format#code_style = 'google'
 " Sane Ignore For ctrlp
 let g:ctrlp_custom_ignore = {
 \ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|tmp$',
+\ 'file': '\v\.(exe|so|dll|webp)$',
 \ }
 
 " Set some syntastic options
