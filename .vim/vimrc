@@ -454,6 +454,9 @@ let g:clang_snippets_engine='clang_complete'
 " Give the user know some information if libclang.so is not found.
 let g:clang_debug=1
 
+" Disable the default mapping for pydocstring. I've defined my own above.
+let g:pydocstring_enable_mapping=0
+
 " Let the user load some computer-specific settings.
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local

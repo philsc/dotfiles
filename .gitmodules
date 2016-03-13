@@ -82,3 +82,6 @@
 [submodule ".vim/bundle/rename.vim"]
 	path = .vim/bundle/rename.vim
 	url = https://github.com/danro/rename.vim.git
+[submodule ".vim/bundle/vim-pydocstring"]
+	path = .vim/bundle/vim-pydocstring
+	url = https://github.com/heavenshell/vim-pydocstring.git
