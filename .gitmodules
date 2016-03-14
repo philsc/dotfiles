@@ -1,87 +1,87 @@
 [submodule ".mutt/mutt-colors-solarized"]
-	path = .mutt/mutt-colors-solarized
+	path = home/.mutt/mutt-colors-solarized
 	url = https://github.com/altercation/mutt-colors-solarized.git
 [submodule ".vim/bundle/ack.vim"]
-	path = .vim/bundle/ack.vim
+	path = home/.vim/bundle/ack.vim
 	url = https://github.com/mileszs/ack.vim.git
 [submodule ".vim/bundle/ctrlp.vim"]
-	path = .vim/bundle/ctrlp.vim
+	path = home/.vim/bundle/ctrlp.vim
 	url = https://github.com/kien/ctrlp.vim.git
 [submodule ".vim/bundle/vim-fugitive"]
-	path = .vim/bundle/vim-fugitive
+	path = home/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".vim/bundle/gundo.vim"]
-	path = .vim/bundle/gundo.vim
+	path = home/.vim/bundle/gundo.vim
 	url = https://github.com/sjl/gundo.vim.git
 [submodule ".vim/bundle/riv.vim"]
-	path = .vim/bundle/riv.vim
+	path = home/.vim/bundle/riv.vim
 	url = https://github.com/Rykka/riv.vim.git
 [submodule ".vim/bundle/vim-surround"]
-	path = .vim/bundle/vim-surround
+	path = home/.vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule ".vim/bundle/syntastic"]
-	path = .vim/bundle/syntastic
+	path = home/.vim/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
 [submodule ".vim/bundle/ultisnips"]
-	path = .vim/bundle/ultisnips
+	path = home/.vim/bundle/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
 [submodule ".vim/bundle/vim-gnupg"]
-	path = .vim/bundle/vim-gnupg
+	path = home/.vim/bundle/vim-gnupg
 	url = https://github.com/jamessan/vim-gnupg.git
 [submodule ".vim/bundle/vim-haml"]
-	path = .vim/bundle/vim-haml
+	path = home/.vim/bundle/vim-haml
 	url = https://github.com/tpope/vim-haml.git
 [submodule ".vim/bundle/vim-markdown"]
-	path = .vim/bundle/vim-markdown
+	path = home/.vim/bundle/vim-markdown
 	url = https://github.com/tpope/vim-markdown.git
 [submodule ".vim/bundle/vim-pathogen"]
-	path = .vim/bundle/vim-pathogen
+	path = home/.vim/bundle/vim-pathogen
 	url = https://github.com/tpope/vim-pathogen.git
 [submodule ".vim/bundle/Zenburn"]
-	path = .vim/bundle/Zenburn
+	path = home/.vim/bundle/Zenburn
 	url = https://github.com/jnurmine/Zenburn.git
 [submodule "tools/q"]
-	path = tools/q
+	path = home/tools/q
 	url = https://github.com/harelba/q
 [submodule "tools/vimpager"]
-	path = tools/vimpager
+	path = home/tools/vimpager
 	url = https://github.com/rkitover/vimpager
 [submodule ".vim/bundle/vim-sleuth"]
-	path = .vim/bundle/vim-sleuth
+	path = home/.vim/bundle/vim-sleuth
 	url = https://github.com/tpope/vim-sleuth.git
 [submodule ".vim/bundle/vim-snippets"]
-	path = .vim/bundle/vim-snippets
+	path = home/.vim/bundle/vim-snippets
 	url = https://github.com/honza/vim-snippets
 [submodule ".vim/bundle/indentLine"]
-	path = .vim/bundle/indentLine
+	path = home/.vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine.git
 [submodule ".vim/bundle/salt-vim"]
-	path = .vim/bundle/salt-vim
+	path = home/.vim/bundle/salt-vim
 	url = https://github.com/saltstack/salt-vim.git
 [submodule "tools/nsenter"]
-	path = tools/nsenter
+	path = home/tools/nsenter
 	url = https://github.com/jpetazzo/nsenter.git
 [submodule ".vim/bundle/vim-clang-format"]
-	path = .vim/bundle/vim-clang-format
+	path = home/.vim/bundle/vim-clang-format
 	url = https://github.com/rhysd/vim-clang-format.git
 [submodule ".vim/bundle/rust.vim"]
-	path = .vim/bundle/rust.vim
+	path = home/.vim/bundle/rust.vim
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule ".vim/bundle/robotframework-vim"]
-	path = .vim/bundle/robotframework-vim
+	path = home/.vim/bundle/robotframework-vim
 	url = https://github.com/mfukar/robotframework-vim.git
 [submodule ".vim/bundle/vim-autopep8"]
-	path = .vim/bundle/vim-autopep8
+	path = home/.vim/bundle/vim-autopep8
 	url = https://github.com/tell-k/vim-autopep8
 [submodule ".vim/bundle/vim-unimpaired"]
-	path = .vim/bundle/vim-unimpaired
+	path = home/.vim/bundle/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 [submodule ".vim/bundle/clang_complete"]
-	path = .vim/bundle/clang_complete
+	path = home/.vim/bundle/clang_complete
 	url = https://github.com/Rip-Rip/clang_complete.git
 [submodule ".vim/bundle/rename.vim"]
-	path = .vim/bundle/rename.vim
+	path = home/.vim/bundle/rename.vim
 	url = https://github.com/danro/rename.vim.git
 [submodule ".vim/bundle/vim-pydocstring"]
-	path = .vim/bundle/vim-pydocstring
+	path = home/.vim/bundle/vim-pydocstring
 	url = https://github.com/heavenshell/vim-pydocstring.git

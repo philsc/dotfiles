@@ -1,7 +1,7 @@
 /.vim/.netrwhist
 /.vim/bundle/docker.vim/
 /.vim/vimrc.local
-/awesome/prefs.lua
+/.config/awesome/prefs.lua
 /.bash/git-*.sh
 /.bash/paths.local
 /.bash/*.d/local
