@@ -28,10 +28,15 @@ def ensure_installed(program):
   pass
 
 
-def symlink(origin, target):
+def symlink(origin, target, force=False):
   if os.path.islink(target):
-    info("Symlink %s already installed\n" % target)
-  elif os.path.exists(target):
+    if force:
+      os.unlink(target)
+    else:
+      info("Symlink %s already installed\n" % target)
+      return
+
+  if os.path.exists(target):
     warn("%s already exists, but not a symlink\n" % target)
   else:
     new("Installing symlink %s\n" % target)
@@ -98,7 +103,7 @@ def create_folders():
         pass
 
 
-def create_links():
+def create_links(force=False):
   # Create symbolic links to various dotfiles.
   direct = [
       '.bash',
@@ -119,10 +124,8 @@ def create_links():
       '.pythonrc.py',
       '.tmux',
       '.gdbinit',
-  ]
-  config = [
-      'awesome',
-      'fontconfig',
+      '.config/awesome',
+      '.config/fontconfig',
   ]
   misc = [
       ('tools/q/bin/q', '.bin/q'),
@@ -140,11 +143,10 @@ def create_links():
 
   from os.path import join
   links = [(l, l) for l in direct] + \
-          [(l, join('.config', l)) for l in config] + \
       misc
 
   for link in links:
-    symlink(join(ROOT, link[0]), join(HOME, link[1]))
+    symlink(join(ROOT, link[0]), join(HOME, link[1]), force=force)
 
 
 def create_default_files():
@@ -277,13 +279,17 @@ def install_certificates():
       done("done\n")
 
 
-def main(arguments):
+def main(argv):
   parser = argparse.ArgumentParser(description='Install dotfiles.')
-  args = parser.parse_args(arguments[1:])
+  parser.add_argument('--force', '-f', dest='force', action='store_true',
+                      help='Force overwrite any symlinks if they point to the '
+                      'wrong target.')
+  parser.set_defaults(force=False)
+  args = parser.parse_args(argv[1:])
 
   warn_missing_programs()
   create_folders()
-  create_links()
+  create_links(force=args.force)
   create_default_files()
   create_min_files()
   create_empty_files()
@@ -292,4 +298,5 @@ def main(arguments):
   install_certificates()
 
 
-main(sys.argv)
+if __name__ == '__main__':
+  sys.exit(main(sys.argv))

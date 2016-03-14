@@ -6,7 +6,6 @@
 /.bash/paths.local
 /.bash/*.d/local
 /.bash/history
-/.vagrant/
 /.mutt/cache/
 /.mutt/muttrc.local
 /.mutt/*.gpg
