@@ -350,6 +350,7 @@ augroup filetype_python
   autocmd!
   autocmd FileType python setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
   autocmd FileType python nnoremap <buffer><Leader>d :<C-u>Pydocstring<CR>
+  autocmd FileType python nnoremap <buffer><Leader>cf :<C-u>call Autopep8()<CR>
   autocmd FileType python setlocal nosmartindent
   autocmd FileType python setlocal cindent
   autocmd FileType python setlocal fo-=t
@@ -403,6 +404,8 @@ let g:ctrlp_custom_ignore = {
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
 let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
+let g:syntastic_python_checkers = ['pep8', 'python']
+let g:syntastic_python_pep8_args = '--ignore=E111,E114'
 
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow
