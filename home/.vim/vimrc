@@ -333,6 +333,10 @@ augroup filetype_c
   autocmd FileType cpp ia <buffer> #i #include
   autocmd FileType cpp ia <buffer> #d #define
   autocmd FileType c,cpp,objc setlocal fo-=t
+  autocmd FileType c,cpp nnoremap <buffer><Leader>cc :<C-u>SyntasticCheck clang_check clang_tidy<CR>
+  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+  autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
 augroup END
 
 augroup filetype_robot
@@ -384,13 +388,6 @@ augroup checktime
     endif
 augroup END
 
-augroup clang_format
-  autocmd!
-  autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
-  autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
-  autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
-augroup END
-
 " Tell clang-format to use the Google style.
 let g:clang_format#code_style = 'google'
 
@@ -403,7 +400,12 @@ let g:ctrlp_custom_ignore = {
 " Set some syntastic options
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
+let g:syntastic_cpp_compiler='clang'
+let g:syntastic_cpp_no_default_include_dirs=1
+let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
+let g:syntastic_clang_check_config_file = '.syntastic_cpp_config'
+let g:syntastic_clang_tidy_config_file = '.syntastic_cpp_config'
 let g:syntastic_python_checkers = ['pep8', 'python']
 let g:syntastic_python_pep8_args = '--ignore=E111,E114'
 
