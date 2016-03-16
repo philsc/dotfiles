@@ -308,6 +308,8 @@ endfunction
 augroup all_files
   autocmd!
   autocmd BufRead,BufNewFile * match RedundantSpaces /\s\+$\| \+\ze\t/
+  autocmd InsertEnter * IndentLinesDisable
+  autocmd InsertLeave * IndentLinesEnable
 augroup END
 
 augroup vagrant
