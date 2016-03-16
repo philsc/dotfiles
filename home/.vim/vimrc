@@ -402,14 +402,14 @@ let g:ctrlp_custom_ignore = {
 " Set some syntastic options
 let g:syntastic_check_on_open=1
 let g:syntastic_enable_signs=1
-let g:syntastic_cpp_compiler='clang'
+let g:syntastic_cpp_compiler='clang++'
 let g:syntastic_cpp_no_default_include_dirs=1
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_cpp_config_file = '.syntastic_cpp_config'
 let g:syntastic_clang_check_config_file = '.syntastic_cpp_config'
 let g:syntastic_clang_tidy_config_file = '.syntastic_cpp_config'
 let g:syntastic_python_checkers = ['pep8', 'python']
-let g:syntastic_python_pep8_args = '--exclude=BUILD,WORKSPACE --ignore=E111,E114'
+let g:syntastic_python_pep8_args = '--exclude=BUILD,WORKSPACE,*.bzl --ignore=E111,E114'
 
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow
