@@ -206,8 +206,10 @@ set modeline
 
 " Remap the default motion keys so long, wrapped, but unsplit lines can be
 " navigated as independent lines
-noremap j gj
-noremap k gk
+" However, make it so that using line movements with a count skips long,
+" wrapped lines. This makes using the relativenumber option a lot easier.
+noremap <expr> j (v:count? 'j' : 'gj')
+noremap <expr> k (v:count? 'k' : 'gk')
 
 " Make Y consistent with C and D. See :help Y.
 nnoremap Y y$
