@@ -87,3 +87,21 @@ symlink_{{ llvm_target }}:
     - name: /usr/bin/{{ llvm_target }}
     - target: /usr/bin/{{ llvm_target }}-{{ llvm_version }}
 {% endfor %}
+
+# Map Caps-Lock to Control in the virtual terminal.
+setup_keymaps:
+  cmd.run:
+    - name: sed -i 's#XKBOPTIONS=".*"#XKBOPTIONS="ctrl:nocaps"#' /etc/default/keyboard
+    - user: root
+    - unless:
+      - grep -q 'XKBOPTIONS="ctrl:nocaps"' /etc/default/keyboard
+
+apply_keymaps:
+  cmd.wait:
+    - name: dpkg-reconfigure -f noninteractive  -phigh console-setup
+    - user: root
+    - watch:
+      - cmd: setup_keymaps
+    - env:
+        DEBIAN_FRONTEND: noninteractive
+        DEBCONF_NONINTERACTIVE_SEEN: "true"
