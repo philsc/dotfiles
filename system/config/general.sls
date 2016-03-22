@@ -39,6 +39,7 @@ general_packages:
       - clang-format-{{ llvm_version }}
       - clang-{{ llvm_version }}
       - colordiff
+      - curl
       - gdebi-core
       - git
       - keychain

@@ -5,7 +5,7 @@ desktop_packages:
       - autocutsel
       - awesome
       - rxvt-unicode-256color
-      - virtualbox
+      - vim-gtk
       - xbacklight
       - xsel
       - xserver-xephyr
