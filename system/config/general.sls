@@ -89,6 +89,14 @@ symlink_{{ llvm_target }}:
     - target: /usr/bin/{{ llvm_target }}-{{ llvm_version }}
 {% endfor %}
 
+# Set up a global vimrc.local that people can source.
+global_vimrc_local:
+  file.managed:
+    - name: /etc/vim/vimrc.local
+    - mode: 644
+    - contents: |
+        let g:clang_library_path='/usr/lib/llvm-{{ llvm_version }}/lib/libclang.so.1'
+
 # Map Caps-Lock to Control in the virtual terminal.
 setup_keymaps:
   cmd.run:
