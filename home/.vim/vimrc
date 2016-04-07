@@ -364,6 +364,11 @@ augroup filetype_python
   autocmd FileType python setlocal fo-=t
 augroup END
 
+augroup filetype_javascript
+  autocmd!
+  autocmd FileType python setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
 augroup git
     autocmd!
     autocmd BufRead,BufNewFile MERGE_MSG setfiletype gitcommit
@@ -412,6 +417,8 @@ let g:syntastic_clang_check_config_file = '.syntastic_cpp_config'
 let g:syntastic_clang_tidy_config_file = '.syntastic_cpp_config'
 let g:syntastic_python_checkers = ['pep8', 'python']
 let g:syntastic_python_pep8_args = '--exclude=BUILD,WORKSPACE,*.bzl --ignore=E111,E114'
+let g:syntastic_javascript_checkers = ['gjslint']
+let g:syntastic_javascript_gjslint_args = '--jslint_error=all --strict'
 
 " Tell the ftplugin helper which ruby we're using
 " Otherwise it's really slow

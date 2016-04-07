@@ -2,6 +2,9 @@
   'autopep8',
   'humanfriendly',
 ] -%}
+{% set external_pip_packages = [
+  'https://closure-linter.googlecode.com/svn/trunk/',
+] -%}
 {% set llvm_version = '3.8' -%}
 {% set vagrant_version = '1.8.1' -%}
 
@@ -77,6 +80,14 @@ vagrant_install:
 {{ pip_pkg }}:
   pip.installed:
     - bin_env: /usr/bin/pip3
+    - require:
+      - pkg: general_packages
+{% endfor %}
+
+{% for pip_pkg in external_pip_packages %}
+{{ pip_pkg }}:
+  pip.installed:
+    - bin_env: /usr/bin/pip2
     - require:
       - pkg: general_packages
 {% endfor %}
