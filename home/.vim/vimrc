@@ -263,6 +263,13 @@ set wmh=0
 nnoremap <Leader>h :Hexmode<CR>
 vnoremap <Leader>h :<C-U>Hexmode<CR>
 
+" When we're repeating an action then we don't care about seeing all the
+" actions individually. Let's use lazy redrawing for those.
+nnoremap . :setlocal lazyredraw<CR>.:setlocal nolazyredraw<CR>
+
+" Let the user toggle lazy redraw easily.
+nnoremap <Leader>l :setlocal lazyredraw!<CR>
+
 " Shortcut(s) for inserting date/time stamps.
 inoremap <F5> <C-R>=strftime("%FT%T%z")<CR>
 
@@ -310,8 +317,6 @@ endfunction
 augroup all_files
   autocmd!
   autocmd BufRead,BufNewFile * match RedundantSpaces /\s\+$\| \+\ze\t/
-  autocmd InsertEnter * IndentLinesDisable
-  autocmd InsertLeave * IndentLinesEnable
 augroup END
 
 augroup vagrant
@@ -341,6 +346,10 @@ augroup filetype_c
   autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
   autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
+  autocmd InsertEnter *.cc setlocal syntax=off
+  autocmd InsertLeave *.cc setlocal syntax=on
+  autocmd InsertEnter *.h setlocal syntax=off
+  autocmd InsertLeave *.h setlocal syntax=on
 augroup END
 
 augroup filetype_robot
@@ -407,7 +416,8 @@ let g:ctrlp_custom_ignore = {
 \ }
 
 " Set some syntastic options
-let g:syntastic_check_on_open=1
+let g:syntastic_check_on_open=0
+let g:syntastic_check_on_wq=0
 let g:syntastic_enable_signs=1
 let g:syntastic_cpp_compiler='clang++'
 let g:syntastic_cpp_no_default_include_dirs=1
