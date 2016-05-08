@@ -9,7 +9,6 @@ import cgi
 import re
 import sys
 import mimetypes
-from os import curdir
 import http.server
 import argparse
 
@@ -22,12 +21,15 @@ BASIC_HTML_PAGE = '''\
 </html>
 '''
 
-UPLOAD_PAGE = BASIC_HTML_PAGE % '''\
-<form method='POST' enctype='multipart/form-data' action='/'>
+LIST_PAGE = BASIC_HTML_PAGE % '''\
+<form method='POST' enctype='multipart/form-data' action='#'>
 File to upload: <input type=file name=upfile><br>
 <br>
 <input type=submit value=Press> to upload the file!
 </form>
+<div>
+%s
+</div>
 '''
 
 UPLOAD_RESPONSE = BASIC_HTML_PAGE % '''\
@@ -35,16 +37,19 @@ POST OK.
 <br><br>
 File uploaded under name: %s
 <br>
-<a href="%s">back</a>
+<a href=".">back</a>
 '''
 
 
 def _make_dir_listing(path):
   link = '<a href="%s">%s</a><br/>'
-  relflist = os.listdir(path)
-  inslist = [link % (os.path.join(path, r), r) for r in relflist]
+  inslist = [link % ('..', '..')]
+  for entry in sorted(os.listdir(path)):
+    if os.path.isdir(os.path.join(path, entry)):
+      entry += '/'
+    inslist.append(link % (entry, entry))
 
-  return BASIC_HTML_PAGE % ('\n'.join(inslist))
+  return LIST_PAGE % ('\n'.join(inslist))
 
 
 def _make_path_safe(path):
@@ -54,18 +59,18 @@ def _make_path_safe(path):
 class MyHandler(http.server.BaseHTTPRequestHandler):
 
   def do_GET(self):
-    try:
-      if self.path.endswith('/'):
-        self._send_html(_make_dir_listing(_make_path_safe(self.path)))
+    safe_path = _make_path_safe(self.path)
 
-      elif self.path == '/upload':
-        self._send_html(UPLOAD_PAGE)
+    try:
+      if safe_path.endswith('/'):
+        self._send_html(_make_dir_listing(safe_path))
 
       else:
-        # note that this potentially makes every file on your computer
-        # readable by the internet
-        with open(os.path.join(curdir, self.path[1:]), 'rb') as f:
-          mime_type, _ = mimetypes.guess_type(self.path)
+        # Note that if there's a bug in this logic, then this potentially makes
+        # every file on your computer readable by the internet.
+        with open(os.path.join(os.curdir, safe_path), 'rb') as f:
+          mime_type, _ = mimetypes.guess_type(safe_path)
+          print('mime_type = ' + mime_type)
           self._send_bytes(mime_type or 'application/octet-stream', f.read())
 
     except IOError as e:
@@ -83,19 +88,21 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         raise Exception("Unexpected POST request")
 
       fs_up = fs['upfile']
+      path = _make_path_safe(self.path)
       filename = os.path.split(fs_up.filename)[1]
-      basename = os.path.join(os.getcwd(), filename)
+      basename = os.path.join(path, filename)
       newname = basename
 
       # If a file under that name already exists, save it to <name>.copy(X)
       i = 1
       while os.path.exists(newname):
         newname = basename + '.copy(%d)' % i
+        i += 1
 
       with open(newname, 'wb') as f:
         f.write(fs_up.file.read())
 
-      self._send_html(UPLOAD_RESPONSE % (os.path.split(newname)[1], '/upload'))
+      self._send_html(UPLOAD_RESPONSE % (os.path.split(newname)[1]))
 
     except Exception as e:
       print(e)
@@ -122,7 +129,7 @@ def main(argv):
 
     args = parser.parse_args(argv[1:])
 
-    server = http.server.HTTPServer(('', args.port), MyHandler)
+    server = http.server.HTTPServer(('0.0.0.0', args.port), MyHandler)
     print('started server: http://localhost:%d/' % args.port)
     server.serve_forever()
   except KeyboardInterrupt:
