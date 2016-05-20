@@ -416,6 +416,10 @@ let g:ctrlp_custom_ignore = {
 \ 'file': '\v\.(exe|so|dll|webp)$',
 \ }
 
+" Disable syntax concealing for markdown files. It messes with column
+" highlighting.
+let g:markdown_syntax_conceal = 0
+
 " Set some syntastic options
 let g:syntastic_check_on_open=0
 let g:syntastic_check_on_wq=0
