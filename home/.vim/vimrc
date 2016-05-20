@@ -411,9 +411,10 @@ augroup END
 let g:clang_format#code_style = 'google'
 
 " Sane Ignore For ctrlp
+let g:ctrlp_dotfiles = 1
 let g:ctrlp_custom_ignore = {
-\ 'dir': '\.git$\|\.hg$\|\.svn$\|\.yardoc\|tmp$',
-\ 'file': '\v\.(exe|so|dll|webp)$',
+\ 'dir': '\v[\/](\.(git|hg|svn|yardoc)|bazel-.*)$',
+\ 'file': '\v\.(exe|so|dll|webp|xz|png|jar|pyc|ico|class)$',
 \ }
 
 " Disable syntax concealing for markdown files. It messes with column
