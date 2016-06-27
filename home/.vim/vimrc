@@ -465,6 +465,9 @@ let g:autopep8_indent_size=2
 let g:autopep8_max_line_length=80
 let g:autopep8_aggressive=1
 
+" Some YouCompleteMe options.
+nnoremap <silent> <C-t> :YcmCompleter GoTo<CR>
+
 " Clang Complete Settings
 let g:clang_use_library=1
 let g:clang_complete_copen=1
