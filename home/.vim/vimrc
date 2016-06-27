@@ -263,6 +263,10 @@ set wmh=0
 nnoremap <Leader>h :Hexmode<CR>
 vnoremap <Leader>h :<C-U>Hexmode<CR>
 
+" Re-select lines after shifting them.
+vnoremap > >gv
+vnoremap < <gv
+
 " When we're repeating an action then we don't care about seeing all the
 " actions individually. Let's use lazy redrawing for those.
 nnoremap . :setlocal lazyredraw<CR>.:setlocal nolazyredraw<CR>
