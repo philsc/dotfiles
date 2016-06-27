@@ -82,3 +82,6 @@
 [submodule ".vim/bundle/vim-pydocstring"]
 	path = home/.vim/bundle/vim-pydocstring
 	url = https://github.com/heavenshell/vim-pydocstring.git
+[submodule "home/.vim/bundle/YouCompleteMe"]
+	path = home/.vim/bundle/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe/
