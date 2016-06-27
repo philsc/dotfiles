@@ -1,2 +1,3 @@
 *.pyc
 .syntastic_*
+.gdb_history
