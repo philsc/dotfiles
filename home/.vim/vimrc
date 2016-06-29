@@ -467,6 +467,8 @@ let g:autopep8_aggressive=1
 
 " Some YouCompleteMe options.
 nnoremap <silent> <C-t> :YcmCompleter GoTo<CR>
+let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_previous_completion = ['<Up>']
 
 " Clang Complete Settings
 let g:clang_use_library=1
