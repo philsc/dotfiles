@@ -380,7 +380,8 @@ augroup END
 augroup filetype_javascript
   autocmd!
   autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-  autocmd FileType javascript nnoremap <buffer><Leader>cf :<C-u>w!<CR>:!fixjsstyle --jslint_error=all %<CR><CR>:e!<CR>:redraw!<CR>
+  autocmd FileType javascript nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+  autocmd FileType javascript vnoremap <buffer><Leader>cf :ClangFormat<CR>
 augroup END
 
 augroup git
