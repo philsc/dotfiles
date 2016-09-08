@@ -424,7 +424,7 @@ let g:clang_format#code_style = 'google'
 let g:ctrlp_dotfiles = 1
 let g:ctrlp_custom_ignore = {
 \ 'dir': '\v[\/](\.(git|hg|svn|yardoc)|bazel-.*)$',
-\ 'file': '\v\.(exe|so|dll|webp|xz|png|jar|pyc|ico|class)$',
+\ 'file': '\v\.(exe|so|dll|webp|xz|png|jar|pyc|ico|class|o|mod|old|map|cmd|ko|gz|tmp)$',
 \ }
 
 " Disable syntax concealing for markdown files. It messes with column
