@@ -136,6 +136,7 @@ def create_links(force=False):
       ('tools/crypt-helper.py', '.bin/crypt-helper.py'),
       ('tools/git-ll', '.bin/git-ll'),
       ('tools/webserver.py', '.bin/webserver.py'),
+      ('tools/dtc-wrapper.sh', '.bin/dtc-wrapper.sh'),
       ('fontconfig/fonts.conf', '.fonts.conf'),
       ('gpg.conf', '.gnupg/gpg.conf'),
       ('templates', '.templates'),
