@@ -57,9 +57,16 @@ alias pbclick='xsel --primary --output'
 # Join a list of arguments with a string. For example, running
 # "join , one two three" will print "one,two,three".
 join() {
-  local IFS="$1";
-  shift
-  echo "$*"
+  local joiner="$1"
+  shift;
+  local -a args=("$@")
+  for ((i = 0; i < ${#args[@]}; i++)); do
+    printf "%s" "${args[i]}"
+    if ((i + 1 < $#)); then
+      printf "%s" "$joiner"
+    fi
+  done
+  echo
 }
 
 # cd into the physical directory. This is useful for when you're inside a
