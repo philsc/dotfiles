@@ -189,6 +189,8 @@ def create_empty_files():
 
 
 def create_git_configs():
+  gitcookies_filename = os.path.join(HOME, '.gitcookies')
+
   configs = [
       ('init.templatedir', os.path.join(HOME, '.git_template')),
       ('alias.ctags', '!.git/hooks/ctags'),
@@ -214,7 +216,12 @@ def create_git_configs():
       ('core.excludesfile', os.path.join(HOME, '.git_global_ignore')),
       ('diff.renameLimit', '9124'),
       ('merge.tool', 'vimdiff'),
+      ('http.cookiefile', gitcookies_filename),
   ]
+
+  # Make sure that the git cookies are not world-readable.
+  with open(gitcookies_filename, 'a'):
+    os.chmod(gitcookies_filename, 0o600)
 
   with open(os.devnull, 'wb') as devnull:
     for config in configs:
