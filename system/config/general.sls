@@ -41,6 +41,7 @@ general_packages:
       - debootstrap
       - clang-format-{{ llvm_version }}
       - clang-{{ llvm_version }}
+      - cmake
       - colordiff
       - curl
       - gdebi-core
@@ -48,8 +49,10 @@ general_packages:
       - keychain
       - pass
       - python
+      - python-dev
       - python-pip
       - python3
+      - python3-dev
       - python3-pip
       - subversion
       - tmux
