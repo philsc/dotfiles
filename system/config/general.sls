@@ -5,7 +5,7 @@
 {% set external_pip_packages = [
   'https://closure-linter.googlecode.com/svn/trunk/',
 ] -%}
-{% set llvm_version = '3.8' -%}
+{% set llvm_version = '4.0' -%}
 {% set vagrant_version = '1.8.1' -%}
 
 # Install the gpg key for LLVM's deb packages.
@@ -26,7 +26,7 @@ apt_key_llvm_added:
 # Install the llvm apt configuration.
 apt_sources_llvm:
   file.managed:
-    - name: /etc/apt/sources.list.d/llvm-3.8.list
+    - name: /etc/apt/sources.list.d/llvm.list
     - contents: |
         deb http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }} main
         deb-src http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }} main
