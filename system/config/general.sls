@@ -128,3 +128,11 @@ apply_keymaps:
     - env:
         DEBIAN_FRONTEND: noninteractive
         DEBCONF_NONINTERACTIVE_SEEN: "true"
+
+# Disable the PC speaker beep.
+disable_pcspkr:
+  file.managed:
+    - name: /etc/modprobe.d/pcspkr.conf
+    - mode: 644
+    - contents: |
+        blacklist pcspkr
