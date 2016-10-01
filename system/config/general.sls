@@ -46,6 +46,7 @@ general_packages:
       - curl
       - gdebi-core
       - git
+      - gnupg-curl
       - keychain
       - pass
       - python
