@@ -1,5 +1,0 @@
-base:
-  '*':
-    - base
-    - general
-    - desktop

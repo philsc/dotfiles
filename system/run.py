@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+import sys
+import tempfile
+import json
+import socket
+import subprocess
+
+
+added_groups = []
+
+
+def add_group(parser, group_name, help, default=True):
+  group_parser = parser.add_mutually_exclusive_group(required=False)
+  group_parser.add_argument(
+      '--' + group_name,
+      dest=group_name,
+      help=help,
+      action='store_true')
+  group_parser.add_argument(
+      '--no-' + group_name,
+      dest=group_name,
+      action='store_false')
+  parser.set_defaults(**{group_name: default})
+
+  global added_groups
+  added_groups.append(group_name)
+
+
+def main(argv):
+  parser = argparse.ArgumentParser(description='Apply salt configs.')
+  add_group(parser, 'base', help='Make sure salt is set up.', default=True)
+  add_group(
+      parser,
+      'general',
+      help='Installs useful command-line tools and compilers and such.',
+      default=True)
+  add_group(
+      parser,
+      'desktop',
+      help='Installs GUI desktop-related programs such as awesome.',
+      default=False)
+  parser.add_argument(
+      '--dry-run',
+      action='store_true',
+      help='Don\'t run salt, but print out everything that is about to happen')
+  parser.add_argument(
+      'positional',
+      type=str,
+      metavar='ARGS',
+      nargs=argparse.REMAINDER,
+      help='Passed to the underlying salt-call function')
+
+  args = parser.parse_args(argv[1:])
+
+  config_dir = os.path.dirname(os.path.realpath(__file__))
+  minion_output = {
+      'file_roots': {'base': [os.path.join(config_dir, 'config')]}}
+  top_sls_output = {'base': {'*': []}}
+
+  global added_groups
+  for group_name in added_groups:
+    if vars(args)[group_name]:
+      top_sls_output['base']['*'].append(group_name)
+
+  with tempfile.TemporaryDirectory() as d:
+    minion_output['file_roots']['base'].append(d)
+
+    with open(os.path.join(d, 'minion'), 'w') as f:
+      f.write(json.dumps(minion_output, indent=4) + '\n')
+
+    with open(os.path.join(d, 'minion_id'), 'w') as f:
+      f.write(socket.gethostname() + '\n')
+
+    with open(os.path.join(d, 'top.sls'), 'w') as f:
+      f.write(json.dumps(top_sls_output, indent=4) + '\n')
+
+    if args.dry_run:
+      print('Temporary directory is at: ' + d)
+      print('Press any key to stop...')
+      input()
+      result = 0
+    else:
+      result = subprocess.call(['salt-call', '--local', '--config-dir=%s' %
+                                d, 'state.highstate'] + args.positional)
+
+  return result
+
+
+if __name__ == '__main__':
+  sys.exit(main(sys.argv))
