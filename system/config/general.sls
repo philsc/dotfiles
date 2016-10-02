@@ -8,6 +8,18 @@
 {% set llvm_version = '4.0' -%}
 {% set vagrant_version = '1.8.1' -%}
 
+# Set up backports.
+{% if grains['os'] == 'Debian' %}
+apt_backports:
+  file.managed:
+    - name: /etc/apt/sources.list.d/backports.list
+    - user: root
+    - group: root
+    - mode: 644
+    - contents: |
+        deb http://ftp.debian.org/debian {{ grains['oscodename'] }}-backports main
+{% endif %}
+
 # Install the gpg key for LLVM's deb packages.
 apt_key_llvm:
   file.managed:
