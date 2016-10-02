@@ -42,6 +42,11 @@ def main(argv):
       'desktop',
       help='Installs GUI desktop-related programs such as awesome.',
       default=False)
+  add_group(
+      parser,
+      'openssh-server',
+      help='Sets up an OpenSSH server.',
+      default=False)
   parser.add_argument(
       '--dry-run',
       action='store_true',
@@ -57,7 +62,8 @@ def main(argv):
 
   config_dir = os.path.dirname(os.path.realpath(__file__))
   minion_output = {
-      'file_roots': {'base': [os.path.join(config_dir, 'config')]}}
+      'file_roots': {'base': [os.path.join(config_dir, 'files'),
+                              os.path.join(config_dir, 'config')]}}
   top_sls_output = {'base': {'*': []}}
 
   global added_groups

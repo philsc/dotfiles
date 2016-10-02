@@ -60,6 +60,7 @@ general_packages:
       - git
       - gnupg-curl
       - keychain
+      - openssh-client
       - pass
       - python
       - python-dev
