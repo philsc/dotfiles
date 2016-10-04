@@ -25,7 +25,7 @@ LogLevel INFO
 
 # Authentication:
 LoginGraceTime 120
-PermitRootLogin without-password
+PermitRootLogin no
 StrictModes yes
 
 RSAAuthentication yes
@@ -49,7 +49,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-#PasswordAuthentication yes
+PasswordAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
@@ -61,7 +61,7 @@ ChallengeResponseAuthentication no
 #GSSAPIAuthentication no
 #GSSAPICleanupCredentials yes
 
-X11Forwarding yes
+X11Forwarding no
 X11DisplayOffset 10
 PrintMotd no
 PrintLastLog yes
@@ -70,6 +70,10 @@ TCPKeepAlive yes
 
 #MaxStartups 10:30:60
 #Banner /etc/issue.net
+
+# Don't perform reverse DNS lookup. It can really slow down establishing
+# connections.
+UseDNS no
 
 # Allow client to pass locale environment variables
 AcceptEnv LANG LC_*
@@ -86,3 +90,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
+
+Match Address 192.168.*.*,10.*.*.*
+PasswordAuthentication yes
+X11Forwarding yes

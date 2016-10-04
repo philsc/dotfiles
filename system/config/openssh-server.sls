@@ -1,4 +1,4 @@
-# Set up openssh-server.
+# Set up openssh-server with a more restrictive configuartion than default.
 openssh-server:
   pkg.installed: []
 
