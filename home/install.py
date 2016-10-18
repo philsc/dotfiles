@@ -2,6 +2,7 @@
 
 import os
 import sys
+import stat
 import argparse
 import errno
 import subprocess
@@ -43,31 +44,39 @@ def symlink(origin, target, force=False):
     os.symlink(origin, target)
 
 
-def setup_default_file(target, default, skip_if_exists=False):
-  file_exists = os.path.exists(target)
+class DefaultFile:
+  def __init__(self, target, source):
+    self.target = target
+    self.source = source
 
-  with open(os.path.join('defaults', default), 'r') as default_file:
+
+def setup_default_file(default, skip_if_exists=False):
+  target = os.path.join(HOME, default.target)
+
+  file_exists = os.path.exists(target)
+  overwrite_contents = False
+
+  with open(os.path.join('defaults', default.source), 'r') as default_file:
     default_content = default_file.read()
 
   if file_exists:
     if skip_if_exists:
       info("Skipping default install for %s\n" % target)
-      return
+    else:
+      with open(target, 'r') as content_file:
+        current_content = content_file.read()
 
-    with open(target, 'r') as content_file:
-      current_content = content_file.read()
+      if current_content == default_content:
+        info("Skipping default install for %s\n" % target)
+        return
 
-    if current_content == default_content:
-      info("Skipping default install for %s\n" % target)
-      return
+      answer = input('Overwrite %s with default? ' % target)
+      overwrite_contents = answer[0].lower == 'y'
 
-    answer = input('Overwrite %s with default? ' % target)
+  if overwrite_contents:
+    with open(target, 'w') as f:
+      f.write(default_content)
 
-    if answer[0].lower() != 'y':
-      return
-
-  with open(target, 'w') as f:
-    f.write(default_content)
 
   new("Installed file %s with default content\n" % target)
 
@@ -152,27 +161,27 @@ def create_links(force=False):
 
 def create_default_files():
   default_files = [
-      ('.vim/vimrc.local', 'vimrc.local'),
-      ('.config/awesome/prefs.lua', 'prefs.lua'),
+      DefaultFile('.vim/vimrc.local', 'vimrc.local'),
+      DefaultFile('.config/awesome/prefs.lua', 'prefs.lua'),
   ]
 
-  for f in default_files:
-    setup_default_file(os.path.join(HOME, f[0]), f[1], skip_if_exists=True)
+  for default in default_files:
+    setup_default_file(default, skip_if_exists=True)
 
 
 def create_min_files():
   # Create certain "minimum" files that will source the dotfiles symlinked
   # earlier. The idea is to keep the configuration all within the dotfiles.
   min_files = [
-      ('.vimrc', '.vimrc'),
-      ('.bashrc', '.bashrc'),
-      ('.bash_profile', '.bash_profile'),
-      ('.muttrc', '.muttrc'),
-      ('.xsessionrc', '.xsessionrc'),
+      DefaultFile('.vimrc', '.vimrc'),
+      DefaultFile('.bashrc', '.bashrc'),
+      DefaultFile('.bash_profile', '.bash_profile'),
+      DefaultFile('.muttrc', '.muttrc'),
+      DefaultFile('.xsessionrc', '.xsessionrc'),
   ]
 
-  for f in min_files:
-    setup_default_file(os.path.join(HOME, f[0]), f[1])
+  for default in min_files:
+    setup_default_file(default)
 
 
 def create_empty_files():
