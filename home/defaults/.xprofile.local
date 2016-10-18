@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# For computer-specific customiziations put your settings in here.
+
+#setxkbmap -option altwin:swap_alt_win
+
+#synclient TapButton1=1
+#synclient TapButton2=3
+#synclient TapButton3=2
+
+#synclient ClickFinger1=1
+#synclient ClickFinger2=3
+#synclient ClickFinger3=2
+
+#synclient VertScrollDelta=-237
+#synclient HorizScrollDelta=-237
+
+#nm-applet &

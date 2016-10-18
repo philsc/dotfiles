@@ -20,18 +20,7 @@ setxkbmap -option ctrl:nocaps
 # Turn off scrolling momentum.
 synclient CoastingSpeed=0
 
-# For computer-specific customiziations, put your settings in a file called
-# ~/.xprofile.local and mark it executable.
-# Some examples of what you could put in there:
-#   setxkbmap -option altwin:swap_alt_win
-#   synclient TapButton1=1
-#   synclient TapButton2=3
-#   synclient TapButton3=2
-#   synclient ClickFinger1=1
-#   synclient ClickFinger2=3
-#   synclient ClickFinger3=2
-#   synclient VertScrollDelta=-237
-#   synclient HorizScrollDelta=-237
+# Put computer-specific customiziations in ~/.xprofile.local.
 [ -x "$HOME/.xprofile.local" ] && "$HOME/.xprofile.local"
 
 export XPROFILE_IS_SOURCED=1

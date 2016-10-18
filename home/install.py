@@ -45,9 +45,10 @@ def symlink(origin, target, force=False):
 
 
 class DefaultFile:
-  def __init__(self, target, source):
+  def __init__(self, target, source, executable=False):
     self.target = target
     self.source = source
+    self.executable = executable
 
 
 def setup_default_file(default, skip_if_exists=False):
@@ -77,6 +78,9 @@ def setup_default_file(default, skip_if_exists=False):
     with open(target, 'w') as f:
       f.write(default_content)
 
+  if default.executable:
+    st = os.stat(target)
+    os.chmod(target, st.st_mode | stat.S_IEXEC)
 
   new("Installed file %s with default content\n" % target)
 
@@ -161,6 +165,7 @@ def create_links(force=False):
 
 def create_default_files():
   default_files = [
+      DefaultFile('.xprofile.local', '.xprofile.local', executable=True),
       DefaultFile('.vim/vimrc.local', 'vimrc.local'),
       DefaultFile('.config/awesome/prefs.lua', 'prefs.lua'),
   ]
