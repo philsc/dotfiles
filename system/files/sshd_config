@@ -91,6 +91,8 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
 
+DenyUsers steam
+
 Match Address 192.168.*.*,10.*.*.*
 PasswordAuthentication yes
 X11Forwarding yes

@@ -42,6 +42,7 @@ def main(argv):
       'desktop',
       help='Installs GUI desktop-related programs such as awesome.',
       default=False)
+  add_group(parser, 'steam', help='Sets up Steam.', default=False)
   add_group(
       parser,
       'openssh-server',
