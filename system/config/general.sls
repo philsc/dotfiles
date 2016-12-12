@@ -1,6 +1,7 @@
 {% set pip_packages = [
   'autopep8',
   'humanfriendly',
+  'pip==8.1.1',
 ] -%}
 {% set external_pip_packages = [
   'https://closure-linter.googlecode.com/svn/trunk/',
@@ -50,6 +51,7 @@ general_packages:
   pkg.installed:
     - pkgs:
       - acpi
+      - apt-transport-https
       - debootstrap
       - clang-format-{{ llvm_version }}
       - clang-{{ llvm_version }}
@@ -65,12 +67,14 @@ general_packages:
       - python
       - python-dev
       - python-pip
+      - python-requests
       - python3
       - python3-dev
       - python3-pip
+      - python3-requests
       - subversion
       - tmux
-      - vim
+      - vim-nox
       - vpnc
     - reload_modules: true
     - require:
@@ -97,6 +101,7 @@ vagrant_install:
 {{ pip_pkg }}:
   pip.installed:
     - bin_env: /usr/bin/pip3
+    - upgrade: False
     - require:
       - pkg: general_packages
 {% endfor %}
@@ -105,6 +110,7 @@ vagrant_install:
 {{ pip_pkg }}:
   pip.installed:
     - bin_env: /usr/bin/pip2
+    - upgrade: False
     - require:
       - pkg: general_packages
 {% endfor %}

@@ -48,6 +48,16 @@ def main(argv):
       'openssh-server',
       help='Sets up an OpenSSH server.',
       default=False)
+  add_group(
+      parser,
+      'docker',
+      help='Sets up the Docker container engine.',
+      default=False)
+  add_group(
+      parser,
+      'wordpress',
+      help='Sets up a WordPress instance via docker.',
+      default=False)
   parser.add_argument(
       '--dry-run',
       action='store_true',
@@ -63,9 +73,14 @@ def main(argv):
 
   config_dir = os.path.dirname(os.path.realpath(__file__))
   minion_output = {
+      'pillar_roots': {'base': []},
       'file_roots': {'base': [os.path.join(config_dir, 'files'),
                               os.path.join(config_dir, 'config')]}}
   top_sls_output = {'base': {'*': []}}
+
+  # Make it so that no one else can access the pillar directory.
+  pillar_dir = os.path.join(config_dir, 'pillar')
+  os.chmod(pillar_dir, 0o700)
 
   global added_groups
   for group_name in added_groups:
@@ -74,6 +89,7 @@ def main(argv):
 
   with tempfile.TemporaryDirectory() as d:
     minion_output['file_roots']['base'].append(d)
+    minion_output['pillar_roots']['base'].append(pillar_dir)
 
     with open(os.path.join(d, 'minion'), 'w') as f:
       f.write(json.dumps(minion_output, indent=4) + '\n')
