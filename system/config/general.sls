@@ -2,6 +2,7 @@
   'autopep8',
   'humanfriendly',
   'pip==8.1.1',
+  'requests==2.4.3',
 ] -%}
 {% set external_pip_packages = [
   'https://closure-linter.googlecode.com/svn/trunk/',

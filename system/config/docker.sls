@@ -18,14 +18,16 @@ apt_sources_docker:
 docker_packages:
   pkg.installed:
     - pkgs:
-      - docker-engine
+      # Use 1.11.2 since we have an old version of salt which means that we
+      # have to use an older version of docker-py.
+      - docker-engine: 1.11.2-0~jessie
     - require:
       - pkg: general_packages
 
 {% for python_version in [2, 3] %}
 docker_packages_python{{ python_version }}:
   pip.installed:
-    - name: docker-py
+    - name: docker-py==1.2.3
     - bin_env: /usr/bin/pip{{ python_version }}
     - upgrade: False
     - require:

@@ -2,26 +2,28 @@
 
 # TODO(phil): Upgrade these to the dockerng module when it makes sense.
 
-wordpress_container:
-  docker.running:
-    - image: wordpress
-    - ports:
-      - "8080/tcp":
-          HostIp: ""
-          HostPort: 80
-    - environment:
-      - WORDPRESS_DB_PASSWORD: {{ pillar['mysqldb_root_password'] }}
+nginx_image:
+  docker.pulled:
+    - name: nginx
+    - tag: latest
     - require:
-      - service: docker_service
-      - pip: docker_packages_python2
-      - pip: docker_packages_python3
+      - service: docker
 
-mysql_container:
+nginx_container:
+  docker.installed:
+    - image: nginx:latest
+    - watch:
+      - docker: nginx_image
+
+nginx:
   docker.running:
-    - image: mariadb
-    - environment:
-      - MYSQL_ROOT_PASSWORD: {{ pillar['mysqldb_root_password'] }}
-    - require:
-      - service: docker_service
-      - pip: docker_packages_python2
-      - pip: docker_packages_python3
+    - container: nginx_container
+    - image: nginx:latest
+    - ports:
+      - "80/tcp":
+            HostIp: "0.0.0.0"
+            HostPort: "80"
+    - volumes:
+      - {{ pillar['static_nginx_volume'] }}
+    - watch:
+      - docker: nginx_container

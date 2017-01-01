@@ -106,8 +106,12 @@ def main(argv):
       input()
       result = 0
     else:
-      result = subprocess.call(['salt-call', '--local', '--config-dir=%s' %
-                                d, 'state.highstate'] + args.positional)
+      if args.positional and args.positional[0] == '--':
+        args.positional = args.positional[1:]
+      cmd = ['salt-call', '--local', '--config-dir=%s' % d,
+             'state.highstate'] + args.positional
+      print('Executing: ' + ' '.join(cmd))
+      result = subprocess.call(cmd)
 
   return result
 

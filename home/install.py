@@ -55,7 +55,7 @@ def setup_default_file(default, skip_if_exists=False):
   target = os.path.join(HOME, default.target)
 
   file_exists = os.path.exists(target)
-  overwrite_contents = False
+  overwrite_contents = True
 
   with open(os.path.join('defaults', default.source), 'r') as default_file:
     default_content = default_file.read()
@@ -63,6 +63,7 @@ def setup_default_file(default, skip_if_exists=False):
   if file_exists:
     if skip_if_exists:
       info("Skipping default install for %s\n" % target)
+      overwrite_contents = False
     else:
       with open(target, 'r') as content_file:
         current_content = content_file.read()
@@ -72,7 +73,7 @@ def setup_default_file(default, skip_if_exists=False):
         return
 
       answer = input('Overwrite %s with default? ' % target)
-      overwrite_contents = answer[0].lower == 'y'
+      overwrite_contents = answer[0].lower() == 'y'
 
   if overwrite_contents:
     with open(target, 'w') as f:
