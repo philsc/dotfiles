@@ -232,6 +232,7 @@ def create_git_configs():
       ('diff.renameLimit', '9124'),
       ('merge.tool', 'vimdiff'),
       ('http.cookiefile', gitcookies_filename),
+      ('fetch.prune', 'true'),
   ]
 
   # Make sure that the git cookies are not world-readable.
