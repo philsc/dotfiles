@@ -1,2 +1,13 @@
 # Import all the C-like snippets.
 extends clike
+
+snippet guard "Adds a header guard" b
+#ifndef ${1:`!p
+snip.rv = path.upper().replace('/','_').replace('.','_') + '_'
+`}
+#define $1
+
+$2
+
+#endif  // $1
+endsnippet
