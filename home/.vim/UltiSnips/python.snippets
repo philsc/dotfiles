@@ -13,12 +13,11 @@ py_library(
 	imports = [
 	],
 	srcs_version = 'PY3',
-	default_python_version = 'PY3',
 )
 endsnippet
 
 snippet pyb "Bazel py_binary" b
-py_library(
+py_binary(
 	name = '$1',
 	main = '$1.py',
 	srcs = [
