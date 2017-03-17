@@ -1,1 +1,7 @@
 export EDITOR=vim
+
+# Don't match . and .. when globbing .*. Unfortunately, this doesn't work if
+# you do ~/.* since the glob doesn't start with a dot anymore.
+# See http://unix.stackexchange.com/a/1174 for more details.
+export GLOBIGNORE=".:.."
+shopt -u dotglob
