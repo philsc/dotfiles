@@ -88,3 +88,6 @@
 [submodule "home/.vim/bundle/matchit"]
 	path = home/.vim/bundle/matchit
 	url = https://github.com/tmhedberg/matchit.git
+[submodule "home/.vim/bundle/vim-fswitch2"]
+	path = home/.vim/bundle/vim-fswitch2
+	url = https://github.com/philsc/vim-fswitch.git
