@@ -72,17 +72,20 @@ def setup_default_file(default, skip_if_exists=False):
         return
 
       answer = input('Overwrite %s with default? ' % target)
-      overwrite_contents = answer[0].lower == 'y'
+      overwrite_contents = answer[0].lower() == 'y'
+  else:
+    overwrite_contents = True
 
   if overwrite_contents:
+    new("Installed file %s with default content\n" % target)
     with open(target, 'w') as f:
       f.write(default_content)
 
   if default.executable:
     st = os.stat(target)
-    os.chmod(target, st.st_mode | stat.S_IEXEC)
-
-  new("Installed file %s with default content\n" % target)
+    if not st.st_mode & stat.S_IEXEC:
+      new("Marking file %s as executable\n" % target)
+      os.chmod(target, st.st_mode | stat.S_IEXEC)
 
 
 def warn_missing_programs():
