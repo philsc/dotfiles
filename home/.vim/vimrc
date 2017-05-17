@@ -170,10 +170,12 @@ function ToggleAutoWrap()
     if &formatoptions =~# '.*c.*'
         setlocal formatoptions-=c
         setlocal formatoptions-=a
+        setlocal formatoptions-=t
         echo 'Auto wrapping disabled'
     else
         setlocal formatoptions+=c
         setlocal formatoptions+=a
+        setlocal formatoptions+=t
         echo 'Auto wrapping enabled'
     endif
 endfunction
