@@ -13,6 +13,7 @@ readonly TEMP_FILE
 
 if [[ ${SRC##*.} == dts ]]; then
     cpp \
+        -H \
         -nostdinc \
         -I "${SRC%/*}" \
         -I "$TOP"/include \
