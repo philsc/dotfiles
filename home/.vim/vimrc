@@ -517,3 +517,8 @@ let g:pydocstring_enable_mapping=0
 if filereadable(expand('~/.vim/vimrc.local'))
   source ~/.vim/vimrc.local
 endif
+
+" Let the user load some directory-specific settings.
+if filereadable('.vimrc.directory')
+  "source .vimrc.directory
+endif

@@ -2,3 +2,4 @@
 .syntastic_*
 .gdb_history
 .ycm_extra_conf.py
+.vimrc.directory
