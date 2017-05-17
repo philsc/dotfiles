@@ -255,8 +255,8 @@ def create_git_configs():
 
 def install_vim_plugins():
   plugins = [
-      ('https://github.com/docker/docker/archive/master.zip',
-       'contrib/syntax/vim', 'docker'),
+      ('https://github.com/moby/moby/archive/master.zip',
+       'contrib/syntax/vim', 'moby'),
   ]
 
   for plugin in plugins:
