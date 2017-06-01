@@ -234,6 +234,9 @@ def create_git_configs():
       ('core.excludesfile', os.path.join(HOME, '.git_global_ignore')),
       ('diff.renameLimit', '9124'),
       ('merge.tool', 'vimdiff'),
+      ('merge.conflictstyle', 'diff3'),
+      ('mergetool.keepBackup', 'false'),
+      ('mergetool.prompt', 'false'),
       ('http.cookiefile', gitcookies_filename),
       ('fetch.prune', 'true'),
   ]
