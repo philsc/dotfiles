@@ -171,6 +171,7 @@ def create_default_files():
       DefaultFile('.xprofile.local', '.xprofile.local', executable=True),
       DefaultFile('.vim/vimrc.local', 'vimrc.local'),
       DefaultFile('.config/awesome/prefs.lua', 'prefs.lua'),
+      DefaultFile('.bazelrc', '.bazelrc'),
   ]
 
   for default in default_files:

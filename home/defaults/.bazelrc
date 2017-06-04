@@ -1,0 +1,8 @@
+#build --local_resources 50000,16,1000
+build --explain=/tmp/bazel_explain.log
+build --verbose_explanations
+--watchfs
+build --experimental_ui
+build --experimental_ui_actions_shown=32
+#build --strategy=Closure=worker
+#build --experimental_sandbox_shm
