@@ -227,6 +227,7 @@ def create_git_configs():
       ('alias.diffstat', 'diff --stat'),
       ('alias.st', 'diff --name-status'),
       ('alias.whatis', "show -s --pretty='tformat:%h (%s, %ad)' --date=short"),
+      ('alias.worddiff', """diff --word-diff --color-words='[^",:  /'"'"'()]+'"""),
       ('color.diff', 'auto'),
       ('color.ui', 'auto'),
       ('color.diff.whitespace', 'red reverse'),
