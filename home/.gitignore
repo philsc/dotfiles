@@ -1,5 +1,6 @@
 /.vim/.netrwhist
 /.vim/bundle/docker.vim/
+/.vim/bundle/moby.vim/
 /.vim/vimrc.local
 /.config/awesome/prefs.lua
 /.bash/git-*.sh
