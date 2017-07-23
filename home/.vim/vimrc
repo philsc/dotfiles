@@ -73,7 +73,7 @@ set softtabstop=4
 set showmode
 set showcmd
 
-" Show relative line numbers and cursor position (rows and cols) and highlight 
+" Show relative line numbers and cursor position (rows and cols) and highlight
 " the current line in the editor.
 set number
 set relativenumber
@@ -107,6 +107,11 @@ colorscheme zenburn
 
 " Highlight redundant whitespaces and tabs.
 highlight RedundantSpaces ctermbg=darkred guibg=red
+
+" Add a shortcut to more explicitly show the various invisible characters in a
+" file.
+set listchars=tab:→\ ,eol:$,trail:·
+nmap <Leader>di :set list!<CR>
 
 " Remove the GUI toolbar, make options text instead of popups, enable the
 " mouse, and use a good font
