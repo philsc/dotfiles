@@ -2,34 +2,6 @@
 
 # TODO(phil): Upgrade these to the dockerng module when it makes sense.
 
-nginx_image:
-  docker.pulled:
-    - name: nginx
-    - tag: latest
-    - require:
-      - service: docker
-
-nginx_container:
-  docker.installed:
-    - image: nginx:latest
-    - watch:
-      - docker: nginx_image
-
-# Disable nginx for now.
-#nginx:
-#  docker.running:
-#    - container: nginx_container
-#    - image: nginx:latest
-#    - ports:
-#      - "80/tcp":
-#            HostIp: "0.0.0.0"
-#            HostPort: "80"
-#    - volumes:
-#      - {{ pillar['static_nginx_volume'] }}
-#    - watch:
-#      - docker: nginx_container
-
-
 # Install actual wordpress.
 {% for image in ['mariadb', 'wordpress'] %}
 {{ image }}_image:
@@ -83,6 +55,30 @@ wordpress:
     - image: wordpress:latest
     - links:
         mariadb_container: mysql
+    - volumes:
+      - {{ pillar['wordpress_static_volume'] }}:/var/www/html
+    - watch:
+      - docker: wordpress_container
+
+https_portal_image:
+  docker.pulled:
+    - name: steveltn/https-portal
+    - tag: 1.0.1
+    - require:
+      - service: docker
+
+https_portal_container:
+  docker.installed:
+    - image: steveltn/https-portal:1.0.1
+    - environment:
+      - DOMAINS: "chocolate-gypsy.com -> http://wordpress"
+    - watch:
+      - docker: https_portal_image
+
+https_portal:
+  docker.running:
+    - container: https_portal_container
+    - image: steveltn/https-portal:1.0.1
     - ports:
       - "80/tcp":
             HostIp: "0.0.0.0"
@@ -90,5 +86,5 @@ wordpress:
       - "443/tcp":
             HostIp: "0.0.0.0"
             HostPort: "443"
-    - watch:
-      - docker: wordpress_container
+    - links:
+        wordpress_container: wordpress
