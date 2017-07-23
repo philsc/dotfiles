@@ -53,6 +53,11 @@ def main(argv):
       'docker',
       help='Sets up the Docker container engine.',
       default=False)
+  add_group(
+      parser,
+      'gitolite',
+      help='Sets up a gitolite instance via docker.',
+      default=False)
   parser.add_argument(
       '--dry-run',
       action='store_true',
