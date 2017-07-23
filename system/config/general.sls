@@ -5,7 +5,6 @@
   'requests==2.4.3',
 ] -%}
 {% set external_pip_packages = [
-  'https://closure-linter.googlecode.com/svn/trunk/',
 ] -%}
 {% set llvm_version = '4.0' -%}
 {% set vagrant_version = '1.8.1' -%}
