@@ -411,6 +411,11 @@ augroup bazel
   autocmd BufRead,BufNewFile WORKSPACE set filetype=python
 augroup END
 
+augroup json
+  autocmd!
+  autocmd FileType json nnoremap <buffer><Leader>cf :<C-u>%!python -m json.tool<CR>
+augroup END
+
 augroup checktime
     autocmd!
     if !has("gui_running")
