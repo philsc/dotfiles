@@ -106,6 +106,10 @@ loadrcdir ~/.bash/exports.d
 stty stop undef
 stty start undef
 
+# Don't expand . and .. when using globbing. It very rarely is what I want.
+GLOBIGNORE=".:.."
+shopt -u dotglob
+
 # If the keychain program is installed (ssh- and gpg-agent frontend), use it.
 [[ -n "$(type -P keychain)" ]] && eval "$(keychain --eval --quiet)"
 
