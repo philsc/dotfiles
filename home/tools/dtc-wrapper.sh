@@ -4,7 +4,6 @@ set -e
 set -u
 set -x
 
-readonly TOP="$(readlink -f "$(pwd)")"
 readonly SRC="$1"
 readonly DST="$2"
 
@@ -25,7 +24,7 @@ else
     cp "$SRC" "$TEMP_FILE"
 fi
 
-"$TOP"/scripts/dtc/dtc \
+dtc \
     -O "${DST##*.}" \
     -o "$DST" \
     -I "${SRC##*.}" \
