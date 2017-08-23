@@ -274,6 +274,10 @@ vnoremap <Leader>h :<C-U>Hexmode<CR>
 vnoremap > >gv
 vnoremap < <gv
 
+set completeopt=menu,longest
+set conceallevel=2
+set concealcursor=nc
+
 " When we're repeating an action then we don't care about seeing all the
 " actions individually. Let's use lazy redrawing for those.
 nnoremap . :setlocal lazyredraw<CR>.:setlocal nolazyredraw<CR>
@@ -479,6 +483,8 @@ let g:GPGExecutable="gpg2 --trust-model always"
 " Set a custom color for the indentation highlight plugin.
 let g:indentLine_color_term = 240
 let g:indentLine_char = "|"
+let g:indentLine_concealcursor = &concealcursor
+let g:indentLine_conceallevel = &conceallevel
 noremap <Leader>dt :IndentLinesToggle<CR>
 
 " Set pep8 spacing, line length.
@@ -510,9 +516,7 @@ let g:clang_memory_percent=70
 " convenient IMO, and it defaults to 0.
 let g:clang_auto_select=1
 let g:clang_close_preview=1
-set completeopt=menu,longest
-set conceallevel=2
-set concealcursor=vin
+
 let g:clang_snippets=1
 let g:clang_conceal_snippets=1
 " The single one that works with clang_complete
