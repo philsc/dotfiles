@@ -90,3 +90,16 @@ sh_binary(
 	],
 )
 endsnippet
+
+snippet gen "Bazel genrule" b
+genrule(
+	name = '$1',
+	srcs = [
+	],
+	outs = [
+	],
+	tools = [
+	],
+	cmd = '${2:cp foo bar}',
+)
+endsnippet
