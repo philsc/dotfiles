@@ -278,6 +278,9 @@ set completeopt=menu,longest
 set conceallevel=2
 set concealcursor=nc
 
+" Auto-complete file names.
+inoremap <C-t> <C-X><C-F>
+
 " When we're repeating an action then we don't care about seeing all the
 " actions individually. Let's use lazy redrawing for those.
 nnoremap . :setlocal lazyredraw<CR>.:setlocal nolazyredraw<CR>
