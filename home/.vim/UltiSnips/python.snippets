@@ -80,6 +80,20 @@ cc_test(
 )
 endsnippet
 
+snippet sht "Bazel sh_test" b
+sh_test(
+	name = "$1",
+	srcs = [
+		"$1.sh",
+	],
+	deps = [
+	],
+	data = [
+	],
+	size = "small",
+)
+endsnippet
+
 snippet shb "Bazel sh_binary" b
 sh_binary(
 	name = "$1",
