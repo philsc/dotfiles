@@ -13,6 +13,79 @@ layoutbox = {}
 tasklist = {}
 taglist = {}
 
+
+-- Helper functions
+cmd = function (program) return prefs.terminal .. " -e " .. program end
+
+clientfocus = function (delta)
+    awful.client.focus.byidx(delta)
+    if client.focus then client.focus:raise() end
+  end
+
+createlabel = function (text)
+    local label = wibox.widget.textbox()
+    label:set_markup('<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>')
+    --label:margin({ top = 2, left = 6 })
+    return wibox.layout.margin(label, 3, 3, 3, 3)
+  end
+
+createbar = function (buttons, settings)
+  local bar = awful.widget.progressbar(settings or { height = 7, width = 25 })
+  bar:set_color(beautiful.fg_widget)
+  bar:set_border_color(beautiful.fg_widget)
+  bar:set_background_color(beautiful.fg_off_widget)
+  bar:buttons(buttons)
+  local bar_layout = wibox.layout.margin(bar, 3, 3, 3, 3)
+  return bar, bar_layout
+end
+
+readcmd = function (cmd)
+  local fd = io.popen(cmd, "r")
+  local text = fd:read("*a")
+  io.close(fd)
+  return text
+end
+
+notifications = {}
+delayed_notifications = {}
+
+create_notification = function (name, content)
+  if notifications[name] then
+    content['replaces_id'] = notifications[name].id
+  end
+  local notification = naughty.notify(content)
+  notification.die = function ()
+    naughty.destroy(notifications[name])
+    notifications[name] = nil
+  end
+  notifications[name] = notification
+end
+
+create_delayed_notification = function (name, delay, content_generator)
+  if delayed_notifications[name] then
+    delayed_notifications[name]:emit_signal('timeout')
+    delayed_notifications[name]:stop()
+  end
+  local delay_timer = timer { timeout = delay }
+  delay_timer:connect_signal('timeout', function ()
+    create_notification(name, content_generator())
+    delayed_notifications[name]:stop()
+    delayed_notifications[name] = nil
+  end)
+  delay_timer:start()
+  delayed_notifications[name] = delay_timer
+end
+
+display_brightness = function ()
+  create_delayed_notification('brightness', 0.2, function ()
+      return {title = 'Brightness', text = readcmd('xbacklight -get')}
+  end)
+end
+
+display_volume = function ()
+end
+
+
 --[[ CONFIGURATION ]]--
 
 -- Define the theme
@@ -47,13 +120,22 @@ layouts = {
 modkey = "Mod4"
 
 sound_helper = function (action)
-    awful.util.spawn("amixer -q set " .. prefs.sound.primary_control .. " " .. action, false)
+    awful.util.spawn("amixer " .. prefs.sound.extra_options .. " set " ..
+            prefs.sound.primary_control .. " " .. action, false)
+  local get_volume = function ()
+    local volume = readcmd('amixer ' .. prefs.sound.extra_options .. ' get ' ..
+        prefs.sound.primary_control .. " | sed -n 's/" ..
+        [==[.*\(Left\|Right\):.*\[\([[:digit:]]\+\).*\[\([[:alpha:]]\+\).*]==] ..
+        '/' .. [==[\1: \2 (\3)]==] .. "/p'")
+    return {title = 'Volume', text = volume}
+  end
+  create_delayed_notification('volume', 0.2, get_volume)
 end
 
 volumebuttons = awful.util.table.join(
     awful.button({ }, 1, function () sound_helper("toggle") end),
-    awful.button({ }, 4, function () sound_helper("2dB+") end),
-    awful.button({ }, 5, function () sound_helper("2dB-") end)
+    awful.button({ }, 4, function () sound_helper("2%+ unmute") end),
+    awful.button({ }, 5, function () sound_helper("2%- unmute") end)
 )
 
 layoutbox.buttons = awful.util.table.join(
@@ -126,8 +208,18 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end),
     -- TODO Add more here, such as an ssh prompt
 
-    awful.key({                   }, "XF86MonBrightnessDown", function() awful.util.spawn("xbacklight -dec 5") end),
-    awful.key({                   }, "XF86MonBrightnessUp", function() awful.util.spawn("xbacklight -inc 5") end)
+    awful.key({                   }, "XF86MonBrightnessDown", function()
+      awful.util.spawn("xbacklight -dec 5")
+      display_brightness()
+    end),
+    awful.key({                   }, "XF86MonBrightnessUp", function()
+      awful.util.spawn("xbacklight -inc 5")
+      display_brightness()
+    end),
+
+    awful.key({ }, "XF86AudioMute", function () sound_helper("toggle") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("3%- unmute") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("3%+ unmute") end)
 )
 
 clientkeys = awful.util.table.join(
@@ -159,38 +251,6 @@ if awful.util.file_readable(theme_file) then
   beautiful.init(theme_file)
 else
   beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
-end
-
--- Helper functions
-cmd = function (program) return prefs.terminal .. " -e " .. program end
-
-clientfocus = function (delta)
-    awful.client.focus.byidx(delta)
-    if client.focus then client.focus:raise() end
-  end
-
-createlabel = function (text)
-    local label = wibox.widget.textbox()
-    label:set_markup('<span font="Liberation Mono 7" color="' .. beautiful.fg_label .. '">' .. text .. '</span>')
-    --label:margin({ top = 2, left = 6 })
-    return wibox.layout.margin(label, 3, 3, 3, 3)
-  end
-
-createbar = function (buttons, settings)
-  local bar = awful.widget.progressbar(settings or { height = 7, width = 25 })
-  bar:set_color(beautiful.fg_widget)
-  bar:set_border_color(beautiful.fg_widget)
-  bar:set_background_color(beautiful.fg_off_widget)
-  bar:buttons(buttons)
-  local bar_layout = wibox.layout.margin(bar, 3, 3, 3, 3)
-  return bar, bar_layout
-end
-
-readcmd = function (cmd)
-  local fd = io.popen(cmd, "r")
-  local text = fd:read("*a")
-  io.close(fd)
-  return text
 end
 
 -- Hold the screen tags
