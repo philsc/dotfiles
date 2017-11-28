@@ -15,7 +15,7 @@ desktop_packages:
 enable_awesome:
   cmd.run:
     - name: sed -i 's/NoDisplay=true/NoDisplay=false/' /usr/share/xsessions/awesome.desktop
-    - user: root
+    - runas: root
     - unless:
       - grep -q 'NoDisplay=false' /usr/share/xsessions/awesome.desktop
     - require:

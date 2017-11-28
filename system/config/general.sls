@@ -135,14 +135,14 @@ global_vimrc_local:
 setup_keymaps:
   cmd.run:
     - name: sed -i 's#XKBOPTIONS=".*"#XKBOPTIONS="ctrl:nocaps"#' /etc/default/keyboard
-    - user: root
+    - runas: root
     - unless:
       - grep -q 'XKBOPTIONS="ctrl:nocaps"' /etc/default/keyboard
 
 apply_keymaps:
   cmd.wait:
     - name: dpkg-reconfigure -f noninteractive  -phigh console-setup
-    - user: root
+    - runas: root
     - watch:
       - cmd: setup_keymaps
     - env:
