@@ -5,7 +5,7 @@ usage()
       echo "Usage: $0 [-c RCFILE] [-r CUSTOMRESOLUTION]"
 }
 
-rcfile=$XDG_CONFIG_HOME/awesome/rc.lua
+rcfile="${XDG_CONFIG_HOME:-$HOME/.config}"/awesome/rc.lua
 resolution=1280x800
 
 while getopts ":hc:r:" opt; do
@@ -15,10 +15,10 @@ while getopts ":hc:r:" opt; do
       exit 0
       ;;
     c)
-      rcfile=$OPTARG
+      rcfile="$OPTARG"
       ;;
     r)
-      resolution=$OPTARG
+      resolution="$OPTARG"
       ;;
     *)
       echo -e "Unknown parameter:  -$OPTARG\n" >&2
@@ -30,7 +30,7 @@ done
 
 if ! pgrep Xephyr &> /dev/null; then
   # Get an absolute path of the config file
-  rcfile="$(readlink -f $rcfile)"
+  rcfile="$(readlink -f "$rcfile")"
 
   # Start a windowed X server
   Xephyr -ac -br -noreset -screen $resolution :1 &> /dev/null &
@@ -40,7 +40,7 @@ if ! pgrep Xephyr &> /dev/null; then
   # Start awesome in the new X server
   cd
   export DISPLAY=:1.0
-  awesome -c $rcfile &
+  awesome -c "$rcfile" &
 else
   # If awesome is already running in the new X server, simply restart awesome
   export DISPLAY=:1.0
