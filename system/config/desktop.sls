@@ -12,6 +12,7 @@ desktop_packages:
       - xsel
       - xserver-xephyr
 
+{% if grains['oscodename'] == 'jessie' %}
 enable_awesome:
   cmd.run:
     - name: sed -i 's/NoDisplay=true/NoDisplay=false/' /usr/share/xsessions/awesome.desktop
@@ -20,3 +21,4 @@ enable_awesome:
       - grep -q 'NoDisplay=false' /usr/share/xsessions/awesome.desktop
     - require:
       - pkg: desktop_packages
+{% endif %}
