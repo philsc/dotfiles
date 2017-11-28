@@ -6,7 +6,7 @@
 ] -%}
 {% set external_pip_packages = [
 ] -%}
-{% set llvm_version = '4.0' -%}
+{% set llvm_version = '6.0' -%}
 {% set vagrant_version = '1.8.1' -%}
 
 # Set up backports.
@@ -58,9 +58,14 @@ general_packages:
       - cmake
       - colordiff
       - curl
+      - debconf-utils
       - gdebi-core
       - git
+{% if grains['oscodename'] == 'jessie' %}
       - gnupg-curl
+{% else %}
+      - gnupg1-curl
+{% endif %}
       - keychain
       - openssh-client
       - pass
@@ -73,6 +78,7 @@ general_packages:
       - python3-pip
       - python3-requests
       - subversion
+      - sudo
       - tmux
       - vim-nox
       - vpnc
