@@ -11,6 +11,7 @@ desktop_packages:
       - xbacklight
       - xsel
       - xserver-xephyr
+      - xserver-xorg-input-synaptics
 
 {% if grains['oscodename'] == 'jessie' %}
 enable_awesome:
