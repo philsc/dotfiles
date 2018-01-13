@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set_urxvt_title() {
+  local title="$1"
+  if [[ -z "$title" ]]; then
+    echo "Please specify a title" >&2
+  else
+    trap 'echo -ne "\e]0;'"$title"'\007"' DEBUG
+  fi
+}
