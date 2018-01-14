@@ -6,6 +6,7 @@
 /.bash/git-*.sh
 /.bash/paths.local
 /.bash/*.d/local
+/.bash/completion.d/fzf
 /.bash/history
 /.mutt/cache/
 /.mutt/muttrc.local

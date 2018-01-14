@@ -98,9 +98,16 @@ eval $(dircolors -b)
 sourcefile "$HOME/.rvm/scripts/rvm"
 
 # Alias definitions and exports.
-loadrcdir() { for f in "$1"/*; do . $f; done 2>/dev/null; }
+loadrcdir() {
+  local rcdir="$1"
+  shopt -s nullglob
+  mkdir -p "$rcdir"
+  for f in "$rcdir"/*; do . $f; done 2>/dev/null
+  shopt -u nullglob
+}
 loadrcdir ~/.bash/aliases.d
 loadrcdir ~/.bash/exports.d
+loadrcdir ~/.bash/completion.d
 
 # Prevent CTRL-s and CTRL-q from controlling the terminal flow.
 stty stop undef

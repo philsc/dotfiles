@@ -100,3 +100,9 @@
 [submodule "home/.vim/bundle/linediff.vim"]
 	path = home/.vim/bundle/linediff.vim
 	url = https://github.com/AndrewRadev/linediff.vim.git
+[submodule "home/tools/fzf"]
+	path = home/tools/fzf
+	url = https://github.com/junegunn/fzf.git
+[submodule "home/.vim/bundle/fzf.vim"]
+	path = home/.vim/bundle/fzf.vim
+	url = https://github.com/junegunn/fzf.vim.git
