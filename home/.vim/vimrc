@@ -439,14 +439,6 @@ augroup END
 " Tell clang-format to use the Google style.
 let g:clang_format#code_style = 'google'
 
-" Sane Ignore For ctrlp
-let g:ctrlp_dotfiles = 1
-let g:ctrlp_custom_ignore = {
-\ 'dir': '\v[\/](\.(git|hg|svn|yardoc)|bazel-.*)$',
-\ 'file': '\v\.(exe|so|dll|webp|xz|png|jar|pyc|ico|class|o|mod|old|map|cmd|ko|gz|tmp|dtb)$',
-\ }
-let g:ctrlp_max_files = 50000
-
 " Prefix all fzf commands.
 let g:fzf_command_prefix = 'Fzf'
 
