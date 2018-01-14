@@ -192,6 +192,7 @@ nmap <Leader>r :AutoWrap<CR>
 " I really don't want anything to get folded
 "set nofoldenable
 set foldmethod=syntax
+set foldlevel=20
 set foldlevelstart=20
 
 " When splitting a window, put the new window below the original one
@@ -209,7 +210,7 @@ let g:load_doxygen_syntax=1
 " Detect different filetypes, and load appropriate plugins and indent files
 filetype plugin indent on
 
-set modeline
+set nomodeline
 
 " Remap the default motion keys so long, wrapped, but unsplit lines can be
 " navigated as independent lines
