@@ -447,6 +447,12 @@ let g:fzf_command_prefix = 'Fzf'
 nnoremap <Leader>fg :<C-u>call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --cached'}))<CR>
 nnoremap <Leader>fb :<C-u>call fzf#run(fzf#wrap({'source': 'find bazel-out/ -path "*/\.*" -prune -o -type f -print -o -type l -print 2> /dev/null'}))<CR>
 
+" Only enable the vim-scroll-off-fraction plugin if everything's supported.
+" We actually prevent it from loading in this case.
+if !exists('#WinNew')
+  let g:loaded_scroll_off_fraction = 1
+endif
+
 " Disable syntax concealing for markdown files. It messes with column
 " highlighting.
 let g:markdown_syntax_conceal = 0
