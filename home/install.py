@@ -41,6 +41,10 @@ def symlink(origin, target, force=False):
     if os.path.exists(target):
         warn("%s already exists, but not a symlink\n" % target)
     else:
+        dirname = os.path.dirname(target)
+        if not os.path.exists(dirname):
+            new("Creating folder %s\n" % dirname)
+            os.makedirs(dirname)
         new("Installing symlink %s\n" % target)
         os.symlink(origin, target)
 
