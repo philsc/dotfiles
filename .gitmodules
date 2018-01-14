@@ -1,9 +1,6 @@
 [submodule ".mutt/mutt-colors-solarized"]
 	path = home/.mutt/mutt-colors-solarized
 	url = https://github.com/altercation/mutt-colors-solarized.git
-[submodule ".vim/bundle/ack.vim"]
-	path = home/.vim/bundle/ack.vim
-	url = https://github.com/mileszs/ack.vim.git
 [submodule ".vim/bundle/vim-fugitive"]
 	path = home/.vim/bundle/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
@@ -73,9 +70,6 @@
 [submodule ".vim/bundle/rename.vim"]
 	path = home/.vim/bundle/rename.vim
 	url = https://github.com/danro/rename.vim.git
-[submodule ".vim/bundle/vim-pydocstring"]
-	path = home/.vim/bundle/vim-pydocstring
-	url = https://github.com/heavenshell/vim-pydocstring.git
 [submodule "home/.vim/bundle/YouCompleteMe"]
 	path = home/.vim/bundle/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe/

@@ -389,7 +389,6 @@ augroup END
 augroup filetype_python
   autocmd!
   autocmd FileType python setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
-  autocmd FileType python nnoremap <buffer><Leader>cd :<C-u>Pydocstring<CR>
   autocmd FileType python nnoremap <buffer><Leader>cf :<C-u>call Autopep8()<CR>
   autocmd FileType python setlocal nosmartindent
   autocmd FileType python setlocal cindent
@@ -518,9 +517,6 @@ let g:clang_conceal_snippets=1
 let g:clang_snippets_engine='clang_complete'
 " Give the user know some information if libclang.so is not found.
 let g:clang_debug=1
-
-" Disable the default mapping for pydocstring. I've defined my own above.
-let g:pydocstring_enable_mapping=0
 
 " Let the user load some computer-specific settings.
 if filereadable(expand('~/.vim/vimrc.local'))
