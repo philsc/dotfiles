@@ -1,5 +1,4 @@
 {% set pip_packages = [
-  'autopep8',
   'humanfriendly',
   'pip==8.1.1',
   'requests==2.4.3',

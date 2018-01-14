@@ -156,6 +156,8 @@ def create_links(force=False):
       ('tools/fzf/bin/fzf', '.bin/fzf'),
       ('tools/fzf/bin/fzf-tmux', '.bin/fzf-tmux'),
       ('tools/fzf/shell/completion.bash', '.bash/completion.d/fzf'),
+      ('python/autopep8/autopep8.py', '.bin/autopep8'),
+      ('python', '.python'),
       ('fontconfig/fonts.conf', '.fonts.conf'),
       ('gpg.conf', '.gnupg/gpg.conf'),
       ('templates', '.templates'),

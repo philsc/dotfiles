@@ -1,1 +1,15 @@
+#!/bin/bash
+
 export PYTHONSTARTUP="$HOME/.pythonrc.py"
+
+add_python_modules() {
+  local dir="$1"
+  shopt -s nullglob
+  for d in "$dir"/*/; do
+    PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}$d"
+  done
+  shopt -u nullglob
+  export PYTHONPATH
+}
+
+add_python_modules "$HOME/.python"
