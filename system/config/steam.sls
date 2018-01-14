@@ -65,6 +65,11 @@ steam_launcher_impl:
         rm -f "$HOME"/.Xauthority
 
 # This is necessary to make the X forwarding work without a password.
+steam_sudoers_d:
+  file.directory:
+    - name: /etc/sudoers.d
+    - mode: 644
+
 steam_permissions:
   file.managed:
     - name: /etc/sudoers.d/steam
@@ -72,6 +77,8 @@ steam_permissions:
     - contents: |
         # Allow members of the steam group to run steam.
         %steam  ALL = NOPASSWD: /bin/su - steam -c steam-wrapper-impl
+    - require:
+      - file: steam_sudoers_d
 
 # Disable pulseaudio in client mode so that we use the system instance.
 pulse_settings_client:
