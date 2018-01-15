@@ -259,6 +259,7 @@ nmap <Leader>/ :nohlsearch<CR>
 
 " Shortcut for opening the gundo window
 nnoremap <Leader>g :GundoToggle<CR>
+let g:gundo_prefer_python3 = 1
 
 " Make splits easier to use
 map <C-j> <C-w>j
