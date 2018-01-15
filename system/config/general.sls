@@ -17,7 +17,7 @@ apt_backports:
     - group: root
     - mode: 644
     - contents: |
-        deb http://ftp.debian.org/debian {{ grains['oscodename'] }}-backports main
+        deb http://ftp.debian.org/debian {{ grains['oscodename'] }}-backports main contrib
 {% endif %}
 
 # Install the gpg key for LLVM's deb packages.
