@@ -39,10 +39,11 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 
+-- Local preferences.
+local prefs = dofile(awful.util.getdir("config") .. "prefs.lua")
+
 -- This is used later as the default terminal and editor to run.
-terminal = "urxvt"
-editor = os.getenv("EDITOR") or "editor"
-editor_cmd = terminal .. " -e " .. editor
+terminal = prefs.terminal
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -85,6 +86,48 @@ local function client_menu_toggle_fn()
         end
     end
 end
+
+readcmd = function (cmd)
+  local fd = io.popen(cmd, "r")
+  local text = fd:read("*a")
+  io.close(fd)
+  return text:gsub("^%s*(.-)%s*$", "%1")
+end
+
+-- Notification helper functions.
+notifications = {}
+
+create_notification = function (name, content_generator)
+  content = content_generator()
+  if notifications[name] then
+    content['replaces_id'] = notifications[name].id
+  end
+  local notification = naughty.notify(content)
+  notification.die = function ()
+    naughty.destroy(notifications[name])
+    notifications[name] = nil
+  end
+  notifications[name] = notification
+end
+
+-- Sound-related helpers.
+get_volume = function ()
+  local volume = readcmd([[pactl list sinks | awk '/^Sink /{print $_} /Volume: .*:/{print $2 " " $5 "\n" $9 " " $12}']])
+  return {title = 'Volume', text = volume}
+end
+
+sound_helper = function (action, param)
+  awful.spawn("pactl " .. action .. " " .. prefs.sound.default_sink .. " " .. param, false)
+  create_notification('volume', get_volume)
+end
+
+-- Brightness-related helpers.
+display_brightness = function ()
+  create_notification('brightness', function ()
+      return {title = 'Brightness', text = readcmd('xbacklight -get')}
+  end)
+end
+
 -- }}}
 
 -- Keyboard map indicator and switcher
@@ -262,6 +305,7 @@ globalkeys = awful.util.table.join(
 
     -- Standard program
     awful.key({ modkey,           }, ";", function () awful.spawn(terminal) end,
+    awful.key({ modkey,           }, "d", function () awful.spawn(prefs.browser) end),
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
               {description = "reload awesome", group = "awesome"}),
@@ -298,7 +342,21 @@ globalkeys = awful.util.table.join(
 
     -- Prompt
     awful.key({ modkey },            "i",     function () awful.screen.focused().mypromptbox:run() end,
-              {description = "run prompt", group = "launcher"})
+              {description = "run prompt", group = "launcher"}),
+
+    -- Multimedia keys
+    awful.key({                   }, "XF86MonBrightnessDown", function()
+      awful.spawn("xbacklight -dec 5")
+      display_brightness()
+    end),
+    awful.key({                   }, "XF86MonBrightnessUp", function()
+      awful.spawn("xbacklight -inc 5")
+      display_brightness()
+    end),
+
+    awful.key({ }, "XF86AudioMute", function () sound_helper("set-sink-mute", "toggle") end),
+    awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("set-sink-volume", "-5%") end),
+    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("set-sink-volume", "+5%") end)
 )
 
 clientkeys = awful.util.table.join(

@@ -1,5 +1,3 @@
-local awful = require("awful")
-
 prefs = {}
 
 -- Define default programs
@@ -8,9 +6,11 @@ prefs.browser = "firefox"
 prefs.editor = "vim"
 
 -- Sound configuration
+-- TODO(phil): Remove amixer "extra_options" and "primary_control".
 prefs.sound = {}
 prefs.sound.extra_options = '-D pulse'
 prefs.sound.primary_control = 'Master 1+'
+prefs.sound.default_sink = '0'
 
 -- Screen preferences
 prefs.main_screen = 1
