@@ -79,9 +79,6 @@
 [submodule "home/.vim/bundle/vim-fswitch2"]
 	path = home/.vim/bundle/vim-fswitch2
 	url = https://github.com/philsc/vim-fswitch.git
-[submodule "home/.vim/bundle/vim-layout"]
-	path = home/.vim/bundle/vim-layout
-	url = https://github.com/auxiliary/vim-layout.git
 [submodule "home/.vim/bundle/vim-scroll-off-fraction"]
 	path = home/.vim/bundle/vim-scroll-off-fraction
 	url = https://github.com/drzel/vim-scroll-off-fraction.git
