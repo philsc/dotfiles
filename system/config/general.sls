@@ -6,7 +6,7 @@
 {% set external_pip_packages = [
 ] -%}
 {% set llvm_version = '6.0' -%}
-{% set vagrant_version = '1.8.1' -%}
+{% set vagrant_version = '2.0.1' -%}
 
 # Set up backports.
 {% if grains['os'] == 'Debian' %}
@@ -90,7 +90,7 @@ vagrant_download:
   file.managed:
     - name: /opt/downloads/vagrant_{{ vagrant_version }}_x86_64.deb
     - source: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
-    - source_hash: sha256=ed0e1ae0f35aecd47e0b3dfb486a230984a08ceda3b371486add4d42714a693d
+    - source_hash: sha256=2f9498a83b3d650fcfcfe0ec7971070fcd3803fad6470cf7da871caf2564d84f
     - require:
       - file: download_dir
 
