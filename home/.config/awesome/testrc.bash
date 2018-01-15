@@ -33,17 +33,17 @@ if ! pgrep Xephyr &> /dev/null; then
   rcfile="$(readlink -f "$rcfile")"
 
   # Start a windowed X server
-  Xephyr -ac -br -noreset -screen $resolution :1 &> /dev/null &
+  Xephyr -ac -br -noreset -screen $resolution :2 &> /dev/null &
   sleep 1
   disown
 
   # Start awesome in the new X server
   cd
-  export DISPLAY=:1.0
+  export DISPLAY=:2.0
   awesome -c "$rcfile" &
 else
   # If awesome is already running in the new X server, simply restart awesome
-  export DISPLAY=:1.0
+  export DISPLAY=:2.0
   echo "awesome.restart()" | awesome-client
 fi
 
