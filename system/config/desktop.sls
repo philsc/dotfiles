@@ -23,3 +23,21 @@ enable_awesome:
     - require:
       - pkg: desktop_packages
 {% endif %}
+
+# On my laptop I need to add this little X11 config snippet so that the
+# backlight controls work properly. Without this snippet I can't use
+# xbacklight(1) to control the backlight.
+{% if grains['host'] == 'minitardis' %}
+fixup_backlight_config:
+  file.managed:
+    - name: /etc/X11/xorg.conf
+    - contents: |
+        # File managed by Salt.
+        Section "Device"
+            Identifier  "Card0"
+            Driver      "intel"
+            Option      "Backlight"  "intel_backlight"
+        EndSection
+    - require:
+      - pkg: desktop_packages
+{% endif %}
