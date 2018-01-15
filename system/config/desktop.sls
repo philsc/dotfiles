@@ -6,6 +6,7 @@ desktop_packages:
       - awesome
       - awesome-extra
       - fonts-liberation
+      - pasystray
       - rxvt-unicode-256color
       - vim-gtk
       - xbacklight
