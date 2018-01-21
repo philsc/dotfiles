@@ -7,19 +7,19 @@ loadpaths() {
       if [[ -n "$d" ]]; then
         PATH="$(eval "echo $d")${PATH:+:$PATH}"
       fi
-    done < "$1";
+    done <"$1"
   fi
 }
 loadpaths ~/.bash/paths
 loadpaths ~/.bash/paths.local
 
 # Colors
-TXTRED='\e[0;31m' # Red
-TXTGRN='\e[0;32m' # Green
-TXTBLU='\e[0;34m' # Blue
-TXTRST='\e[0m'    # Text Reset
+TXTRED='\e[0;31m'     # Red
+TXTGRN='\e[0;32m'     # Green
+TXTBLU='\e[0;34m'     # Blue
+TXTRST='\e[0m'        # Text Reset
 
-shopt -s histappend # append to the history file, don't overwrite it
+shopt -s histappend   # append to the history file, don't overwrite it
 shopt -s checkwinsize # adjust terminal width dynamically
 
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -34,22 +34,22 @@ shopt -s checkwinsize # adjust terminal width dynamically
 sourcefile() { [[ -s "$1" ]] && . "$1"; }
 sourcefile ~/.rvm/scripts/rvm
 sourcefile ~/.rvm/scripts/completion
-sourcefile /etc/bash_completion                 # Ubuntu version
-sourcefile /opt/local/etc/bash_completion       # Macports version
-sourcefile /usr/share/bash-completion/bash_completion   # Fedora version
-sourcefile /usr/lib/git-core/git-sh-prompt      # Ubuntu version
-sourcefile /opt/local/share/git/git-prompt.sh   # Macports version
+sourcefile /etc/bash_completion                       # Ubuntu version
+sourcefile /opt/local/etc/bash_completion             # Macports version
+sourcefile /usr/share/bash-completion/bash_completion # Fedora version
+sourcefile /usr/lib/git-core/git-sh-prompt            # Ubuntu version
+sourcefile /opt/local/share/git/git-prompt.sh         # Macports version
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
 
 __timer_start() {
-    timer=${timer:-$SECONDS}
+  timer=${timer:-$SECONDS}
 }
 
 __timer_stop() {
-    timer_show=$((SECONDS - timer))
-    unset timer
+  timer_show=$((SECONDS - timer))
+  unset timer
 }
 
 __setps1() {
@@ -67,7 +67,7 @@ __setps1() {
     if [[ "$(git config prompt.fancy)" == "true" ]]; then
       s=" $(__git_ps1 "($TXTRED%s$TXTRST)")"
     else
-      s=" ($TXTRED$(git rev-parse  --abbrev-ref HEAD 2>/dev/null)$TXTRST)"
+      s=" ($TXTRED$(git rev-parse --abbrev-ref HEAD 2>/dev/null)$TXTRST)"
     fi
     d="${PWD#$(dirname ${g:--})/}"
   elif g="$(svn info 2>/dev/null)"; then
@@ -75,7 +75,7 @@ __setps1() {
     url="$(sed -ne 's#^URL: ##p' <<<"$g")"
     root="$(sed -ne 's#^Repository Root: ##p' <<<"$g")"
     s="$(sed -e 's#^'"$root"'##g' <<<"$url" | egrep -o \
-    '(tags|branches)/[^/]+|trunk' | egrep -o '[^/]+$' | awk '{print $1}')"
+      '(tags|branches)/[^/]+|trunk' | egrep -o '[^/]+$' | awk '{print $1}')"
     s=" ($TXTRED$s$TXTRST)"
     d='\w'
   else
