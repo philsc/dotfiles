@@ -4,7 +4,9 @@
 loadpaths() {
   if [[ -r "$1" ]]; then
     while read d; do
-      PATH="$(eval "echo $d"):$PATH"
+      if [[ -n "$d" ]]; then
+        PATH="$(eval "echo $d")${PATH:+:$PATH}"
+      fi
     done < "$1";
   fi
 }
