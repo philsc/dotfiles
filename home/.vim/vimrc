@@ -383,6 +383,11 @@ augroup filetype_c
   autocmd InsertLeave *.h setlocal syntax=on
 augroup END
 
+augroup filetype_sh
+  autocmd!
+  autocmd FileType sh,bash nnoremap <buffer><Leader>cf :<C-u>Shfmt -i 2<CR>
+augroup END
+
 augroup filetype_robot
   autocmd!
   autocmd FileType robot setlocal fo-=t

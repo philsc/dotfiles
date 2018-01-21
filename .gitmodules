@@ -97,3 +97,6 @@
 [submodule "home/python/pycodestyle"]
 	path = home/python/pycodestyle
 	url = https://github.com/PyCQA/pycodestyle.git
+[submodule "home/.vim/bundle/vim-shfmt"]
+	path = home/.vim/bundle/vim-shfmt
+	url = https://github.com/z0mbix/vim-shfmt.git
