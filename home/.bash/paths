@@ -1,4 +1,5 @@
 ~/.bin
 ~/.rvm/bin
 $HOME/bin
+$HOME/go/bin
 $HOME/.local/bin

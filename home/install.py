@@ -321,6 +321,27 @@ def install_certificates():
             done("done\n")
 
 
+def install_go_programs():
+    programs = [
+        "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
+        "github.com/junegunn/fzf",
+    ]
+
+    go_bin = shutil.which('go')
+    if not go_bin:
+        warn("Couln't find go in the PATH\n");
+        for program in programs:
+            warn("Skipping install of %s\n" % program)
+        return
+
+    with open(os.devnull, 'wb') as devnull:
+        for program in programs:
+            if subprocess.call(["go", "get", program], stdout=devnull) == 0:
+                new('Installed %s\n' % program)
+            else:
+                warn("Failed to get %s\n" % program)
+
+
 def main(argv):
     parser = argparse.ArgumentParser(description='Install dotfiles.')
     parser.add_argument('--force', '-f', dest='force', action='store_true',
@@ -338,6 +359,7 @@ def main(argv):
     create_git_configs()
     install_vim_plugins()
     install_certificates()
+    install_go_programs()
 
 
 if __name__ == '__main__':
