@@ -59,3 +59,29 @@ disable_pcspkr:
     - mode: 644
     - contents: |
         blacklist pcspkr
+
+# Create the teensy group.
+teensy:
+  group.present:
+    - system: false
+
+# Add the upstream teensy udev rules.
+# Taken from http://www.pjrc.com/teensy/ and slightly modified.
+setup_teensy_udev_rules:
+  file.managed:
+    - name: /etc/udev/rules.d/49-teensy.rules
+    - mode: 644
+    - contents: |
+        ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
+        ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789A]?", ENV{MTP_NO_PROBE}="1"
+        SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", MODE:="0660", GROUP="teensy"
+        KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", MODE:="0660", GROUP="teensy"
+    - require:
+      - group: teensy
+
+# Reload udev rules after they changed.
+reload_teensy_udev_rules:
+  cmd.run:
+    - name: udevadm control --reload-rules
+    - onchanges:
+      - file: /etc/udev/rules.d/49-teensy.rules
