@@ -1,0 +1,5 @@
+#!/bin/bash
+# Add bazel-excludes to the completion as well.
+if declare -f _bazel__complete > /dev/null; then
+  complete -F _bazel__complete -o nospace "bazel-excludes"
+fi
