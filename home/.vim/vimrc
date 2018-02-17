@@ -434,6 +434,13 @@ augroup json
   autocmd FileType json nnoremap <buffer><Leader>cf :<C-u>%!python -m json.tool<CR>
 augroup END
 
+augroup proto
+  autocmd!
+  autocmd BufRead,BufNewFile CROSSTOOL set filetype=protoascii
+  autocmd BufRead,BufNewFile *.pb set filetype=protoascii
+  autocmd FileType protoascii setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+augroup END
+
 augroup checktime
     autocmd!
     if !has("gui_running")
