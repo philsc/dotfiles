@@ -12,3 +12,4 @@
 /.mutt/muttrc.local
 /.mutt/*.gpg
 /.fonts/fonts.dir
+/.jira.d/cookies.js

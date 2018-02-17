@@ -1,0 +1,9 @@
+custom-commands:
+  - name: env
+    help: Print the JIRA environment variables available to custom commands
+    script: |
+      env | grep JIRA
+  - name: recent
+    help: Print the most recent JIRA tickets.
+    script: |
+      {{ jira }} list --query "issuekey in issueHistory() order by lastViewed DESC"

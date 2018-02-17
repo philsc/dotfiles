@@ -133,6 +133,7 @@ def create_links(force=False):
         '.tmux.conf',
         '.vim',
         '.irbrc',
+        '.jira.d',
         '.rvmrc',
         '.colordiffrc',
         '.mutt',
@@ -323,9 +324,9 @@ def install_certificates():
 
 def install_go_programs():
     programs = [
-        "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
-        "github.com/junegunn/fzf",
         "github.com/bazelbuild/buildtools/buildifier",
+        "github.com/junegunn/fzf",
+        "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
     ]
 
     go_bin = shutil.which('go')

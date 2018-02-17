@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Setup bash auto-completion for the jira command if it exists.
+if type -p jira > /dev/null; then
+  eval "$(jira --completion-script-bash)"
+fi
