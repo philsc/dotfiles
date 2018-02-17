@@ -327,6 +327,7 @@ def install_go_programs():
         "github.com/bazelbuild/buildtools/buildifier",
         "github.com/junegunn/fzf",
         "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
+        "mvdan.cc/sh/cmd/shfmt",
     ]
 
     go_bin = shutil.which('go')
