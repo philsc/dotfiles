@@ -2,6 +2,7 @@
 /.vim/bundle/docker.vim/
 /.vim/bundle/moby.vim/
 /.vim/vimrc.local
+/.vim/session/
 /.config/awesome/prefs.lua
 /.bash/git-*.sh
 /.bash/paths.local
