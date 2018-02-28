@@ -126,7 +126,7 @@ set laststatus=2
 " Autowrap text, autowrap comments (and add comment delimiter), recognise
 " white space, and automatically format paragraphs as they are edited, based
 " on the second line of the paragraph rather than the first
-set formatoptions+=jtcwa2l
+set formatoptions+=jtcwa2lor
 set wrap
 set textwidth=79
 
