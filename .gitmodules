@@ -100,3 +100,9 @@
 [submodule "home/.vim/bundle/vim-shfmt"]
 	path = home/.vim/bundle/vim-shfmt
 	url = https://github.com/z0mbix/vim-shfmt.git
+[submodule "home/.tmux/tmux-resurrect"]
+	path = home/.tmux/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect.git
+[submodule "home/.tmux/tmux-continuum"]
+	path = home/.tmux/tmux-continuum
+	url = https://github.com/tmux-plugins/tmux-continuum.git
