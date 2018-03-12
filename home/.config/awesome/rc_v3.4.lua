@@ -46,6 +46,8 @@ layouts = {
 }
 
 --[[ KEY BINDINGS ]]--
+vim_popup = awful.util.getdir("config") .. "/bin/vim_popup.sh " .. prefs.terminal
+
 modkey = "Mod4"
 
 brightness_helper = function (multiplier)
@@ -141,7 +143,8 @@ globalkeys = awful.util.table.join(
     awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("3%+ unmute") end),
 
     -- Prompt
-    awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end)
+    awful.key({ modkey,           }, "i", function () promptbox[mouse.screen]:run() end),
+    awful.key({ modkey,           }, "e", function () awful.util.spawn(vim_popup) end)
     -- TODO Add more here, such as an ssh prompt
 )
 
