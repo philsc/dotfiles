@@ -27,6 +27,10 @@ nnoremap <Leader>s :%s/
 " Type <Space>cl to delete all superfluous whitespace at the end of a line.
 nnoremap <Leader>cl :%s/\s\+$//g<CR>
 
+" Type <Space>y to copy to the system clipboard.
+vnoremap <Leader>y :<C-U>silent '<,'>w !xsel --clipboard --input<CR>
+nnoremap <Leader>y :silent w !xsel --clipboard --input<CR>
+
 " Set to auto read when a file is changed from the outside
 set autoread
 
