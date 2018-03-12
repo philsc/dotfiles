@@ -419,6 +419,13 @@ augroup filetype_javascript
   autocmd FileType javascript vnoremap <buffer><Leader>cf :ClangFormat<CR>
 augroup END
 
+augroup filetype_markdown
+  autocmd!
+  autocmd FileType markdown setlocal formatoptions-=t
+  autocmd FileType markdown setlocal formatoptions-=c
+  autocmd FileType markdown setlocal formatoptions-=a
+augroup END
+
 augroup git
     autocmd!
     autocmd BufRead,BufNewFile MERGE_MSG setfiletype gitcommit
