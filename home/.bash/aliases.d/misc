@@ -74,3 +74,15 @@ join() {
 cdp() {
   cd "$(pwd -P)"
 }
+
+# Prints the arguments to the function on one line at a time. I find myself
+# often experimenting with bash arrays and this function makes it easier to
+# understand what's happening.
+print_args() {
+  local i=0
+  local arg
+  for arg in "$@"; do
+    ((++i))
+    printf '%d: %s\n' "$i" "$arg"
+  done
+}
