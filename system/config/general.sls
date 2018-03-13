@@ -40,8 +40,8 @@ apt_sources_llvm:
   file.managed:
     - name: /etc/apt/sources.list.d/llvm.list
     - contents: |
-        deb http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }} main
-        deb-src http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }} main
+        deb http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
+        deb-src http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
     - require:
       - cmd: apt_key_llvm_added
 
