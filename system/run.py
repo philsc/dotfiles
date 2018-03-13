@@ -12,6 +12,29 @@ import subprocess
 added_groups = []
 
 
+AUTO_GROUPS = {
+    "gallifrey": [
+      "base",
+      "general",
+      "docker",
+      "gitolite",
+    ],
+    "silence": [
+      "base",
+      "general",
+      "desktop",
+      "openssh-server",
+      "steam",
+    ],
+    "minitardis": [
+      "base",
+      "general",
+      "desktop",
+      "openssh-server",
+      "steam",
+    ],
+}
+
 def add_group(parser, group_name, help, default=True):
   group_parser = parser.add_mutually_exclusive_group(required=False)
   group_parser.add_argument(
@@ -31,6 +54,8 @@ def add_group(parser, group_name, help, default=True):
 
 def main(argv):
   parser = argparse.ArgumentParser(description='Apply salt configs.')
+  parser.add_argument('--auto', action='store_true',
+      help='Determine groups based on hostname.')
   add_group(parser, 'base', help='Make sure salt is set up.', default=True)
   add_group(
       parser,
@@ -81,6 +106,11 @@ def main(argv):
   # Make it so that no one else can access the pillar directory.
   pillar_dir = os.path.join(config_dir, 'pillar')
   os.chmod(pillar_dir, 0o700)
+
+  # Set up the groups if --auto was specifified.
+  if args.auto:
+    for group_name in AUTO_GROUPS[socket.gethostname()]:
+      top_sls_output['base']['*'].append(group_name)
 
   global added_groups
   for group_name in added_groups:
