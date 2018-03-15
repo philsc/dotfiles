@@ -23,6 +23,7 @@ AUTO_GROUPS = {
     "silence": [
       "base",
       "general",
+      "development",
       "desktop",
       "openssh-server",
       "steam",
@@ -30,6 +31,7 @@ AUTO_GROUPS = {
     "minitardis": [
       "base",
       "general",
+      "development",
       "desktop",
       "openssh-server",
       "steam",
