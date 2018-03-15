@@ -1,10 +1,3 @@
-{% set pip_packages = [
-  'humanfriendly',
-  'pip==8.1.1',
-  'requests==2.4.3',
-] -%}
-{% set external_pip_packages = [
-] -%}
 {% set llvm_version = '6.0' -%}
 {% set vagrant_version = '2.0.1' -%}
 
@@ -100,25 +93,6 @@ vagrant_install:
       - vagrant: /opt/downloads/vagrant_{{ vagrant_version }}_x86_64.deb
     - require:
       - file: vagrant_download
-
-# Install all the pip packages.
-{% for pip_pkg in pip_packages %}
-{{ pip_pkg }}:
-  pip.installed:
-    - bin_env: /usr/bin/pip3
-    - upgrade: False
-    - require:
-      - pkg: general_packages
-{% endfor %}
-
-{% for pip_pkg in external_pip_packages %}
-{{ pip_pkg }}:
-  pip.installed:
-    - bin_env: /usr/bin/pip2
-    - upgrade: False
-    - require:
-      - pkg: general_packages
-{% endfor %}
 
 # Set up some symlinks.
 {% for llvm_target in ['clang-format', 'clang-format-diff', 'clang++'] %}

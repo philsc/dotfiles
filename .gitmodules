@@ -112,3 +112,6 @@
 [submodule "home/.vim/bundle/vim-obsession"]
 	path = home/.vim/bundle/vim-obsession
 	url = https://github.com/tpope/vim-obsession.git
+[submodule "home/python/humanfriendly"]
+	path = home/python/humanfriendly
+	url = https://github.com/xolox/python-humanfriendly.git
