@@ -18,6 +18,7 @@ AUTO_GROUPS = {
       "general",
       "docker",
       "gitolite",
+      "nginx",
     ],
     "silence": [
       "base",
