@@ -97,14 +97,17 @@ def main(argv):
   args = parser.parse_args(argv[1:])
 
   config_dir = os.path.dirname(os.path.realpath(__file__))
+  pillar_dir = os.path.join(config_dir, 'pillar')
+  pillar_files_dir = os.path.join(pillar_dir, 'files')
+
   minion_output = {
-      'pillar_roots': {'base': []},
+      'pillar_roots': {'base': [pillar_dir]},
       'file_roots': {'base': [os.path.join(config_dir, 'files'),
-                              os.path.join(config_dir, 'config')]}}
+                              os.path.join(config_dir, 'config'),
+                              pillar_files_dir]}}
   top_sls_output = {'base': {'*': []}}
 
   # Make it so that no one else can access the pillar directory.
-  pillar_dir = os.path.join(config_dir, 'pillar')
   os.chmod(pillar_dir, 0o700)
 
   # Set up the groups if --auto was specifified.
@@ -119,7 +122,6 @@ def main(argv):
 
   with tempfile.TemporaryDirectory() as d:
     minion_output['file_roots']['base'].append(d)
-    minion_output['pillar_roots']['base'].append(pillar_dir)
 
     with open(os.path.join(d, 'minion'), 'w') as f:
       f.write(json.dumps(minion_output, indent=4) + '\n')
