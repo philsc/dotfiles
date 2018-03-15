@@ -1,0 +1,13 @@
+# Extra space for docker to work with.
+
+[Unit]
+Before=local-fs.target
+
+[Mount]
+What=/data/docker
+Where=/var/lib/docker
+Type=none
+Options=defaults,bind
+
+[Install]
+WantedBy=local-fs.target

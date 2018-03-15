@@ -1,0 +1,13 @@
+# The data partition on gallifrey.
+
+[Unit]
+Before=local-fs.target
+RequiresOverridable=systemd-fsck@dev-sdc.service
+After=systemd-fsck@dev-sdc.service
+
+[Mount]
+What=/dev/sdc
+Where=/data
+
+[Install]
+WantedBy=local-fs.target

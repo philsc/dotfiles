@@ -29,6 +29,7 @@ general_packages:
       - openssh-client
       - pass
       - sudo
+      - systemd
       - tmux
       - vim-nox
     - reload_modules: true
