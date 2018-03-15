@@ -12,5 +12,6 @@
 /.mutt/cache/
 /.mutt/muttrc.local
 /.mutt/*.gpg
+/.tmux/resurrect/
 /.fonts/fonts.dir
 /.jira.d/cookies.js
