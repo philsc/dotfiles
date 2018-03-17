@@ -1,21 +1,16 @@
 # Set up a gitolite instance.
 
-# TODO(phil): Upgrade these to the dockerng module when it makes sense.
-# TODO(phil): Get this working on stretch again.
+gitolite_image_build:
+  dockerng.image_present:
+    - build: system/third_party/dockerfiles/gitolite/
 
-#gitolite_image_build:
-#  docker.built:
-#    - path: third_party/dockerfiles/gitolite/
-#
-#gitolite:
-#  docker.running:
-#    - container: gitolite_image_build
-#    - image: gitolite_image_build:latest
-#    - volumes:
-#      - {{ pillar['gitolite_volume'] }}:/home/git/repositories
-#    - watch:
-#      - docker: gitolite_image_build
-#    - ports:
-#      - "22/tcp":
-#            HostIp: "0.0.0.0"
-#            HostPort: "778"
+gitolite:
+  dockerng.running:
+    - image: gitolite_image_build:latest
+    - binds:
+      - {{ pillar['gitolite_volume'] }}:/home/git/repositories:rw
+    - watch:
+      - dockerng: gitolite_image_build
+    - port_bindings:
+      - '778:22'
+    - memory: 64M

@@ -14,32 +14,19 @@ apt_sources_docker:
     - require:
       - cmd: apt_key_docker_added
 
-# TODO(phil): Get this working on stretch again.
-## Install the packages.
-#docker_packages:
-#  pkg.installed:
-#    - pkgs:
-#      # Use 1.11.2 since we have an old version of salt which means that we
-#      # have to use an older version of docker-py.
-#      - docker-engine: 1.11.2-0~jessie
-#    - require:
-#      - pkg: general_packages
-#
-#{% for python_version in [2, 3] %}
-#docker_packages_python{{ python_version }}:
-#  pip.installed:
-#    - name: docker-py==1.2.3
-#    - bin_env: /usr/bin/pip{{ python_version }}
-#    - upgrade: False
-#    - require:
-#      - pkg: general_packages
-#{% endfor %}
-#
-#docker_service:
-#  service.running:
-#    - name: docker
-#    - require:
-#      - pkg: docker_packages
-#    - watch:
-#      - pkg: docker_packages
-#
+# Install the packages.
+docker_packages:
+  pkg.installed:
+    - pkgs:
+      - docker-engine
+      - python-docker
+    - require:
+      - pkg: general_packages
+
+docker_service:
+  service.running:
+    - name: docker
+    - require:
+      - pkg: docker_packages
+    - watch:
+      - pkg: docker_packages
