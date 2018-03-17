@@ -7,7 +7,7 @@
 {% endfor %}
 
 {% for unit in units %}
-mount_{{ unit }}:
+mount_unit_{{ unit }}:
   file.managed:
     - name: /etc/systemd/system/{{ unit }}.mount
     - source:
@@ -23,3 +23,13 @@ service.systemctl_reload:
 {% for unit in units %}
       - file: /etc/systemd/system/{{ unit }}.mount
 {% endfor %}
+
+mount_data:
+  mount.mounted:
+    - name: /data
+    - device: /dev/sdc
+    - fstype: auto
+    - persist: False
+    - opts: defaults
+    - require:
+      - file: /data
