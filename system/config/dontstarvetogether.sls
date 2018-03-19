@@ -1,27 +1,26 @@
 # Inspired by
 # https://github.com/dst-academy/docker-dontstarvetogether/blob/develop/docs/examples/shard/docker-compose.yml
 
-{% set dst_version = '0.8' -%}
+{% set dst_version = '0.8.0' %}
 
-dstacademy/dontstarvetogether:{{ dst_version }}:
-  dockerng.image_present
+dontstarvetogether_image_build:
+  cmd.run:
+    - name: docker build --build-arg MODS=378160973 --tag phil/dontstarvetogether:{{ dst_version }} https://github.com/dst-academy/docker-dontstarvetogether.git#v{{ dst_version }}:build
+    - unless:
+      - docker image inspect phil/dontstarvetogether:{{ dst_version }} > /dev/null
 
-{% for dir in ["overworld", "underworld"] %}
-{{ pillar["dontstarvetogether_volume"] }}/{{ dir }}:
-  file.directory:
-    - user: root
-    - makedirs: True
-    {% if grains["nodename"] == "gallifrey" %}
-    - require:
-      - mount: mount_data
-    {% endif %}
-{% endfor %}
+dst_overworld_volume:
+  dockerng.volume_present
+
+dst_underworld_volume:
+  dockerng.volume_present
 
 dst_overworld:
   dockerng.running:
-    - image: dstacademy/dontstarvetogether:{{ dst_version }}
+    - image: phil/dontstarvetogether:{{ dst_version }}
     - watch:
-      - dockerng: dstacademy/dontstarvetogether:{{ dst_version }}
+      - cmd: dontstarvetogether_image_build
+      - dockerng: dst_overworld_volume
     - hostname: overworld
     - tty: True
     - interactive: True
@@ -154,16 +153,22 @@ dst_overworld:
       - SHARD_IS_MASTER: "true"
       - SHARD_MASTER_IP: overworld
       - SHARD_CLUSTER_KEY: {{ pillar["dontstarvetogether_cluster_key"] }}
+      # Keep in sync with dontstarvetogether/docker/Dockerfile.
+      - MODS_OVERRIDES: |
+          return {
+            ['workshop-378160973'] = { enabled = true },
+          }
     - port_bindings:
       - "10999:10999/udp"
-    - volumes:
-      - {{ pillar["dontstarvetogether_volume"] }}/overworld:/var/lib/dsta/cluster
+    - binds:
+      - dst_overworld_volume:/var/lib/dsta/cluster:rw
 
 dst_underworld:
   dockerng.running:
-    - image: dstacademy/dontstarvetogether:{{ dst_version }}
+    - image: phil/dontstarvetogether:{{ dst_version }}
     - watch:
-      - dockerng: dstacademy/dontstarvetogether:{{ dst_version }}
+      - cmd: dontstarvetogether_image_build
+      - dockerng: dst_underworld_volume
     - hostname: underworld
     - tty: True
     - interactive: True
@@ -248,5 +253,5 @@ dst_underworld:
       - "11000:11000/udp"
     - links:
       - dst_overworld:dst_link
-    - volumes:
-      - {{ pillar["dontstarvetogether_volume"] }}/underworld:/var/lib/dsta/cluster
+    - binds:
+      - dst_underworld_volume:/var/lib/dsta/cluster:rw
