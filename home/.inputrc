@@ -1,0 +1,19 @@
+# Use tab to cycle through completion options. Shift-tab to go backwards.
+TAB: menu-complete
+"\e[Z": menu-complete-backward
+
+# Display a list of choices that match the given prefix before cycling through
+# the choices.
+set menu-complete-display-prefix on
+set show-all-if-ambiguous on
+
+# Enable colors when completing filenames and directories.
+set colored-stats on
+
+# Highlight the common matching prefix in color.
+# Only available in bash 4.4 and readline 7.0.
+# set colored-completion-prefix on
+
+# Ignore case when completing and treat hyphens as underscores.
+set completion-ignore-case on
+set completion-map-case on

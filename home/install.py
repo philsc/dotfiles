@@ -148,6 +148,7 @@ def create_links(force=False):
         '.gdbinit',
         '.config/awesome',
         '.config/fontconfig',
+        '.inputrc',
     ]
     misc = [
         ('tools/q/bin/q', '.bin/q'),
