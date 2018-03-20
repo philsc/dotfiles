@@ -21,6 +21,7 @@ TXTRST='\e[0m'        # Text Reset
 
 shopt -s histappend   # append to the history file, don't overwrite it
 shopt -s checkwinsize # adjust terminal width dynamically
+shopt -s globstar  # enable recursive patterns like **/*.txt
 
 # set variable identifying the chroot you work in (used in the prompt below)
 #if [ -z "$chroot_name" ]; then
