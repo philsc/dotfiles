@@ -86,3 +86,11 @@ print_args() {
     printf '%d: %s\n' "$i" "$arg"
   done
 }
+
+# Go up a specific number of directories.
+up() {
+  local num="${1:-1}"
+  for ((i=0; i < $1; i++)); do
+    cd ..
+  done
+}
