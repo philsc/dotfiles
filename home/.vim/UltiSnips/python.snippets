@@ -111,14 +111,14 @@ endsnippet
 
 snippet gen "Bazel genrule" b
 genrule(
-	name = '$1',
+	name = "$1",
 	srcs = [
 	],
 	outs = [
 	],
 	tools = [
 	],
-	cmd = '${2:cp foo bar}',
+	cmd = "${2:cp foo bar}",
 )
 endsnippet
 
@@ -126,4 +126,13 @@ snippet peloton "Add the Peloton copyright header" b
 # Copyright (C) `!v strftime("%Y")` Peloton Technology, Inc. - All Rights Reserved
 # Author: Philipp Schrader (philipp@peloton-tech.com)
 
+endsnippet
+
+snippet fg "Bazel filegroup" b
+filegroup(
+	name = "$1",
+	srcs = [
+		$2
+	],
+)
 endsnippet
