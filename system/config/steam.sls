@@ -21,6 +21,7 @@ steam:
     - gid: steam
     - groups:
       - pulse-access
+      - video
     # Generated via:
     # python -c 'import crypt; print(crypt.crypt(PASS, "$6$SALTsalt$"));'
     - password: $6$SALTsalt$X863t7VBm4Y09JZiTvgZOxD2RqBB/reAtHz6yraHdiUsJwfWHUgYlccIn1UDbimSd0Y/rrtPFC1Xp9U46mf4A1
