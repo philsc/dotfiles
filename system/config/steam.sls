@@ -69,7 +69,7 @@ steam_launcher_impl:
 steam_sudoers_d:
   file.directory:
     - name: /etc/sudoers.d
-    - mode: 644
+    - mode: 755
 
 steam_permissions:
   file.managed:

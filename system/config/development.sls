@@ -51,7 +51,7 @@ symlink_{{ llvm_target }}:
   file.symlink:
     - name: /usr/bin/{{ llvm_target }}
     - target: /usr/bin/{{ llvm_target }}-{{ llvm_version }}
-    -require:
+    - require:
       - pkg: development_packages
 {% endfor %}
 
