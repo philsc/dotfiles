@@ -71,3 +71,12 @@ vagrant_install:
     - require:
       - file: vagrant_download
 
+
+# Enable user namespaces.
+userns_sysctl_file:
+  file.managed:
+    - name: /etc/sysctl.d/0-userns.conf
+    - mode: 644
+    - contents: |
+        # Enable user namespaces. This is really useful for bazel.
+        kernel.unprivileged_userns_clone = 1
