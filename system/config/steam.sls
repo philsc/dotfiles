@@ -62,6 +62,9 @@ steam_launcher_impl:
         readonly TEMP=/tmp/steam-Xauthority
         unset XAUTHORITY
         xauth -i merge "$TEMP"
+        # Disable UI scaling.
+        # TODO(phil): Figure out how to change this per-machine.
+        export GDK_SCALE=1
         steam
         rm -f "$HOME"/.Xauthority
 
