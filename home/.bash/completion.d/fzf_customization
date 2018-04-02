@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Exclude the bazel-* symlinks since they're full of files we don't really care
+# about.
+_fzf_compgen_path() {
+  echo "$1"
+  command find -L "$1" \
+    -name .git -prune -o -name .svn -prune -o -name 'bazel-*' -prune \
+    -o \( -type d -o -type f -o -type l \) \
+    -a -not -path "$1" -print 2> /dev/null | sed 's@^\./@@'
+}
