@@ -16,3 +16,8 @@
 /.tmux/resurrect/
 /.fonts/fonts.dir
 /.jira.d/cookies.js
+
+# Use the specific version here so that "git status" will inform me of old
+# versions lingering around.
+# TODO(phil): Figure out a way to auto-remove old versions in install.py.
+/tools/ripgrep-0.8.1-x86_64-unknown-linux-musl/

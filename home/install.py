@@ -11,9 +11,12 @@ import urllib.request
 import zipfile
 import tempfile
 import shutil
+import tarfile
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
+
+RIPGREP_VERSION = '0.8.1'
 
 
 def make_printer(prefix):
@@ -164,6 +167,8 @@ def create_links(force=False):
         ('tools/fzf/bin/fzf-tmux', '.bin/fzf-tmux'),
         ('tools/fzf/shell/completion.bash', '.bash/completion.d/fzf'),
         ('tools/fzf/shell/key-bindings.bash', '.bash/aliases.d/fzf'),
+        ('tools/ripgrep-%s-x86_64-unknown-linux-musl/rg' %
+         RIPGREP_VERSION, '.bin/rg'),
         ('python/autopep8/autopep8.py', '.bin/autopep8'),
         ('python', '.python'),
         ('fontconfig/fonts.conf', '.fonts.conf'),
@@ -306,6 +311,41 @@ def install_vim_plugins():
         done("done\n")
 
 
+def install_tools():
+    # TODO(philipp): De-duplicate with what's in install_vim_plugins().
+    tools = [
+        ('https://github.com/BurntSushi/ripgrep/releases/download/%s/ripgrep-%s-x86_64-unknown-linux-musl.tar.gz'
+            % (RIPGREP_VERSION, RIPGREP_VERSION),
+         'ripgrep-%s-x86_64-unknown-linux-musl' % RIPGREP_VERSION,)
+    ]
+
+    for tool in tools:
+        target = os.path.join(ROOT, 'tools', tool[1])
+
+        if os.path.isdir(target):
+            info("tool %s already installed\n" % tool[1])
+            continue
+
+        new("Installing tool %s..." % tool[1])
+
+        # Download the tarball and save it as a temporary file.
+        (temp_file, _) = urllib.request.urlretrieve(tool[0])
+
+        # Unzip the tarball and copy the right folder into the tools structure.
+        with tarfile.open(temp_file) as tar_file:
+            temp_dir = tempfile.mkdtemp()
+            tar_file.extractall(temp_dir)
+
+            src = os.path.join(temp_dir, tool[1])
+            dest = os.path.join(ROOT, 'tools', tool[1])
+            shutil.move(src, dest)
+            shutil.rmtree(temp_dir)
+
+        os.remove(temp_file)
+
+        done("done\n")
+
+
 def install_certificates():
     certs = [
         ('https://sks-keyservers.net/sks-keyservers.netCA.pem',
@@ -334,7 +374,7 @@ def install_go_programs():
 
     go_bin = shutil.which('go')
     if not go_bin:
-        warn("Couln't find go in the PATH\n");
+        warn("Couln't find go in the PATH\n")
         for program in programs:
             warn("Skipping install of %s\n" % program)
         return
@@ -363,6 +403,7 @@ def main(argv):
     create_empty_files()
     create_git_configs()
     install_vim_plugins()
+    install_tools()
     install_certificates()
     install_go_programs()
 
