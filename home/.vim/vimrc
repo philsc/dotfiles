@@ -503,6 +503,17 @@ let g:markdown_syntax_conceal = 0
 " Otherwise it's really slow
 let g:ruby_path = system('rvm current')
 
+" Tell the markdown plugin to use syntax highlighting for the following
+" languages.
+let g:markdown_fenced_languages = [
+  \ 'html',
+  \ 'python',
+  \ 'proto',
+  \ 'robot',
+  \ 'c++=cpp',
+  \ 'c',
+  \ 'bash=sh' ]
+
 " Make it easier to create in-file diffs. Hit <Leader>dll on two sections to
 " compare them. Hit <Leader>dlr to reset.
 vnoremap <Leader>dll :Linediff<CR>
