@@ -94,3 +94,9 @@ up() {
     cd ..
   done
 }
+
+# Creates an alarm so that terminals can highlight a window/tab.
+# Useful for long-running background tasks you want to be notified of.
+bell() {
+  echo -ne '\a'
+}
