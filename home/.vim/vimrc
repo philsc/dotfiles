@@ -477,11 +477,11 @@ let g:fzf_command_prefix = 'Fzf'
 
 " Add some shortcuts for fzf.
 " <Leader>fa will open all files.
+" <Leader>fb will open all buffers.
 " <Leader>fg will open a list of files known to git.
-" <Leader>fb will open a list of files generated/compiled by bazel.
 nnoremap <Leader>fa :<C-u>FzfFiles<CR>
+nnoremap <Leader>fb :<C-u>FzfBuffers<CR>
 nnoremap <Leader>fg :<C-u>call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --cached'}))<CR>
-nnoremap <Leader>fb :<C-u>call fzf#run(fzf#wrap({'source': 'find bazel-out/ -path "*/\.*" -prune -o -type f -print -o -type l -print 2> /dev/null'}))<CR>
 
 " Customize the shortcuts for fzf splitting.
 let g:fzf_action = {
