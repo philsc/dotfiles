@@ -17,3 +17,11 @@ set colored-stats on
 # Ignore case when completing and treat hyphens as underscores.
 set completion-ignore-case on
 set completion-map-case on
+
+# Never ask for completion items and just list them all.
+set completion-query-items -1
+set page-completions off
+
+# Don't complete items if they're already there. Just skip to what we already
+# have.
+set skip-completed-text on
