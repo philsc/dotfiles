@@ -490,6 +490,17 @@ let g:fzf_action = {
   \ 'ctrl-s': 'split',
   \ 'ctrl-v': 'vsplit' }
 
+" Create a new command to ripgrep for a certain string. The results are then
+" browsable using fzf.
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+nnoremap <Leader>fG :<C-u>Rg!<Space>
+
 " Only enable the vim-scroll-off-fraction plugin if everything's supported.
 " We actually prevent it from loading in this case.
 if !exists('#WinNew')
