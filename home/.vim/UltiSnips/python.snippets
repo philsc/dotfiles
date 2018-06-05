@@ -137,8 +137,21 @@ filegroup(
 )
 endsnippet
 
-snippet deps "Adds a 'deps' field" b
+snippet deps "Adds a bazel 'deps' field" b
 deps = [
 	$1
 ],
+endsnippet
+
+snippet robot "Add a bazel robot_test target" b
+robot_test(
+	name = "$1"
+	srcs = [
+		"$1.robot",
+	],
+	args = [
+		"--exclude=DISABLED",
+	],
+	loglevel = "DEBUG",
+)
 endsnippet

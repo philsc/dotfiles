@@ -12,3 +12,24 @@ endsnippet
 snippet "# todo" "Add a todo" b
 # TODO(`whoami`): ${1:Implement this.}
 endsnippet
+
+snippet settings "Add a new Settings section" b
+*** Settings ***
+
+endsnippet
+
+snippet var "Add a new Variables section" b
+*** Variables ***
+
+endsnippet
+
+snippet testcases "Add a new Test Cases section" b
+*** Test Cases ***
+
+endsnippet
+
+snippet test "Add a new test" b
+${1:Test_Name}
+	[Documentation]     ${2:Document this test.}
+	${3:No Operation}
+endsnippet
