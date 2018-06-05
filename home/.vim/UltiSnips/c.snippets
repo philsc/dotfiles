@@ -3,7 +3,7 @@ extends clike
 
 snippet guard "Adds a header guard" b
 #ifndef ${1:`!p
-snip.rv = path.upper().replace('/','_').replace('.','_') + '_'
+snip.rv = path.upper().replace('/','_').replace('.','_').replace('-','_') + '_'
 `}
 #define $1
 
