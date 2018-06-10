@@ -28,6 +28,7 @@ AUTO_GROUPS = {
         "desktop",
         "openssh-server",
         "steam",
+        "pulseaudio",
     ],
     "minitardis": [
         "base",
@@ -36,6 +37,7 @@ AUTO_GROUPS = {
         "desktop",
         "openssh-server",
         "steam",
+        "pulseaudio",
     ],
 }
 
@@ -72,6 +74,8 @@ def main(argv):
         'desktop',
         help='Installs GUI desktop-related programs such as awesome.',
         default=False)
+    add_group(parser, 'pulseaudio',
+              help='Sets up a system PulseAudio daemon.', default=False)
     add_group(parser, 'steam', help='Sets up Steam.', default=False)
     add_group(
         parser,
