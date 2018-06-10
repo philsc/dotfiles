@@ -28,6 +28,7 @@ AUTO_GROUPS = {
         "desktop",
         "openssh-server",
         "steam",
+        "firefox",
         "pulseaudio",
     ],
     "minitardis": [
@@ -37,6 +38,7 @@ AUTO_GROUPS = {
         "desktop",
         "openssh-server",
         "steam",
+        "firefox",
         "pulseaudio",
     ],
 }
@@ -77,6 +79,7 @@ def main(argv):
     add_group(parser, 'pulseaudio',
               help='Sets up a system PulseAudio daemon.', default=False)
     add_group(parser, 'steam', help='Sets up Steam.', default=False)
+    add_group(parser, 'firefox', help='Sets up Firefox.', default=False)
     add_group(
         parser,
         'openssh-server',
