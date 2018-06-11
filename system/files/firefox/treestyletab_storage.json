@@ -1,0 +1,13 @@
+{
+    "animation": false,
+    "autoCollapseExpandSubtreeOnAttach": false,
+    "autoCollapseExpandSubtreeOnSelect": false,
+    "cachedExternalAddons": [],
+    "lastConfirmedToCloseTabs": 1526744089068,
+    "notifiedFeaturesVersion": 3,
+    "requestingPermissions": null,
+    "scrollbarMode": 1,
+    "style": "plain",
+    "userStyleRules": "{{ user_style_rules }}",
+    "warnOnCloseTabs": false
+}

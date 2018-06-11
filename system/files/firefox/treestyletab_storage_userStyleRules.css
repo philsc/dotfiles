@@ -1,0 +1,71 @@
+ 
+/* Show title of unread tabs with red and italic font */
+/* .tab.unread .label {
+     color: red !important;
+     font-style: italic !important;
+}
+*/
+
+/* Add private browsing indicator per tab */
+/* .tab.private-browsing .label:before {
+     content: \"\ud83d\udd76\";
+}
+ */
+
+/* Hide the \"new tab\" button at the bottom edge of the tab bar */
+.newtab-button-box {
+     display: none;
+}
+
+/* Eliminate dead space on bottom */
+#tabbar {
+     bottom: 0 !important;
+}
+
+/* Only show tab close button on hover #1448 */
+.tab .closebox {
+     display: none;
+}
+
+/* Change tab height */
+.tab {
+     height: 24px;
+}
+
+/*
+ * Tab Numbering/Counting
+ * All of the options in this section need the raw count of tabs available.
+ * This is done using CSS counters:
+ */
+#tabbar {
+     counter-reset: vtabs atabs tabs;
+    /* vtabs tracks visible tabs, atabs tracks active tabs, tabs tracks all tabs */
+}
+.tab:not(.collapsed):not(.discarded) {
+     counter-increment: vtabs atabs tabs;
+}
+.tab:not(.collapsed) {
+     counter-increment: vtabs tabs;
+}
+.tab:not(.discarded) {
+     counter-increment: atabs tabs;
+}
+.tab {
+     counter-increment: tabs;
+}
+
+/*
+ * Numbering of tabs
+ * This displays the number of each visible tab along side each tab.
+ */
+.tab:not(.pinned):not(.active) .active-marker::before {
+     background: Highlight;
+     color: HighlightText;
+     content: counter(vtabs);
+     font-size: x-small;
+     right: 0.2em;
+     padding: 0.2em;
+     pointer-events none;
+     position: absolute;
+     bottom: 0.2em;
+}

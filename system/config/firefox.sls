@@ -3,6 +3,8 @@
 {% set firefox_version = '60.0.2' -%}
 {% set firefox_hash = '90e5d4c106ae1756e6834593b357925f48a4e60c539e5f95f4bc323b5b7f4196' %}
 
+{% set firefox_profile = 'n6hqy50j.default' %}
+
 firefox:
   # Set up a firefox user/group for isolating browsing.
   # TODO(phil): Also set up SELinux or something.
@@ -88,3 +90,56 @@ firefox_permissions:
         %firefox  ALL = (firefox) NOPASSWD: /usr/bin/firefox-wrapper-impl
     - require:
       - file: firefox_sudoers_d
+
+{% for dir in [
+    "",
+    "extensions",
+    "firefox",
+    "firefox/" + firefox_profile,
+    "systemextensionsdev",
+] %}
+firefox_dir_{{ dir }}:
+  file.directory:
+    - name: /home/firefox/.mozilla/{{ dir }}
+    - mode: 700
+    - user: firefox
+    - group: firefox
+{% endfor %}
+
+firefox_profiles_ini:
+  file.managed:
+    - name: /home/firefox/.mozilla/firefox/profiles.ini
+    - mode: 600
+    - user: firefox
+    - group: firefox
+    - contents: |
+        [General]
+        StartWithLastProfile=1
+        [Profile0]
+        Name=default
+        IsRelative=1
+        Path={{ firefox_profile }}
+        Default=1
+
+firefox_userchrome_css:
+  file.managed:
+    - name: /home/firefox/.mozilla/firefox/{{ firefox_profile }}/chrome/userChrome.css
+    - mode: 600
+    - user: firefox
+    - group: firefox
+    - source:
+      - salt://firefox/userChrome.css
+
+firefox_treestyletab_css:
+  file.managed:
+    - name: /home/firefox/.mozilla/firefox/{{ firefox_profile }}//browser-extension-data/treestyletab@piro.sakura.ne.jp/storage.js
+    - mode: 600
+    - user: firefox
+    - group: firefox
+    - source:
+      - salt://firefox/treestyletab_storage.json
+    - template: jinja
+
+# TODO(phil): Figure out how to merge userStyleRules.css into storage.js.
+# Maybe do something like https://stackoverflow.com/questions/37842020/salt-text-file-to-variable-and-use-the-same-variable-in-state-file-to-findrepl
+# Would need to figure out how to get a file from the salt server into a variable.

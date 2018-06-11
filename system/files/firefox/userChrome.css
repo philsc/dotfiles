@@ -1,0 +1,38 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/*******************************************
+ * Tree Style Tabs
+ ******************************************/
+
+/* Hide the top bar with all the tabs on it. */
+#TabsToolbar {
+    visibility: collapse !important;
+}
+
+/* Hide the sidebar that says "Tree Style Tab". */
+#sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+    display: none;
+}
+
+/*******************************************
+ * Tridactyl
+ ******************************************/
+
+/* Avoid transparent background for menubar if nav-toolbox not focussed */
+#navigator-toolbox:not(:hover):not(:focus-within) #toolbar-menubar > * {
+    /* Colour matches the grey background of the default firefox theme. Can't see what variable it uses */
+    background-color: rgb(232, 232, 231);
+}
+
+/* Make nav-bar thinner */
+#nav-bar{
+    padding-top: 1px !important;
+    padding-bottom: 0 !important;
+}
+
+/* Hide URL notifications that aren't particularly useful and cover up the command line
+ * TODO: move it above the command line / bring functionality into status line like Vimperator */
+statuspanel[type="overLink"]{display: none !important;}
+
+/* Partial removal of black bottom 1px line shown in fullscreen mode */
+#navigator-toolbox::after { display: none !important; }
