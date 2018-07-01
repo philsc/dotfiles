@@ -4,6 +4,8 @@
 loadpaths() {
   if [[ -r "$1" ]]; then
     while read d; do
+      # TODO(phil): Figure out a way to not add duplicate entries here.
+      # Currently we add ~/.bin via .xprofile and again here.
       if [[ -n "$d" ]]; then
         PATH="$(eval "echo $d")${PATH:+:$PATH}"
       fi

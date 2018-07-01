@@ -28,6 +28,53 @@ steam:
     - require:
       - group: steam
 
+  file.directory:
+    - name: /home/steam/bin/
+    - user: steam
+    - group: steam
+    - require:
+      - user: steam
+      - group: steam
+
+# Set up the 32-bit libraries that steam needs.
+steam_deps:
+  cmd.run:
+    - name: dpkg --add-architecture i386
+    - unless: dpkg --print-foreign-architectures | grep i386
+
+  pkg.installed:
+    - pkgs:
+      - libgl1-mesa-dri:i386
+      - libc6:i386
+    - reload_modules: true
+    - require:
+      - cmd: steam_deps
+
+  file.managed:
+    - name: /usr/bin/steamdeps
+    - contents: |
+        #!/usr/bin/env python3
+        # This file is managed by salt.
+        # All dependencies are installed/managed via salt.
+        import sys
+        sys.exit(0)
+
+steam_disable_sudo:
+  file.managed:
+    - name: /home/steam/bin/sudo
+    - mode: 755
+    - user: root
+    - group: root
+    - contents: |
+        #!/bin/bash
+        # This file is managed by salt.
+        # It's here to prevent steam from attempting to install anything.
+        # All dependencies are installed/managed via salt.
+        echo "sudo is disabled for the this user." >&2
+        exit 1
+    - require:
+      - file: steam
+
 # The following two files is my attempt to securely give the steam user access
 # to the X server. I know it's stupid to consider that this is actually secure,
 # but it's slightly better than running these games as my own user.

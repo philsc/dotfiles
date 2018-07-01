@@ -7,6 +7,9 @@ if [[ "${XPROFILE_IS_SOURCED:-0}" == 1 ]]; then
   return 0 2>/dev/null || exit 0
 fi
 
+# Make sure the window manager has access to my local tools.
+export PATH="$HOME/.bin:$PATH"
+
 # Set up all the X resources: colors, etc...
 xrdb -merge "$HOME/.Xresources"
 

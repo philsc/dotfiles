@@ -1,0 +1,3 @@
+#!/bin/bash
+# Execute the wrapper instead.
+/usr/bin/steam-wrapper

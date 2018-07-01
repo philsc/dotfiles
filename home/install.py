@@ -165,6 +165,7 @@ def create_links(force=False):
         ('tools/dtc-wrapper.sh', '.bin/dtc-wrapper.sh'),
         ('tools/fzf/bin/fzf', '.bin/fzf'),
         ('tools/fzf/bin/fzf-tmux', '.bin/fzf-tmux'),
+        ('tools/steam', '.bin/steam'),
         ('tools/fzf/shell/completion.bash', '.bash/completion.d/fzf'),
         ('tools/fzf/shell/key-bindings.bash', '.bash/aliases.d/fzf'),
         ('tools/ripgrep-%s-x86_64-unknown-linux-musl/rg' %
