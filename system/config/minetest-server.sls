@@ -7,7 +7,7 @@
     - dir_mode: 700
     - file_mode: 600
 
-{% for subfolder in ['worlds', 'config', 'logs'] %}
+{% for subfolder in ['worlds', 'config', 'logs', 'mods'] %}
 {{ pillar['minetest_volume'] }}/{{ subfolder }}:
   file.directory:
     - user: 3000
@@ -26,6 +26,7 @@ minetest:
     - binds:
       - {{ pillar['minetest_volume'] }}/worlds:/home/minetest/worlds:rw
       - {{ pillar['minetest_volume'] }}/config:/home/minetest/config:rw
+      - {{ pillar['minetest_volume'] }}/mods:/home/minetest/.minetest/mods:rw
       - {{ pillar['minetest_volume'] }}/logs:/var/log/minetest:rw
     - watch:
       - dockerng: minetest_image_build
@@ -36,3 +37,4 @@ minetest:
       - file: {{ pillar['minetest_volume'] }}/worlds
       - file: {{ pillar['minetest_volume'] }}/config
       - file: {{ pillar['minetest_volume'] }}/logs
+      - file: {{ pillar['minetest_volume'] }}/mods
