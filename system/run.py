@@ -20,6 +20,7 @@ AUTO_GROUPS = {
         "gitolite",
         "nginx",
         "gallifrey",
+        "minetest-server",
     ],
     "silence": [
         "base",
@@ -77,6 +78,11 @@ def main(argv):
     add_group(parser, 'pulseaudio',
               help='Sets up a system PulseAudio daemon.', default=False)
     add_group(parser, 'steam', help='Sets up Steam.', default=False)
+    add_group(
+        parser,
+        'minetest-server',
+        help='Sets up Minetest server.',
+        default=False)
     add_group(
         parser,
         'openssh-server',
