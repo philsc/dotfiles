@@ -2,12 +2,15 @@
 [ -z "$PS1" ] && return
 
 loadpaths() {
+  local new_path
   if [[ -r "$1" ]]; then
     while read d; do
-      # TODO(phil): Figure out a way to not add duplicate entries here.
-      # Currently we add ~/.bin via .xprofile and again here.
+      new_path="$(eval "echo $d")"
       if [[ -n "$d" ]]; then
-        PATH="$(eval "echo $d")${PATH:+:$PATH}"
+        if ! [[ "$PATH" == "$new_path" || "$PATH" =~ ^${new_path}:.* \
+          || "$PATH" =~ .*:${new_path}:.* || "$PATH" =~ :${new_path}\$ ]]; then
+          PATH="${new_path}${PATH:+:$PATH}"
+        fi
       fi
     done <"$1"
   fi
