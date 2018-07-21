@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
+
+# This script apparently gets sourced not by bash, but by a more primitive
+# shell. Beware!
 
 # Exit prematurely if this file has already been executed.
 # Use string comparison here to avoid undefined variable errors the first time
 # this script gets executed.
-if [[ "${XPROFILE_IS_SOURCED:-0}" == 1 ]]; then
+if [ "${XPROFILE_IS_SOURCED:-0}" == 1 ]; then
   return 0 2>/dev/null || exit 0
 fi
 
