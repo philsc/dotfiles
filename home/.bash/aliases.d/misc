@@ -100,3 +100,8 @@ up() {
 bell() {
   echo -ne '\a'
 }
+
+# Perform sed-like editing on a stream using vim commands.
+vimpipe() {
+  vim -u NONE -c "exec \"%norm $1\"" -es '+%print|q!' "${2:-/dev/stdin}"
+}
