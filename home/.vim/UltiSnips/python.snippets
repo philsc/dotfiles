@@ -23,14 +23,14 @@ endsnippet
 snippet pyb "Bazel py_binary" b
 py_binary(
 	name = "$1",
-	main = "$1.py",
 	srcs = [
 		"$1.py",
 	],
+	default_python_version = "PY3",
+	main = "$1.py",
+	srcs_version = "PY3",
 	deps = [
 	],
-	srcs_version = "PY3",
-	default_python_version = "PY3",
 )
 endsnippet
 
@@ -87,14 +87,14 @@ endsnippet
 snippet sht "Bazel sh_test" b
 sh_test(
 	name = "$1",
+	size = "small",
 	srcs = [
 		"$1.sh",
 	],
-	deps = [
-	],
 	data = [
 	],
-	size = "small",
+	deps = [
+	],
 )
 endsnippet
 
