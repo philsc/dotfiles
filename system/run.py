@@ -79,6 +79,11 @@ def main(argv):
     add_group(parser, 'steam', help='Sets up Steam.', default=False)
     add_group(
         parser,
+        'minecraft-server',
+        help='Sets up a Minecraft server.',
+        default=False)
+    add_group(
+        parser,
         'openssh-server',
         help='Sets up an OpenSSH server.',
         default=False)
