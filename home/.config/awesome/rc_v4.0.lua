@@ -4,6 +4,7 @@ local awful = require("awful")
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
+local vicious = require("vicious")
 -- Theme handling library
 local beautiful = require("beautiful")
 -- Notification library
@@ -135,6 +136,18 @@ end
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
+---- Battery indicators.
+batwidgets = {}
+for bat, settings in pairs(prefs.battery) do
+  label = wibox.widget.textbox(bat)
+  remaining = wibox.widget.textbox('-')
+  vicious.register(remaining, vicious.widgets.bat, "$1 $3", settings.refresh_rate, bat)
+
+  table.insert(batwidgets, label)
+  table.insert(batwidgets, remaining)
+end
+
+
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
@@ -216,11 +229,6 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create an imagebox widget which will contains an icon indicating which layout we're using.
     -- We need one layoutbox per screen.
     s.mylayoutbox = awful.widget.layoutbox(s)
-    s.mylayoutbox:buttons(awful.util.table.join(
-                           awful.button({ }, 1, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 3, function () awful.layout.inc(-1) end),
-                           awful.button({ }, 4, function () awful.layout.inc( 1) end),
-                           awful.button({ }, 5, function () awful.layout.inc(-1) end)))
     -- Create a taglist widget
     s.mytaglist = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist_buttons)
 
@@ -242,12 +250,13 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
+        awful.util.table.join({ -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
+        }, batwidgets, {
             wibox.widget.systray(),
             mytextclock,
-        },
+        }),
     }
 end)
 -- }}}
