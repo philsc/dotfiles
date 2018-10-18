@@ -483,7 +483,7 @@ let g:fzf_command_prefix = 'Fzf'
 " <Leader>fl will open all lines in the current buffer.
 nnoremap <Leader>fa :<C-u>FzfFiles<CR>
 nnoremap <Leader>fb :<C-u>FzfBuffers<CR>
-nnoremap <Leader>fg :<C-u>call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --cached'}))<CR>
+nnoremap <Leader>ff :<C-u>call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --cached'}))<CR>
 nnoremap <Leader>fl :<C-u>FzfBLines<CR>
 
 " Customize the shortcuts for fzf splitting.
@@ -502,7 +502,7 @@ command! -bang -nargs=* Rg
   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
   \   <bang>0)
 
-nnoremap <Leader>fG :<C-u>Rg!<Space>
+nnoremap <Leader>fg :<C-u>Rg!<Space>
 
 " Only enable the vim-scroll-off-fraction plugin if everything's supported.
 " We actually prevent it from loading in this case.
