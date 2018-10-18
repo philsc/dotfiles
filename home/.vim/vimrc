@@ -131,7 +131,7 @@ set laststatus=2
 " Autowrap text, autowrap comments (and add comment delimiter), recognise
 " white space, and automatically format paragraphs as they are edited, based
 " on the second line of the paragraph rather than the first
-set formatoptions+=jtcwa2lor
+set formatoptions+=jcwa2lor
 set wrap
 set textwidth=79
 
@@ -180,12 +180,10 @@ function ToggleAutoWrap()
     if &formatoptions =~# '.*c.*'
         setlocal formatoptions-=c
         setlocal formatoptions-=a
-        setlocal formatoptions-=t
         echo 'Auto wrapping disabled'
     else
         setlocal formatoptions+=c
         setlocal formatoptions+=a
-        setlocal formatoptions+=t
         echo 'Auto wrapping enabled'
     endif
 endfunction
@@ -359,7 +357,6 @@ augroup END
 
 augroup docker
     autocmd!
-    autocmd FileType dockerfile setlocal formatoptions-=t
     autocmd FileType dockerfile setlocal formatoptions-=c
     autocmd FileType dockerfile setlocal formatoptions-=a
 augroup END
@@ -367,7 +364,7 @@ augroup END
 augroup filetype_markdown
     autocmd!
     " Make lists a little easier to use in text files.
-    autocmd FileType markdown,text setlocal formatoptions-=2 formatoptions+=n
+    autocmd FileType markdown,text setlocal formatoptions-=2 formatoptions+=tn
 augroup END
 
 " C-style abbreviations and shortcuts
@@ -423,7 +420,6 @@ augroup END
 
 augroup filetype_markdown
   autocmd!
-  autocmd FileType markdown setlocal formatoptions-=t
   autocmd FileType markdown setlocal formatoptions-=c
   autocmd FileType markdown setlocal formatoptions-=a
 augroup END
