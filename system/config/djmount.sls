@@ -30,11 +30,6 @@ djmount:
 
   file.directory:
     - name: /opt/djmount/
-    - user: djmount
-    - group: djmount
-    - require:
-      - user: djmount
-      - group: djmount
 
 # Install the djmount service file for autostarting.
 djmount_service:

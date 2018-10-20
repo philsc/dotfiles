@@ -39,6 +39,7 @@ AUTO_GROUPS = {
         "steam",
         "pulseaudio",
         "djmount",
+        "minitardis",
     ],
 }
 
