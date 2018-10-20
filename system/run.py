@@ -38,6 +38,7 @@ AUTO_GROUPS = {
         "openssh-server",
         "steam",
         "pulseaudio",
+        "djmount",
     ],
 }
 
@@ -74,6 +75,8 @@ def main(argv):
         'desktop',
         help='Installs GUI desktop-related programs such as awesome.',
         default=False)
+    add_group(parser, 'djmount',
+              help='Sets up /opt/av/ for UPnP.', default=False)
     add_group(parser, 'pulseaudio',
               help='Sets up a system PulseAudio daemon.', default=False)
     add_group(parser, 'steam', help='Sets up Steam.', default=False)
