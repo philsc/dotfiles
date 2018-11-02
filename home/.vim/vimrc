@@ -409,6 +409,7 @@ augroup filetype_python
   autocmd FileType python setlocal nosmartindent
   autocmd FileType python setlocal cindent
   autocmd FileType python setlocal fo-=t
+  autocmd FileType python setlocal colorcolumn=80
 augroup END
 
 augroup filetype_javascript
