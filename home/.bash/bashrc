@@ -92,7 +92,7 @@ __setps1() {
     chroot="$(cat /etc/debian_chroot)/"
   fi
 
-  PS1="${TXTBLU}\h/$chroot\u${TXTRST} [${TXTGRN}$d${TXTRST}]$s r\$?,j\j,t$timer_show\n\$ "
+  PS1="${TXTBLU}\h/$chroot\u${TXTRST} [${TXTGRN}$d${TXTRST}]$s $(date +'%H:%M:%S') r\$?,j\j,t$timer_show\n\$ "
 }
 
 # Set the command prompt.
