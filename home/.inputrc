@@ -25,3 +25,7 @@ set page-completions off
 # Don't complete items if they're already there. Just skip to what we already
 # have.
 set skip-completed-text on
+
+# Allow me to jump forward/backwards by whitespace delimiters.
+"\e\C-f": shell-forward-word
+"\e\C-b": shell-backward-word
