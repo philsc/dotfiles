@@ -23,8 +23,11 @@ readonly window_id
 "$terminal" -e vim -c "set noswapfile" "$tempfile"
 
 # Strip the last byte which is the newline and make X paste everything into the
-# window that was focused before vim popped up.
+# window that was focused before vim popped up. We want to use CR characters
+# here because that's what most applications (e.g. firefox) will interpret as a
+# newline.
 head -c -1 "$tempfile" \
+  | tr '\n' '\r' \
   | xdotool type --window "$window_id" --clearmodifiers --delay 0 --file -
 
 rm "$tempfile"
