@@ -15,18 +15,26 @@
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
 # Usage:
+# Copy resize-font to where URxvt looks for Perl extensions, e.g:
+# $HOME/.urxvt/ext/ For exact path see urxvt(1) man-page on perl-lib.
 # Set your font in ~/.Xresources:
 # urxvt.font: xft:Inconsolata:pixelsize=12
 # to set it with pixels or
 # urxvt.font: xft:Inconsolata:size=12
 # to set it with points.
+# Fixed fonts are also supported:
+# urxvt.font: 7x14
+# XLFD/X logical font description too:
+# urxvt.font: -*-inconsolata-medium-*-normal-*-14-*-*-*-*-*-iso8859-*
 
 # And re-bind some keymappings (if you want, below are the defaults):
-# URxvt.resize-font.smaller: C-minus
-# URxvt.resize-font.bigger: C-plus
-# URxvt.resize-font.reset: C-equal
-# URxvt.resize-font.show: C-question
+# URxvt.keysym.C-minus:     resize-font:smaller
+# URxvt.keysym.C-plus:      resize-font:bigger
+# URxvt.keysym.C-equal:     resize-font:reset
+# URxvt.keysym.C-question:  resize-font:show
 #
+# You can also configure the number of steps to take when changing the size:
+# URxvt.resize-font.step: 2
 
 my @fonts = (
   {'name' => 'font',           'code' => 710},
@@ -35,12 +43,17 @@ my @fonts = (
   {'name' => 'boldItalicFont', 'code' => 713},
 );
 
+my @fixed = qw(4x6 5x7 5x8 6x9 6x10 6x12 6x13 7x13 7x14 8x13 8x16 9x15 9x18 10x20 12x24);
+my $step;
+
 sub on_start {
   my ($self) = @_;
 
   foreach (@fonts) {
     $_->{'default'} = $self->resource($_->{'name'});
   }
+
+  $step = $self->x_resource("%.step") || 2;
 }
 
 sub on_init {
@@ -58,37 +71,50 @@ sub on_init {
 
 sub bind_hotkeys {
   my ($self, $commands) = @_;
-  for (keys %$commands) {
-    my $hotkey = $self->x_resource("resize-font.$_") || $$commands{$_};
 
-    $self->parse_keysym($hotkey, "perl:resize-font:$_") or
-    warn "unable to register '$hotkey' as hotkey for $_\n";
+  for (keys %$commands) {
+    my $hotkey = $$commands{$_};
+    my $hotkey_bound = $self->{'term'}->x_resource("keysym.$hotkey");
+    if (!defined($hotkey_bound) ) {
+      # Support old-style key bindings
+      if ($self->x_resource("%.$_")) {
+        $hotkey = $self->x_resource("%.$_");
+      }
+
+      # FIXME If we're bound to a keysym, don't bind the default.
+      $self->bind_action($hotkey, "%:$_") or
+      warn "unable to register '$hotkey' as hotkey for $_";
+    }
+    else {
+      if ($hotkey_bound !~ /^resize-font:/) {
+        warn "Hotkey $$commands{$_} already bound to $hotkey_bound, not binding to resize-font:$_ by default.";
+      }
+    }
   }
 }
 
-sub on_user_command {
+sub on_action {
   my ($self, $string) = @_;
-  my $regex = qr"(?!pixelsize=)(\d+)";
 
-  if ($string =~ /bigger$/) {
+  if ($string eq "bigger") {
     foreach (@fonts) {
       next if not defined($_->{'default'});
-      update_font_size($self, $_, +2);
+      update_font_size($self, $_, +$step);
     }
   }
-  elsif ($string =~ /smaller$/) {
+  elsif ($string eq "smaller") {
     foreach (@fonts) {
       next if not defined($_->{'default'});
-      update_font_size($self, $_, -2);
+      update_font_size($self, $_, -$step);
     }
   }
-  elsif ($string =~ /reset$/) {
+  elsif ($string eq "reset") {
     foreach (@fonts) {
       next if not defined($_->{'default'});
       set_font($self, $_, $_->{'default'});
     }
   }
-  elsif ($string =~ /show$/) {
+  elsif ($string eq "show") {
 
     my $term = $self->{'term'};
     $term->{'resize-font'}{'overlay'} = {
@@ -119,7 +145,24 @@ sub update_font_size {
   my ($self, $font, $delta) = @_;
   my $regex = qr"(?<=size=)(\d+)";
   my $current = get_font($self, $font->{'name'});
-  $current =~ s/$regex/$1+$delta/e;
+
+  my ($index) = grep { $fixed[$_] eq $current } 0..$#fixed;
+  if ($index or $index eq 0) {
+    my $inc = $delta / abs($delta);
+    $index += $inc;
+    if ($index < 0) { $index = 0; }
+    if ($index > $#fixed) { $index = $#fixed; }
+    $current = $fixed[$index];
+  }
+  elsif ($current =~ /^-/) {
+    my @font = split(/-/, $current);
+    # https://en.wikipedia.org/wiki/X_logical_font_description
+    $font[7] = $font[7]+$delta;
+    $current = join('-', @font);
+  }
+  else {
+    $current =~ s/$regex/$1+$delta/ge;
+  }
   set_font($self, $font, $current);
 }
 
