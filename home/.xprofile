@@ -25,6 +25,10 @@ autocutsel -selection CLIPBOARD -buttonup -fork
 # Set caps-lock as another left-Control key.
 setxkbmap -option ctrl:nocaps
 
+# Make single hits of Left Shift turn into space.
+# Make single hits of Left Control turn into Backspace.
+xcape -t 200 -e 'Shift_L=space;Control_L=BackSpace'
+
 # Turn off scrolling momentum.
 synclient CoastingSpeed=0
 

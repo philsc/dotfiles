@@ -10,6 +10,7 @@ desktop_packages:
       - rxvt-unicode-256color
       - vim-gtk
       - xbacklight
+      - xcape
       - xdotool
       - xsel
       - xserver-xephyr
