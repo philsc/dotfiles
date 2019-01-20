@@ -32,6 +32,14 @@ File to upload: <input type=file name=upfile><br>
 </div>
 '''
 
+UPLOAD_ERROR = BASIC_HTML_PAGE % '''\
+POST ERROR.
+<br><br>
+%s
+<br>
+<a href=".">back</a>
+'''
+
 UPLOAD_RESPONSE = BASIC_HTML_PAGE % '''\
 POST OK.
 <br><br>
@@ -93,6 +101,10 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
       basename = os.path.join(path, filename)
       newname = basename
 
+      if not filename:
+        self._send_html(UPLOAD_ERROR % ("Empty filename specified."))
+        return
+
       # If a file under that name already exists, save it to <name>.copy(X)
       i = 1
       while os.path.exists(newname):
@@ -102,7 +114,9 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
       with open(newname, 'wb') as f:
         f.write(fs_up.file.read())
 
-      self._send_html(UPLOAD_RESPONSE % (os.path.split(newname)[1]))
+      reported_filename = os.path.split(newname)[1]
+      print("Received file: %s" % reported_filename)
+      self._send_html(UPLOAD_RESPONSE % reported_filename)
 
     except Exception as e:
       print(e)
