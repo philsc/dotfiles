@@ -36,12 +36,13 @@ endsnippet
 
 snippet pyt "Bazel py_test" b
 py_test(
-	name = "$1",
-	main = "$1.py",
+	name = "$1_test",
+	main = "$1_test.py",
 	srcs = [
-		"$1.py",
+		"$1_test.py",
 	],
 	deps = [
+		":$1",
 	],
 	srcs_version = "PY3",
 	default_python_version = "PY3",
@@ -75,25 +76,27 @@ endsnippet
 
 snippet cct "Bazel cc_test" b
 cc_test(
-	name = "$1",
+	name = "$1_test",
 	srcs = [
-		"$1.cc",
+		"$1_test.cc",
 	],
 	deps = [
+		":$1",
 	],
 )
 endsnippet
 
 snippet sht "Bazel sh_test" b
 sh_test(
-	name = "$1",
+	name = "$1_test",
 	size = "small",
 	srcs = [
-		"$1.sh",
+		"$1_test.sh",
 	],
 	data = [
 	],
 	deps = [
+		":$1",
 	],
 )
 endsnippet
