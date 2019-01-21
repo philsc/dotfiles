@@ -501,6 +501,23 @@ command! -bang -nargs=* Rg
 
 nnoremap <Leader>fg :<C-u>Rg!<Space>
 
+" Create a new command to fzf through the register contents.
+function! GetRegisters()
+  redir => cout
+  silent registers
+  redir END
+  return split(cout, "\n")[1:]
+endfunction
+function! UseRegister(line)
+  let l:var_amode = getregtype(a:line[1])
+  call setreg('"', getreg(a:line[1], 1, 1), l:var_amode)
+endfunction
+command! Registers call fzf#run(fzf#wrap({
+        \ 'source': GetRegisters(),
+        \ 'sink': function('UseRegister')}))
+
+nnoremap <Leader>fr :<C-u>Registers<CR>
+
 " Only enable the vim-scroll-off-fraction plugin if everything's supported.
 " We actually prevent it from loading in this case.
 if !exists('#WinNew')
