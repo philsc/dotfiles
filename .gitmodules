@@ -106,12 +106,6 @@
 [submodule "home/.tmux/tmux-continuum"]
 	path = home/.tmux/tmux-continuum
 	url = https://github.com/tmux-plugins/tmux-continuum.git
-[submodule "home/.vim/bundle/vim-prosession"]
-	path = home/.vim/bundle/vim-prosession
-	url = https://github.com/dhruvasagar/vim-prosession.git
-[submodule "home/.vim/bundle/vim-obsession"]
-	path = home/.vim/bundle/vim-obsession
-	url = https://github.com/tpope/vim-obsession.git
 [submodule "home/python/humanfriendly"]
 	path = home/python/humanfriendly
 	url = https://github.com/xolox/python-humanfriendly.git
