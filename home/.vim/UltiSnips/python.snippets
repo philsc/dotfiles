@@ -6,6 +6,10 @@ snippet "# todo" "Add a TODO" b
 # TODO(${2:`whoami`}): ${1:Implement this}
 endsnippet
 
+snippet pub "Add public visibility to a bazel target" b
+visibility = ["//visibility:public"],
+endsnippet
+
 snippet pyl "Bazel py_library" b
 py_library(
 	name = "$1",
