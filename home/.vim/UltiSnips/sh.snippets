@@ -19,8 +19,8 @@ snippet bash "Add bash shebang" b
 endsnippet
 
 snippet set "Adds my favourite options" b
-set -e
-set -u
+set -o errexit
+set -o nounset
 set -o pipefail
 
 
