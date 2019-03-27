@@ -5,4 +5,11 @@ sub on_sel_grab {
     $query=~ s/\n/\\n/g;
     $query=~ s/\r/\\r/g;
     system("/bin/echo -en " . $query . " | xsel -i -b -p");
+
+    # TODO(phil): Get this working. The escaping above is too tricky.
+    #my @cmd = ('xsel', '-i', '-b', '-p');
+    #open(my $pipe, '|-', @cmd) or return;
+    #binmode($pipe);
+    #print($pipe $_[0]->selection);
+    #close($pipe);
 }
