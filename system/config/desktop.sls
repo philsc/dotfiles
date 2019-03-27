@@ -15,6 +15,10 @@ desktop_packages:
       - xsel
       - xserver-xephyr
       - xserver-xorg-input-synaptics
+{% if grains['oscodename'] != 'jessie' %}
+      - maim
+      - slop
+{% endif %}
 
 {% if grains['oscodename'] == 'jessie' %}
 enable_awesome:
