@@ -12,6 +12,7 @@ desktop_packages:
       - xbacklight
       - xcape
       - xdotool
+      - xfonts-terminus
       - xsel
       - xserver-xephyr
       - xserver-xorg-input-synaptics

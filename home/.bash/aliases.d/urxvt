@@ -8,3 +8,7 @@ set_urxvt_title() {
     trap 'echo -ne "\e]0;'"$title"'\007"' DEBUG
   fi
 }
+
+set_huge_font() {
+  printf '\33]50;%s\007' "xft:Terminus:pixelsize=40"
+}
