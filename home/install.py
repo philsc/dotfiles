@@ -169,6 +169,7 @@ def create_links(force=False):
         ('tools/steam', '.bin/steam'),
         ('tools/fzf/shell/completion.bash', '.bash/completion.d/fzf'),
         ('tools/fzf/shell/key-bindings.bash', '.bash/aliases.d/fzf'),
+        ('tools/fzf-tests', '.bin/fzf-tests'),
         ('tools/ripgrep-%s-x86_64-unknown-linux-musl/rg' %
          RIPGREP_VERSION, '.bin/rg'),
         ('python/autopep8/autopep8.py', '.bin/autopep8'),

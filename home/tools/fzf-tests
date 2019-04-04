@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# This file finds a list of bazel tests and lets the user select them via fzf.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly PATTERN="${1:-//...}"
+
+# The output of "label_kind" is something like:
+#  py_test rule //foo:bar
+#
+# The "rule" part is redundant so we don't display that in the search result.
+# Once fzf is done, however, we are only interested in the //foo:bar part.
+# That's why we filter it with awk at the very end.
+bazel query --output=label_kind --order_output=no "tests(${PATTERN})" \
+  | fzf --multi --no-mouse --prompt="bazel test > " --with-nth=1,3 --reverse \
+  | awk '{print $3}'
