@@ -32,10 +32,10 @@ enable_awesome:
       - pkg: desktop_packages
 {% endif %}
 
-# On my laptop I need to add this little X11 config snippet so that the
+# On my laptops I need to add this little X11 config snippet so that the
 # backlight controls work properly. Without this snippet I can't use
 # xbacklight(1) to control the backlight.
-{% if grains['host'] == 'minitardis' %}
+{% if grains['host'] == 'minitardis' or grains['host'] == 'philipp-laptop' %}
 fixup_backlight_config:
   file.managed:
     - name: /etc/X11/xorg.conf
