@@ -149,6 +149,7 @@ def create_links(force=False):
         '.pythonrc.py',
         '.tmux',
         '.gdbinit',
+        '.config/alacritty',
         '.config/awesome',
         '.config/fontconfig',
         '.inputrc',
