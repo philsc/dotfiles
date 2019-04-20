@@ -29,6 +29,7 @@ AUTO_GROUPS = {
         "openssh-server",
         "steam",
         "pulseaudio",
+        "silence",
     ],
     "minitardis": [
         "base",
