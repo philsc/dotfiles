@@ -105,3 +105,8 @@ bell() {
 vimpipe() {
   vim -u NONE -c "exec \"%norm $1\"" -es '+%print|q!' "${2:-/dev/stdin}"
 }
+
+# Prints the errno values.
+errno() {
+  cpp -dM /usr/include/errno.h | grep 'define E' | sort -n -k 3
+}
