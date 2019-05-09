@@ -14,9 +14,12 @@ set colored-stats on
 # Only available in bash 4.4 and readline 7.0.
 # set colored-completion-prefix on
 
-# Ignore case when completing and treat hyphens as underscores.
+# Ignore case when completing.
 set completion-ignore-case on
-set completion-map-case on
+# Treat hyphens as underscores.
+# TODO(phil): Figure out a better way to use this. At the moment it's very
+# annoying.
+#set completion-map-case on
 
 # Never ask for completion items and just list them all.
 set completion-query-items -1
