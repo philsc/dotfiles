@@ -60,7 +60,7 @@
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule ".vim/bundle/robotframework-vim"]
 	path = home/.vim/bundle/robotframework-vim
-	url = https://github.com/mfukar/robotframework-vim.git
+	url = https://github.com/rasjani/robotframework-vim.git
 [submodule ".vim/bundle/vim-autopep8"]
 	path = home/.vim/bundle/vim-autopep8
 	url = https://github.com/tell-k/vim-autopep8
