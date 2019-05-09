@@ -429,6 +429,14 @@ augroup git
     autocmd!
     autocmd BufRead,BufNewFile MERGE_MSG setfiletype gitcommit
     autocmd FileType gitcommit setlocal textwidth=70
+    autocmd FileType gitcommit setlocal formatoptions+=c
+    " Since commit messages don't really have code, vim doesn't distinguish
+    " 'comments' either. That means we don't want it to auto-format paragraphs
+    " on us. It can get messy otherwise.
+    autocmd FileType gitcommit setlocal formatoptions-=w
+    autocmd FileType gitcommit setlocal formatoptions-=a
+    " Always turn spell checking on in git commits.
+    autocmd FileType gitcommit setlocal spell
 augroup END
 
 augroup bazel
