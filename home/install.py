@@ -162,6 +162,7 @@ def create_links(force=False):
         ('tools/template.py', '.bin/template.py'),
         ('tools/crypt-helper.py', '.bin/crypt-helper.py'),
         ('tools/git-co', '.bin/git-co'),
+        ('tools/git-latest', '.bin/git-latest'),
         ('tools/git-ll', '.bin/git-ll'),
         ('tools/webserver.py', '.bin/webserver.py'),
         ('tools/dtc-wrapper.sh', '.bin/dtc-wrapper.sh'),

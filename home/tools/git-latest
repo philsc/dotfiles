@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly ORIGIN="${1:-origin}"
+
+git fetch "${ORIGIN}"
+
+DEFAULT_BRANCH="$(git symbolic-ref "refs/remotes/${ORIGIN}/HEAD")"
+DEFAULT_BRANCH="${DEFAULT_BRANCH#refs/remotes/}"
+
+git checkout "${DEFAULT_BRANCH}"
