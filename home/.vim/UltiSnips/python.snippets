@@ -78,6 +78,14 @@ cc_binary(
 )
 endsnippet
 
+snippet cci "Bazel cc_import" b
+cc_import(
+	name = "$1_import",
+	interface_library = "lib/$1.so",
+	system_provided = 1,
+)
+endsnippet
+
 snippet cct "Bazel cc_test" b
 cc_test(
 	name = "$1_test",
