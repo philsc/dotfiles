@@ -2,4 +2,5 @@
 set prompt \033[0;33m(gdb)\033[0m 
 
 # Save history. Otherwise, you're repeating yourself unnecessarily.
-set history save
+set history save on
+set history filename ~/.gdb_history
