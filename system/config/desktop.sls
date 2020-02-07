@@ -49,3 +49,26 @@ fixup_backlight_config:
     - require:
       - pkg: desktop_packages
 {% endif %}
+
+# Enable bitmap fonts. No idea why they're disabled by default.
+desktop_remove_disable_bitmap_fonts:
+  file.absent:
+    - name: /etc/fonts/conf.d/70-no-bitmaps.conf
+
+desktop_remove_scale_bitmap_fonts:
+  file.absent:
+    - name: /etc/fonts/conf.d/10-scale-bitmap-fonts.conf
+
+desktop_add_enable_bitmap_fonts:
+  file.symlink:
+    - name: /etc/fonts/conf.d/70-yes-bitmaps.conf
+    - target: /usr/share/fontconfig/conf.avail/70-yes-bitmaps.conf
+    - require:
+      - file: desktop_remove_disable_bitmap_fonts
+      - file: desktop_remove_scale_bitmap_fonts
+
+desktop_fonts_reconfigure:
+  cmd.run:
+    - name: dpkg-reconfigure -f noninteractive fontconfig
+    - onchanges:
+      - file: desktop_add_enable_bitmap_fonts
