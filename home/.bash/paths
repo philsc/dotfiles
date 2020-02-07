@@ -1,5 +1,6 @@
 ~/.bin
 ~/.rvm/bin
 $HOME/bin
-$HOME/go/bin
+$HOME/.golang/go/bin
+$HOME/.golang/path/bin
 $HOME/.local/bin
