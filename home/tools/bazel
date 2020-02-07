@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# Defer to bazelisk if available.
+if BAZELISK_PATH="$(type -p bazelisk)"; then
+  exec "${BAZELISK_PATH}" "$@"
+else
+  exec /usr/bin/bazel "$@"
+fi

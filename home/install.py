@@ -174,6 +174,7 @@ def create_links(force=False):
         ('tools/fzf-tests', '.bin/fzf-tests'),
         ('tools/ripgrep-%s-x86_64-unknown-linux-musl/rg' %
          RIPGREP_VERSION, '.bin/rg'),
+        ('tools/bazel', '.bin/bazel'),
         ('python/autopep8/autopep8.py', '.bin/autopep8'),
         ('python', '.python'),
         ('fontconfig/fonts.conf', '.fonts.conf'),
@@ -371,6 +372,7 @@ def install_certificates():
 
 def install_go_programs():
     programs = [
+        "github.com/bazelbuild/bazelisk",
         "github.com/bazelbuild/buildtools/buildifier",
         "github.com/junegunn/fzf",
         "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
