@@ -88,12 +88,15 @@ steam_launcher:
         set -e
         set -u
         readonly TEMP=/tmp/steam-Xauthority
-        cleanup() { rm -f "$TEMP"; }
+        readonly TEMP2=/tmp/steam-display
+        echo "${DISPLAY}" > "${TEMP2}"
+        cleanup() { rm -f "${TEMP}" "${TEMP2}"; }
         trap cleanup EXIT
-        touch "$TEMP"
-        chown :steam "$TEMP"
-        chmod 640 "$TEMP"
-        xauth extract "$TEMP" "$DISPLAY"
+        touch "${TEMP}"
+        chown :steam "${TEMP}" "${TEMP2}"
+        chmod 640 "${TEMP}" "${TEMP2}"
+        xauth extract "${TEMP}" "${DISPLAY}"
+        export DISPLAY
         sudo /bin/su - steam -c steam-wrapper-impl
     - require:
       - file: steam_launcher_impl
@@ -108,8 +111,11 @@ steam_launcher_impl:
         set -e
         set -u
         readonly TEMP=/tmp/steam-Xauthority
+        read DISPLAY < /tmp/steam-display
+        export DISPLAY
         unset XAUTHORITY
-        xauth -i merge "$TEMP"
+        touch ~/.Xauthority
+        xauth -i merge "${TEMP}"
         # Disable UI scaling.
         # TODO(phil): Figure out how to change this per-machine.
         export GDK_SCALE=1
