@@ -6,6 +6,7 @@ pulse_settings_client:
     - contents: |
         # This file is managed by SaltStack.
         # I recommend _against_ editing this file by hand.
+        default-server = /var/run/pulse/native
         autospawn = no
 
 # Add a systemd service file to start pulseaudio in system mode.
@@ -34,3 +35,9 @@ service.systemctl_reload:
   module.run:
     - onchanges:
       - file: pulse_system_daemon_service
+
+{% for unit in ("pulseaudio.service", "pulseaudio.socket") %}
+user_{{ unit.replace(".", "_") }}:
+  service.masked:
+    - name: {{ unit }}
+{% endfor %}
