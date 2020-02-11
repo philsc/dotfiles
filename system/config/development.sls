@@ -1,4 +1,4 @@
-{% set llvm_version = '6.0' -%}
+{% set llvm_version = '9' -%}
 {% set vagrant_version = '2.0.1' -%}
 
 # Install the gpg key for LLVM's deb packages.
