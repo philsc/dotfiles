@@ -79,8 +79,8 @@ def setup_default_file(default, skip_if_exists=False):
                 info("Skipping default install for %s\n" % target)
                 return
 
-            answer = input('Overwrite %s with default? ' % target)
-            overwrite_contents = answer[0].lower() == 'y'
+            answer = input('Overwrite %s with default? [Y/n] ' % target)
+            overwrite_contents = (not answer) or answer[0].lower() == 'y'
     else:
         overwrite_contents = True
 
