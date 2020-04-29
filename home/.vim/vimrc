@@ -565,6 +565,7 @@ let g:UltiSnipsEditSplit='vertical'
 " Make riv.vim use a leader other than Ctrl+e.
 let g:riv_global_leader='<C-G>'
 let g:riv_highlight_code='lua,cpp,javascript,vim,sh,python,ruby,c,rust'
+let g:riv_auto_format_table=0
 
 " Use gpg2 for gnupg.vim
 let g:GPGExecutable="gpg2 --trust-model always"
