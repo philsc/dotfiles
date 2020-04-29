@@ -253,6 +253,7 @@ def create_git_configs():
         ('alias.whatis', "show -s --pretty='tformat:%h (%s, %ad)' --date=short"),
         ('alias.worddiff',
          """diff --word-diff --color-words='[^"?=.,;:  /'"'"'()]+'"""),
+        ('alias.amend', 'commit -a --amend --no-edit'),
         ('color.diff', 'auto'),
         ('color.ui', 'auto'),
         ('color.diff.whitespace', 'red reverse'),
