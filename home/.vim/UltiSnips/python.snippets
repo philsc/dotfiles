@@ -20,7 +20,6 @@ py_library(
 	],
 	imports = [
 	],
-	srcs_version = "PY3",
 )
 endsnippet
 
@@ -30,9 +29,7 @@ py_binary(
 	srcs = [
 		"$1.py",
 	],
-	default_python_version = "PY3",
 	main = "$1.py",
-	srcs_version = "PY3",
 	deps = [
 	],
 )
@@ -41,26 +38,24 @@ endsnippet
 snippet pyt "Bazel py_test" b
 py_test(
 	name = "$1_test",
-	main = "$1_test.py",
 	srcs = [
 		"$1_test.py",
 	],
+	main = "$1_test.py",
 	deps = [
 		":$1",
 	],
-	srcs_version = "PY3",
-	default_python_version = "PY3",
 )
 endsnippet
 
 snippet ccl "Bazel cc_library" b
 cc_library(
 	name = "$1",
-	hdrs = [
-		"$1.h",
-	],
 	srcs = [
 		"$1.cc",
+	],
+	hdrs = [
+		"$1.h",
 	],
 	deps = [
 	],
@@ -176,7 +171,18 @@ snippet env "Add shebang" b
 
 endsnippet
 
+snippet main "Inserts a main() invocation" b
+if __name__ == "__main__":
+	sys.exit(main(sys.argv))
+endsnippet
+
 snippet testmain "Inserts a unittest.main() invocation" b
-if __name__ == '__main__':
+if __name__ == "__main__":
 	unittest.main()
+endsnippet
+
+snippet data "Add a data attr to a BUILD file"
+data = [
+	$1
+],
 endsnippet
