@@ -456,6 +456,7 @@ augroup proto
   autocmd!
   autocmd BufRead,BufNewFile CROSSTOOL set filetype=protoascii
   autocmd BufRead,BufNewFile *.pb set filetype=protoascii
+  autocmd BufRead,BufNewFile *.pb.txt set filetype=protoascii
   autocmd FileType protoascii setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
   autocmd FileType proto nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType proto vnoremap <buffer><Leader>cf :ClangFormat<CR>
