@@ -384,6 +384,8 @@ augroup filetype_c
   autocmd InsertLeave *.cc setlocal syntax=on
   autocmd InsertEnter *.h setlocal syntax=off
   autocmd InsertLeave *.h setlocal syntax=on
+  autocmd InsertEnter *.hh setlocal syntax=off
+  autocmd InsertLeave *.hh setlocal syntax=on
 augroup END
 
 augroup filetype_sh
@@ -442,6 +444,7 @@ augroup END
 augroup bazel
   autocmd!
   autocmd BufRead,BufNewFile *.bzl set filetype=python
+  autocmd BufRead,BufNewFile *.bazel set filetype=python
   autocmd BufRead,BufNewFile BUILD set filetype=python
   autocmd BufRead,BufNewFile *.BUILD set filetype=python
   autocmd BufRead,BufNewFile WORKSPACE set filetype=python
