@@ -111,4 +111,8 @@ errno() {
   cpp -dM /usr/include/errno.h | grep 'define E' | sort -n -k 3
 }
 
+gcc_macros() {
+  g++ -dM -E -x c++ "$@" - < /dev/null
+}
+
 alias miniterm.py='miniterm.py --raw'
