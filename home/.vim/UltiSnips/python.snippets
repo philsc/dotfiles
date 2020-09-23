@@ -10,6 +10,10 @@ snippet pub "Add public visibility to a bazel target" b
 visibility = ["//visibility:public"],
 endsnippet
 
+snippet priv "Add private visibility to a bazel target" b
+visibility = ["//visibility:private"],
+endsnippet
+
 snippet pyl "Bazel py_library" b
 py_library(
 	name = "$1",
