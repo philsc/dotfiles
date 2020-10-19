@@ -12,4 +12,7 @@ add_python_modules() {
   export PYTHONPATH
 }
 
-add_python_modules "$HOME/.python"
+# This is currently buggy. It should really just add the .python directory to
+# PYTHONPATH instead of the directories inside of .python itself. Disable this
+# for now.
+#add_python_modules "$HOME/.python"
