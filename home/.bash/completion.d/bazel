@@ -9,5 +9,6 @@ _bazel_run_complete_internal() {
 # Add bazel-excludes to the completion as well.
 if declare -f _bazel__complete > /dev/null; then
   complete -F _bazel__complete -o nospace "bazel-excludes"
+  complete -F _bazel__complete -o nospace "./dazel"
   complete -F _bazel_run_complete_internal -o nospace "bazel-run.sh"
 fi
