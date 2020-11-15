@@ -388,6 +388,13 @@ augroup filetype_c
   autocmd InsertLeave *.hh setlocal syntax=on
 augroup END
 
+augroup filetype_java
+  autocmd!
+  autocmd FileType java setlocal textwidth=100
+  autocmd InsertEnter *.java setlocal syntax=off
+  autocmd InsertLeave *.java setlocal syntax=on
+augroup END
+
 augroup filetype_sh
   autocmd!
   autocmd FileType sh,bash nnoremap <buffer><Leader>cf :<C-u>Shfmt -i 2<CR>
