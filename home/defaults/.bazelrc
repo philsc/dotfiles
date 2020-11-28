@@ -1,8 +1,12 @@
 #build --local_resources 50000,16,1000
-build --explain=/tmp/bazel_explain.log
-build --verbose_explanations
 --watchfs
-build --experimental_ui
-build --experimental_ui_actions_shown=32
-#build --strategy=Closure=worker
-#build --experimental_sandbox_shm
+
+#build build --spawn_strategy=linux-sandbox
+#build --experimental_sandbox_default_allow_network=false
+#build --experimental_sandbox_base=/dev/shm/
+#build --sandbox_fake_hostname=true
+#build --sandbox_fake_username=true
+
+#build --disk_cache=~/.cache/bazel_disk
+#build --repository_cache=~/.cache/bazel_repository
+#build --experimental_repository_cache_hardlinks=true
