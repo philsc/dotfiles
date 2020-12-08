@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Copies a selected section of the screen to the clipboard.
+maim -s --format png /dev/stdout | xclip -selection clipboard -t image/png -i
