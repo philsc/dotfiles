@@ -199,3 +199,8 @@ endsnippet
 snippet pip "Add a pip dependency to a BUILD file"
 "@aurora_pip_dependencies//pip/$1",
 endsnippet
+
+snippet third "Adds ignored third_party.py import" b
+import third_party.py  # pylint: disable=unused-import
+
+endsnippet
