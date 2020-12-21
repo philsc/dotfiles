@@ -185,6 +185,11 @@ if __name__ == "__main__":
 	unittest.main()
 endsnippet
 
+snippet pytest "Inserts a pytest.main() invocation" b
+if __name__ == "__main__":
+	sys.exit(pytest.main([__file__]))
+endsnippet
+
 snippet data "Add a data attr to a BUILD file"
 data = [
 	$1
