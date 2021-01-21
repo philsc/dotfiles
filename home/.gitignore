@@ -15,6 +15,7 @@
 /.mutt/*.gpg
 /.tmux/resurrect/
 /.fonts/fonts.dir
+/.fonts/.uuid
 /.jira.d/cookies.js
 
 # Use the specific version here so that "git status" will inform me of old
