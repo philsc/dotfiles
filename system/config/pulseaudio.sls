@@ -41,3 +41,11 @@ user_{{ unit.replace(".", "_") }}:
   service.masked:
     - name: {{ unit }}
 {% endfor %}
+
+# TODO(phil): Figure out what this does. I vaguely remember that this is used
+# to decouple output volume streams from one another.
+tweak_pulseaudio_daemon_conf:
+  file.append:
+    - name: /etc/pulse/daemon.conf
+    - text: |
+        flat-volumes = no
