@@ -1,11 +1,26 @@
 #!/bin/bash
 
-# Exclude the bazel-* symlinks since they're full of files we don't really care
-# about.
-_fzf_compgen_path() {
-  echo "$1"
-  command find -L "$1" \
-    -name .git -prune -o -name .svn -prune -o -name 'bazel-*' -prune \
-    -o \( -type d -o -type f -o -type l \) \
-    -a -not -path "$1" -print 2> /dev/null | sed 's@^\./@@'
-}
+if type -p fd >&/dev/null; then
+  # Use fd (https://github.com/sharkdp/fd) instead of the default find
+  # command for listing path candidates.
+  # - The first argument to the function ($1) is the base path to start traversal
+  # - See the source code (completion.{bash,zsh}) for the details.
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude ".git" . "$1"
+  }
+
+  # Use fd to generate the list for directory completion
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude ".git" . "$1"
+  }
+else
+  # Exclude the bazel-* symlinks since they're full of files we don't really care
+  # about.
+  _fzf_compgen_path() {
+    echo "$1"
+    command find -L "$1" \
+      -name .git -prune -o -name .svn -prune -o name external -o -name 'bazel-*' -prune \
+      -o \( -type d -o -type f -o -type l \) \
+      -a -not -path "$1" -print 2> /dev/null | sed 's@^\./@@'
+  }
+fi
