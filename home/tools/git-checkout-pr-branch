@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+if (($# != 2)); then
+    echo "usage: $0 PR_NUMBER BRANCH_NAME" >&2
+    exit 1
+fi
+
+readonly ORIGIN="${ORIGIN:-origin}"
+readonly PR_NUMBER="$1"
+readonly BRANCH_NAME="$2"
+
+# Start from latest HEAD before creating a new branch.
+git latest
+
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+git fetch "${ORIGIN}" "pull/${PR_NUMBER}/head"
+
+git checkout -B "${BRANCH_NAME}" FETCH_HEAD
+git branch -u "${CURRENT_BRANCH}"

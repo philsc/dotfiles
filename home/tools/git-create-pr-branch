@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly BRANCH_NAME="$1"
+
+# Start from latest HEAD before creating a new branch.
+git latest
+
+git checkout --track -B "${USER}/${BRANCH_NAME}"

@@ -6,9 +6,15 @@ set -o pipefail
 
 readonly ORIGIN="${1:-origin}"
 
-git fetch "${ORIGIN}"
-
 DEFAULT_BRANCH="$(git symbolic-ref "refs/remotes/${ORIGIN}/HEAD")"
-DEFAULT_BRANCH="${DEFAULT_BRANCH#refs/remotes/}"
+DEFAULT_BRANCH="${DEFAULT_BRANCH#refs/remotes/${ORIGIN}/}"
 
-git checkout "${DEFAULT_BRANCH}"
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+if [[ "${CURRENT_BRANCH}" == "${DEFAULT_BRANCH}" ]]; then
+    git fetch "${ORIGIN}" "${DEFAULT_BRANCH}"
+    git merge --ff-only "${ORIGIN}/${DEFAULT_BRANCH}"
+else
+    git fetch "${ORIGIN}" "${DEFAULT_BRANCH}:${DEFAULT_BRANCH}"
+    git checkout "${DEFAULT_BRANCH}"
+fi
