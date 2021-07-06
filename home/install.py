@@ -163,7 +163,7 @@ def create_links(force=False):
         ('tools/template.py', '.bin/template.py'),
         ('tools/crypt-helper.py', '.bin/crypt-helper.py'),
         ('tools/git-co', '.bin/git-co'),
-        ('tools/git-checkout-pr-branch', '.bin/git-checkout-pr-branch'),
+        ('tools/git-get-pr-branch', '.bin/git-get-pr-branch'),
         ('tools/git-create-pr-branch', '.bin/git-create-pr-branch'),
         ('tools/git-latest', '.bin/git-latest'),
         ('tools/git-ll', '.bin/git-ll'),
