@@ -392,7 +392,7 @@ def install_go_programs():
 
     with open(os.devnull, 'wb') as devnull:
         for program in programs:
-            if subprocess.call(["go", "get", program], stdout=devnull) == 0:
+            if subprocess.call(["go", "install", f"{program}@latest"], stdout=devnull) == 0:
                 new('Installed %s\n' % program)
             else:
                 warn("Failed to get %s\n" % program)
