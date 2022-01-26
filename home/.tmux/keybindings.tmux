@@ -4,8 +4,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Parse the tmux version number. Strip all non-digits.
+# Tmux 3.1c gets turned into "31" here.
+# Tmux 2.8a gets turned into "28" here.
 read _ TMUX_VERSION < <(tmux -V)
-TMUX_VERSION="${TMUX_VERSION//\./}"
+TMUX_VERSION="${TMUX_VERSION//[!0-9]/}"
 readonly TMUX_VERSION
 
 # Account for the bind key incompatiblity:
