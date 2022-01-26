@@ -23,7 +23,7 @@ general_packages:
 {% if grains['oscodename'] == 'jessie' %}
       - gnupg-curl
 {% else %}
-      - gnupg1-curl
+      - gnupg1
 {% endif %}
       - keychain
       - openssh-client

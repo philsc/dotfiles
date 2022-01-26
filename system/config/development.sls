@@ -1,5 +1,4 @@
-{% set llvm_version = '9' -%}
-{% set vagrant_version = '2.0.1' -%}
+{% set llvm_version = '13' -%}
 
 # Install the gpg key for LLVM's deb packages.
 apt_key_llvm:
@@ -21,8 +20,8 @@ apt_sources_llvm:
   file.managed:
     - name: /etc/apt/sources.list.d/llvm.list
     - contents: |
-        deb http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
-        deb-src http://llvm.org/apt/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
+        deb http://apt.llvm.org/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
+        deb-src http://apt.llvm.org/{{ grains['oscodename'] }}/ llvm-toolchain-{{ grains['oscodename'] }}-{{ llvm_version }} main
     - require:
       - cmd: apt_key_llvm_added
 
@@ -33,14 +32,9 @@ development_packages:
       - debootstrap
       - clang-format-{{ llvm_version }}
       - clang-{{ llvm_version }}
-      - cmake
       - debconf-utils
-      - python
-      - python-dev
       - python3
       - python3-dev
-      - subversion
-      - vpnc
     - reload_modules: true
     - require:
       - file: apt_sources_llvm
@@ -54,23 +48,6 @@ symlink_{{ llvm_target }}:
     - require:
       - pkg: development_packages
 {% endfor %}
-
-# Download the version of vagrant in the form of a .deb package.
-vagrant_download:
-  file.managed:
-    - name: /opt/downloads/vagrant_{{ vagrant_version }}_x86_64.deb
-    - source: https://releases.hashicorp.com/vagrant/{{ vagrant_version }}/vagrant_{{ vagrant_version }}_x86_64.deb
-    - source_hash: sha256=2f9498a83b3d650fcfcfe0ec7971070fcd3803fad6470cf7da871caf2564d84f
-    - require:
-      - file: download_dir
-
-vagrant_install:
-  pkg.installed:
-    - sources:
-      - vagrant: /opt/downloads/vagrant_{{ vagrant_version }}_x86_64.deb
-    - require:
-      - file: vagrant_download
-
 
 # Enable user namespaces.
 userns_sysctl_file:
