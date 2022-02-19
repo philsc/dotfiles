@@ -2,7 +2,6 @@
 desktop_packages:
   pkg.installed:
     - pkgs:
-      - autocutsel
       - awesome
       - awesome-extra
       - fonts-liberation

@@ -19,8 +19,6 @@ xrdb -merge "$HOME/.Xresources"
 # Start up the necessary daemons.
 urxvtd -o -f -q
 xscreensaver -no-splash &
-autocutsel -selection PRIMARY -buttonup -fork
-autocutsel -selection CLIPBOARD -buttonup -fork
 
 # Set caps-lock as another left-Control key.
 setxkbmap -option ctrl:nocaps

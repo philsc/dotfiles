@@ -102,7 +102,6 @@ def warn_missing_programs():
     # - ack
     # - git
     # - xsel
-    # - autocutsel
     pass
 
 

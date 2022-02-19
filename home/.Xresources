@@ -20,10 +20,13 @@ urxvt.urllauncher:          luakit
 ! Make matcher a right-click
 *matcher.button: 3
 
-! Use no urxvt extensions
-! Options are default, matcher, tabbed
-urxvt.perl-ext-common:
-urxvt.perl-ext: clipboard,selection,resize-font
+! Make text selections copy to the clipboard in addition to primary.
+urxvt.perl-ext-common: default
+urxvt.perl-ext: selection-to-clipboard,resize-font
+
+! Use Shift-Insert to paste the clipboard selection.
+! Middle click still pastes the primary selection.
+urxvt.keysym.S-Insert: eval:paste_clipboard
 
 ! Custom key-bindings for resize-font
 URxvt.resize-font.smaller: C-minus
