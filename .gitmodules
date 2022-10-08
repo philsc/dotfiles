@@ -7,9 +7,6 @@
 [submodule ".vim/bundle/gundo.vim"]
 	path = home/.vim/bundle/gundo.vim
 	url = https://github.com/sjl/gundo.vim.git
-[submodule ".vim/bundle/riv.vim"]
-	path = home/.vim/bundle/riv.vim
-	url = https://github.com/Rykka/riv.vim.git
 [submodule ".vim/bundle/vim-surround"]
 	path = home/.vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
@@ -116,3 +113,6 @@
 	path = home/.tmux/tmux-copycat-tmux-23
 	url = https://github.com/tmux-plugins/tmux-copycat.git
 	branch = tmux-23
+[submodule "home/.vim/bundle/vimspector"]
+	path = home/.vim/bundle/vimspector
+	url = https://github.com/puremourning/vimspector

@@ -43,8 +43,12 @@ set nobackup
 set noswapfile
 set nowb
 
-" Persistent undo
-set undodir=~/.vim/undodir
+" Persistent undo. nvim uses an incompatible format.
+if has('nvim')
+  set undodir=~/.vim/nvim_undodir
+else
+  set undodir=~/.vim/undodir
+endif
 set undofile
 
 " Let backspace work normally, i.e. allow deleting everything
@@ -561,6 +565,16 @@ let g:markdown_fenced_languages = [
   \ 'c++=cpp',
   \ 'c',
   \ 'bash=sh' ]
+
+let g:vimspector_enable_mappings = 'HUMAN'
+"sign define vimspectorBP            text=● texthl=WarningMsg
+"sign define vimspectorBPCond        text=◆ texthl=WarningMsg
+"sign define vimspectorBPLog         text=◆ texthl=SpellRare
+"sign define vimspectorBPDisabled    text=● texthl=LineNr
+"sign define vimspectorPC            text=▶ texthl=MatchParen linehl=CursorLine
+"sign define vimspectorPCBP          text=●▶  texthl=MatchParen linehl=CursorLine
+"sign define vimspectorCurrentThread text=▶   texthl=MatchParen linehl=CursorLine
+"sign define vimspectorCurrentFrame  text=▶   texthl=Special    linehl=CursorLine
 
 " Make it easier to create in-file diffs. Hit <Leader>dll on two sections to
 " compare them. Hit <Leader>dlr to reset.
