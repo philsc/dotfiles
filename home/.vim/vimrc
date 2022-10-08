@@ -384,6 +384,8 @@ augroup filetype_c
   autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
   autocmd FileType c,cpp,objc nmap <Leader>C :ClangFormatAutoToggle<CR>
+  autocmd InsertEnter *.c setlocal syntax=off
+  autocmd InsertLeave *.c setlocal syntax=on
   autocmd InsertEnter *.cc setlocal syntax=off
   autocmd InsertLeave *.cc setlocal syntax=on
   autocmd InsertEnter *.h setlocal syntax=off
