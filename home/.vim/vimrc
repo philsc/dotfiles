@@ -126,7 +126,7 @@ nmap <Leader>di :set list!<CR>
 " mouse, and use a good font
 set guioptions-=T
 set guioptions+=c
-set mouse=a
+set mouse=
 "set guifont=Inconsolata\ 10
 
 " Windows should always have a status line
