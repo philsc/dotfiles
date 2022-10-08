@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+set -x
+
+CURRENT_HASH="$(git rev-parse HEAD)"
+CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+UPSTREAM_BRANCH="$(git rev-parse --abbrev-ref HEAD@{u})"
+readonly CURRENT_BRANCH UPSTREAM_BRANCH
+
+if [[ "${CURRENT_BRANCH}" == "HEAD" ]]; then
+    echo "This command only works when executed from a branch." >&2
+    exit 1
+fi
+
+git latest
+
+MERGE_BASE="$(git merge-base "${CURRENT_BRANCH}" "${UPSTREAM_BRANCH}")"
+readonly MERGE_BASE
+
+git checkout "${CURRENT_BRANCH}"
+git reset --soft "${MERGE_BASE}"
+git commit -m "Flattened branch ${CURRENT_BRANCH}"

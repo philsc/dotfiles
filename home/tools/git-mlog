@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+UPSTREAM="$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
+readonly UPSTREAM
+
+exec git log --no-merges "${UPSTREAM}..@" "$@"

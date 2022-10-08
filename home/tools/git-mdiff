@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Lets you more easily diff your changes against the upstream branch regardless of merges and number
+# of commits. This is very useful for Github where PRs are branches.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+UPSTREAM="$(git rev-parse --abbrev-ref --symbolic-full-name @{u})"
+readonly UPSTREAM
+
+MERGE_BASE="$(git merge-base "${UPSTREAM}" @)"
+readonly MERGE_BASE
+
+exec git diff "${MERGE_BASE}..@" "$@"
