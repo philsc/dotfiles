@@ -16,7 +16,7 @@ import tarfile
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
 
-RIPGREP_VERSION = '0.8.1'
+RIPGREP_VERSION = '13.0.0'
 
 
 def make_printer(prefix):
