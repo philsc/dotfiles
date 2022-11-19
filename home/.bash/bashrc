@@ -62,6 +62,7 @@ __setps1() {
   local s=""
   local d=""
   local chroot=""
+  local g=""
 
   # Store history to prevent any loss.
   history -a
