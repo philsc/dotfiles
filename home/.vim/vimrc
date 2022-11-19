@@ -404,6 +404,7 @@ augroup END
 augroup filetype_sh
   autocmd!
   autocmd FileType sh,bash nnoremap <buffer><Leader>cf :<C-u>Shfmt -i 2<CR>
+  autocmd FileType sh,bash setlocal fo-=t
 augroup END
 
 augroup filetype_robot
