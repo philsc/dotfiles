@@ -469,6 +469,11 @@ augroup json
   autocmd FileType json nnoremap <buffer><Leader>cf :<C-u>%!python -m json.tool<CR>
 augroup END
 
+augroup fbs
+  autocmd!
+  autocmd BufNewFile,BufRead *.fbs setfiletype fbs
+augroup END
+
 augroup proto
   autocmd!
   autocmd BufRead,BufNewFile CROSSTOOL set filetype=protoascii
