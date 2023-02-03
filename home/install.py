@@ -154,6 +154,7 @@ def create_links(force=False):
         '.inputrc',
     ]
     misc = [
+        ('tools/maim-all', '.bin/maim-all'),
         ('tools/maim-clip', '.bin/maim-clip'),
         ('tools/q/bin/q', '.bin/q'),
         ('tools/nsenter/docker-enter', '.bin/docker-enter'),
