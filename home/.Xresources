@@ -37,6 +37,12 @@ URxvt.resize-font.show: C-question
 *VT100*colorMode: on
 *VT100*dynamicColors: on
 
+! Fix escape codes for Home and End.
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~
+URxvt.keysym.KP_Home: \033[1~
+URxvt.keysym.KP_End:  \033[4~
+
 ! Theme ten obtained from http://phraktured.net/terminal-colors/
 *VT100*background: rgb:1a/1a/1a
 *VT100*foreground: rgb:bb/bb/bb

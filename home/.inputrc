@@ -32,3 +32,7 @@ set skip-completed-text on
 # Allow me to jump forward/backwards by whitespace delimiters.
 "\e\C-f": shell-forward-word
 "\e\C-b": shell-backward-word
+
+# Fix Home and End.
+"\e[7~":beginning-of-line
+"\e[8~":end-of-line
