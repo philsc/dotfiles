@@ -2,5 +2,5 @@ export HISTFILE=~/.bash/history
 export HISTFILESIZE=1000000
 export HISTSIZE=1000000
 export HISTCONTROL=erasedups:ignorespace
-export HISTIGNORE="ls:pwd"
+export HISTIGNORE="ls:pwd:pass"
 export HISTTIMEFORMAT="%T " # for a better history output
