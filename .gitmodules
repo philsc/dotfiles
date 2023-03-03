@@ -67,9 +67,6 @@
 [submodule ".vim/bundle/rename.vim"]
 	path = home/.vim/bundle/rename.vim
 	url = https://github.com/danro/rename.vim.git
-[submodule "home/.vim/bundle/YouCompleteMe"]
-	path = home/.vim/bundle/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe/
 [submodule "home/.vim/bundle/matchit"]
 	path = home/.vim/bundle/matchit
 	url = https://github.com/tmhedberg/matchit.git
