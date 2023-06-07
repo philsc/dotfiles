@@ -291,42 +291,7 @@ def create_git_configs():
                 new('git configured %s\n' % config[0])
 
 
-def install_vim_plugins():
-    plugins = [
-        ('https://github.com/moby/moby/archive/master.zip',
-         'contrib/syntax/vim', 'moby'),
-    ]
-
-    for plugin in plugins:
-
-        target = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
-
-        if os.path.isdir(target):
-            info("vim plugin for %s already installed\n" % plugin[2])
-            continue
-
-        # Download the zip file and save it as a temporary file.
-        new("Installing vim plugin for %s..." % plugin[2])
-
-        (temp_file, _) = urllib.request.urlretrieve(plugin[0])
-
-        # Unzip the zipfile and copy the right folder into the .vim structure.
-        with zipfile.ZipFile(temp_file) as zip_file:
-            temp_dir = tempfile.mkdtemp()
-            zip_file.extractall(temp_dir)
-
-            src = os.path.join(temp_dir, plugin[2] + '-master', plugin[1])
-            dest = os.path.join(HOME, '.vim/bundle', plugin[2] + '.vim')
-            shutil.move(src, dest)
-            shutil.rmtree(temp_dir)
-
-        os.remove(temp_file)
-
-        done("done\n")
-
-
 def install_tools():
-    # TODO(philipp): De-duplicate with what's in install_vim_plugins().
     tools = [
         ('https://github.com/BurntSushi/ripgrep/releases/download/%s/ripgrep-%s-x86_64-unknown-linux-musl.tar.gz'
             % (RIPGREP_VERSION, RIPGREP_VERSION),
@@ -417,7 +382,6 @@ def main(argv):
     create_min_files()
     create_empty_files()
     create_git_configs()
-    install_vim_plugins()
     install_tools()
     install_certificates()
     install_go_programs()
