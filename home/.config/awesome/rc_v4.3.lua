@@ -387,7 +387,10 @@ globalkeys = awful.util.table.join(
 
     awful.key({ }, "XF86AudioMute", function () sound_helper("set-sink-mute", "toggle") end),
     awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("set-sink-volume", "-5%") end),
-    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("set-sink-volume", "+5%") end)
+    awful.key({ }, "XF86AudioRaiseVolume", function () sound_helper("set-sink-volume", "+5%") end),
+
+    -- Misc
+    awful.key({ modkey, "Control" }, "m", function () awful.util.spawn("xscreensaver-command -l") end)
 )
 
 clientkeys = awful.util.table.join(
