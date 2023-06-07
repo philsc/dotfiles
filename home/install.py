@@ -384,7 +384,8 @@ def main(argv):
     create_empty_files()
     create_git_configs()
     install_tools()
-    install_certificates()
+    # TODO(phil): Make this work again.
+    #install_certificates()
     install_go_programs()
 
 
