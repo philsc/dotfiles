@@ -20,4 +20,4 @@ popd
 
 rm -rf "${TEMPDIR}"
 
-mkdir -p "${GOPATH}"
+mkdir -p "${HOME}/.golang/path"
