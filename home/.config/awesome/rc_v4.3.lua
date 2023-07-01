@@ -223,10 +223,13 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     for i=1,num_tags-1 do
-      awful.tag.add(tags[i], {
+      tag = awful.tag.add(tags[i], {
         screen = s,
         layout = awful.layout.layouts[1],
       })
+      if i == 1 then
+        tag.selected = true
+      end
     end
     awful.tag.add(tags[num_tags], {
       screen = s,
