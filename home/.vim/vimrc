@@ -139,7 +139,7 @@ set laststatus=2
 " Autowrap text, autowrap comments (and add comment delimiter), recognise
 " white space, and automatically format paragraphs as they are edited, based
 " on the second line of the paragraph rather than the first
-set formatoptions+=jcwa2lor
+set formatoptions+=jcw2lor
 set wrap
 set textwidth=79
 
@@ -374,13 +374,12 @@ augroup END
 augroup docker
     autocmd!
     autocmd FileType dockerfile setlocal formatoptions-=c
-    autocmd FileType dockerfile setlocal formatoptions-=a
 augroup END
 
 augroup filetype_markdown
     autocmd!
     " Make lists a little easier to use in text files.
-    autocmd FileType markdown,text setlocal formatoptions-=2 formatoptions+=tn
+    autocmd FileType markdown,text setlocal formatoptions-=2 formatoptions+=tna
 augroup END
 
 " C-style abbreviations and shortcuts
@@ -449,7 +448,6 @@ augroup END
 augroup filetype_markdown
   autocmd!
   autocmd FileType markdown setlocal formatoptions-=c
-  autocmd FileType markdown setlocal formatoptions-=a
 augroup END
 
 augroup git
@@ -461,7 +459,6 @@ augroup git
     " 'comments' either. That means we don't want it to auto-format paragraphs
     " on us. It can get messy otherwise.
     autocmd FileType gitcommit setlocal formatoptions-=w
-    autocmd FileType gitcommit setlocal formatoptions-=a
     " Always turn spell checking on in git commits.
     autocmd FileType gitcommit setlocal spell
     autocmd FileType gitcommit call SetSyntaxOnInsertEnterLeave()
