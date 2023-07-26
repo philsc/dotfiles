@@ -22,3 +22,20 @@ else
       -o -name 'bazel-*' -prune \
       -o -type d -print 2> /dev/null | cut -b3-"
 fi
+
+__fzf_select_bazel_target__() {
+  local cmd="buildozer 'print label' //...:*"
+  eval "$cmd" | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-40%} --reverse $FZF_DEFAULT_OPTS $FZF_CTRL_T_OPTS" fzf -m "$@" | while read -r item; do
+    printf '%q ' "$item"
+  done
+  echo
+}
+
+fzf-bazel-target-widget() {
+  local selected="$(__fzf_select_bazel_target__)"
+  READLINE_LINE="${READLINE_LINE:0:$READLINE_POINT}$selected${READLINE_LINE:$READLINE_POINT}"
+  READLINE_POINT=$(( READLINE_POINT + ${#selected} ))
+}
+
+# Bind CTRL-q to bring up a list of bazel targets.
+bind -x '"\C-q": "fzf-bazel-target-widget"'
