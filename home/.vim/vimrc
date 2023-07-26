@@ -78,6 +78,10 @@ set tabstop=8
 set shiftwidth=4
 set softtabstop=4
 
+" Disable automatic detection of intendation settings for C/C++ files.
+let g:sleuth_c_heuristics = 0
+let g:sleuth_cpp_heuristics = 0
+
 " Let us know that we are in command/insert mode, and show commands as we type
 set showmode
 set showcmd
