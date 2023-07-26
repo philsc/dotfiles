@@ -346,10 +346,10 @@ def install_certificates():
 
 def install_go_programs():
     programs = [
+        "github.com/ankitpokhrel/jira-cli/cmd/jira",
         "github.com/bazelbuild/bazelisk",
         "github.com/bazelbuild/buildtools/buildifier",
         "github.com/junegunn/fzf",
-        "gopkg.in/Netflix-Skunkworks/go-jira.v1/cmd/jira",
         "mvdan.cc/sh/cmd/shfmt",
     ]
 
