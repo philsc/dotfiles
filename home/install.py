@@ -349,6 +349,7 @@ def install_go_programs():
         "github.com/ankitpokhrel/jira-cli/cmd/jira",
         "github.com/bazelbuild/bazelisk",
         "github.com/bazelbuild/buildtools/buildifier",
+        "github.com/bazelbuild/buildtools/buildozer",
         "github.com/junegunn/fzf",
         "mvdan.cc/sh/cmd/shfmt",
     ]
