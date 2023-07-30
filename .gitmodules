@@ -97,13 +97,6 @@
 [submodule "home/python/humanfriendly"]
 	path = home/python/humanfriendly
 	url = https://github.com/xolox/python-humanfriendly.git
-[submodule "home/.tmux/tmux-copycat"]
-	path = home/.tmux/tmux-copycat
-	url = https://github.com/tmux-plugins/tmux-copycat.git
-[submodule "home/.tmux/tmux-copycat-tmux-23"]
-	path = home/.tmux/tmux-copycat-tmux-23
-	url = https://github.com/tmux-plugins/tmux-copycat.git
-	branch = tmux-23
 [submodule "home/.vim/bundle/vimspector"]
 	path = home/.vim/bundle/vimspector
 	url = https://github.com/puremourning/vimspector
