@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if type -p fd &>/dev/null; then
-  export FZF_CTRL_T_COMMAND='command fd --hidden --follow --exclude ".git" .'
-  export FZF_ALT_C_COMMAND='command fd --type d --hidden --follow --exclude ".git" .'
+  export FZF_CTRL_T_COMMAND='command fd --hidden --exclude ".git" .'
+  export FZF_ALT_C_COMMAND='command fd --type d --hidden --exclude ".git" .'
 else
   # Exclude the bazel-* symlinks since they're full of files we don't really care
   # about.
