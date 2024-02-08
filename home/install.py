@@ -155,6 +155,7 @@ def create_links(force=False):
     ]
     misc = [
         ('tools/desktop-launch.py', '.bin/desktop-launch.py'),
+        ('tools/maim-post-select', '.bin/maim-post-select'),
         ('tools/maim-all', '.bin/maim-all'),
         ('tools/maim-clip', '.bin/maim-clip'),
         ('tools/q/bin/q', '.bin/q'),

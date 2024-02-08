@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+maim -f png "$@" | feh -

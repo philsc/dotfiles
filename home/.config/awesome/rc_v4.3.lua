@@ -327,6 +327,10 @@ globalkeys = awful.util.table.join(
         {description = "go back", group = "client"}),
 
     -- Standard program
+    awful.key({ modkey, "Control" }, "c", function () awful.spawn("maim-post-select") end,
+              {description = "take a screenshot", group = "launcher"}),
+    awful.key({ modkey,           }, "c", function () awful.spawn("maim-clip") end,
+              {description = "take a screenshot", group = "launcher"}),
     awful.key({ modkey,           }, ";", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey,           }, "d", function () awful.spawn(prefs.browser) end,
