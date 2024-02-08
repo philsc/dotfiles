@@ -4,6 +4,10 @@
 
 #setxkbmap -option altwin:swap_alt_win
 
+# Make single hits of Left Shift turn into space.
+# Make single hits of Left Control turn into Backspace.
+#xcape -t 200 -e 'Shift_L=space;Control_L=BackSpace'
+
 #synclient TapButton1=1
 #synclient TapButton2=3
 #synclient TapButton3=2
