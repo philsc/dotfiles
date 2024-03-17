@@ -443,6 +443,10 @@ augroup filetype_javascript
   autocmd FileType javascript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
   autocmd FileType javascript nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
   autocmd FileType javascript vnoremap <buffer><Leader>cf :ClangFormat<CR>
+  autocmd InsertEnter *.ts setlocal syntax=off
+  autocmd InsertLeave *.ts setlocal syntax=on
+  autocmd InsertEnter *.js setlocal syntax=off
+  autocmd InsertLeave *.js setlocal syntax=on
 augroup END
 
 augroup filetype_markdown
