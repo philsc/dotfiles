@@ -4,7 +4,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-readonly URL="https://go.dev/dl/go1.18.1.linux-amd64.tar.gz"
+readonly URL="https://go.dev/dl/go1.21.0.linux-amd64.tar.gz"
 
 TEMPDIR="$(mktemp -d)"
 readonly TEMPDIR
