@@ -6,9 +6,13 @@ _bazel_run_complete_internal() {
   _bazel__complete
 }
 
-# Add bazel-excludes to the completion as well.
+_bazel_test_complete_internal() {
+  COMP_WORDS=("${COMP_WORDS[0]}" test "${COMP_WORDS[@]:1}")
+  COMP_CWORD="$((COMP_CWORD + 1))"
+  _bazel__complete
+}
+
+# Add some bazel wrappers to the completion as well.
 if declare -f _bazel__complete > /dev/null; then
-  complete -F _bazel__complete -o nospace "bazel-excludes"
-  complete -F _bazel__complete -o nospace "./dazel"
-  complete -F _bazel_run_complete_internal -o nospace "bazel-run.sh"
+  complete -F _bazel_test_complete_internal -o nospace "itest.py"
 fi
