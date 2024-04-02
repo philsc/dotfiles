@@ -151,6 +151,7 @@ def create_links(force=False):
         '.config/alacritty',
         '.config/awesome',
         '.config/fontconfig',
+        '.config/nvim',
         '.inputrc',
     ]
     misc = [
@@ -390,6 +391,8 @@ def main(argv):
     # TODO(phil): Make this work again.
     #install_certificates()
     install_go_programs()
+
+    # TODO(philipp): Set up a virtualenv for nvim's +python3 support.
 
 
 if __name__ == '__main__':
