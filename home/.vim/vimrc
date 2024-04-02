@@ -399,6 +399,8 @@ augroup filetype_c
   autocmd InsertLeave *.c setlocal syntax=on
   autocmd InsertEnter *.cc setlocal syntax=off
   autocmd InsertLeave *.cc setlocal syntax=on
+  autocmd InsertEnter *.cpp setlocal syntax=off
+  autocmd InsertLeave *.cpp setlocal syntax=on
   autocmd InsertEnter *.h setlocal syntax=off
   autocmd InsertLeave *.h setlocal syntax=on
   autocmd InsertEnter *.hh setlocal syntax=off
