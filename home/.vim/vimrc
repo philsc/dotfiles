@@ -637,5 +637,5 @@ endif
 
 " Let the user load some directory-specific settings.
 if filereadable('.vimrc.directory')
-  "source .vimrc.directory
+  source .vimrc.directory
 endif

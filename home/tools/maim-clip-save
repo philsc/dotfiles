@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+mkdir -p "${HOME}/Screenshots/"
+
+FILENAME="screenshot_$(date +"%Y-%m-%d_%H-%M-%S.%3N")_clip.png"
+readonly FILENAME
+readonly FILEPATH="${HOME}/Screenshots/${FILENAME}"
+
+maim -s -f png "$@" > ~/Screenshots/"${FILENAME}"
+
+echo "Saved to ${FILEPATH}"
