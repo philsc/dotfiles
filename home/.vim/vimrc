@@ -30,6 +30,18 @@ nnoremap <Leader>cl :%s/\s\+$//g<CR>
 " Type <Space>y to copy to the system clipboard. Disable the builtin support.
 vnoremap <Leader>y :<C-U>silent '<,'>w !xsel --clipboard --input<CR>
 nnoremap <Leader>y :silent w !xsel --clipboard --input<CR>
+let g:clipboard = {
+		\ 'name': 'xsel',
+		\ 'copy': {
+		\    '+': 'xsel --nodetach -i -b',
+		\    '*': 'xsel --nodetach -i -p',
+		\  },
+		\ 'paste': {
+		\    '+': 'xsel -o -b',
+		\    '*': 'xsel -o -p',
+		\ },
+		\ 'cache_enabled': 1,
+		\ }
 set clipboard=
 
 " Set to auto read when a file is changed from the outside
