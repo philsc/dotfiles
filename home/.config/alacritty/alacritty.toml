@@ -1,0 +1,39 @@
+[font]
+#normal = { family = "ProFontOTB", style = "Regular" }
+normal = { family = "Fixed", style = "SemiCondensed" }
+bold = { family = "Fixed", style = "SemiCondensed" }
+#normal = { family = "monospace", style = "Regular" }
+size = 10
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+
+# Default colors
+[colors.primary]
+background = '#1a1a1a'
+foreground = '#bbbbbb'
+
+# Normal colors
+[colors.normal]
+black   = '#1E2320'
+red     = '#98565e'
+green   = '#60B48A'
+yellow  = '#DFAF8F'
+#blue    = '#506070'
+blue    = '#4d6585'
+magenta = '#DC8CC3'
+cyan    = '#8CD0D3'
+white   = '#DCDCCC'
+
+# Bright colors
+[colors.bright]
+black   = '#709080'
+red     = '#DCA3A3'
+green   = '#C3BF9F'
+yellow  = '#F0DFAF'
+#blue    = '#94BFF3'
+blue    = '#83a3be'
+magenta = '#EC93D3'
+cyan    = '#93E0E3'
+white   = '#FFFFFF'
