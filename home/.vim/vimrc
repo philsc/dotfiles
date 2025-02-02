@@ -417,6 +417,8 @@ augroup filetype_c
   autocmd InsertLeave *.h setlocal syntax=on
   autocmd InsertEnter *.hh setlocal syntax=off
   autocmd InsertLeave *.hh setlocal syntax=on
+  autocmd InsertEnter *.hpp setlocal syntax=off
+  autocmd InsertLeave *.hpp setlocal syntax=on
 augroup END
 
 augroup filetype_java
