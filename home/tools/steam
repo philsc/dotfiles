@@ -1,3 +1,8 @@
 #!/bin/bash
-# Execute the wrapper instead.
-/usr/bin/steam-wrapper
+if [[ -x /usr/bin/steam-wrapper ]]; then
+    # Execute the wrapper instead.
+    exec /usr/bin/steam-wrapper
+fi
+
+# Fall back to the system installed version.
+exec /usr/games/steam
