@@ -127,7 +127,7 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
 
   def _send_bytes(self, mime_type, data):
     self.send_response(200)
-    self.send_header('Content-type', 'text/html')
+    self.send_header('Content-type', mime_type)
     self.end_headers()
     self.wfile.write(data)
 
