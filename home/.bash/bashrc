@@ -43,6 +43,7 @@ sourcefile /opt/local/etc/bash_completion             # Macports version
 sourcefile /usr/share/bash-completion/bash_completion # Fedora version
 sourcefile /usr/lib/git-core/git-sh-prompt            # Ubuntu version
 sourcefile /opt/local/share/git/git-prompt.sh         # Macports version
+sourcefile "$HOME/.cargo/env"
 
 export GIT_PS1_SHOWDIRTYSTATE=1
 export GIT_PS1_SHOWUNTRACKEDFILES=1
