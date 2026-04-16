@@ -90,6 +90,8 @@ set tabstop=2
 set shiftwidth=4
 set softtabstop=4
 
+let g:sleuth_automatic = 1
+
 " Disable automatic detection of intendation settings for C/C++ files.
 let g:sleuth_c_heuristics = 0
 let g:sleuth_cpp_heuristics = 0
@@ -502,6 +504,7 @@ augroup END
 augroup fbs
   autocmd!
   autocmd BufNewFile,BufRead *.fbs setfiletype fbs
+  "autocmd FileType fbs setlocal textwidth=80
 augroup END
 
 augroup proto
