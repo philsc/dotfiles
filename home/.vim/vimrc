@@ -140,12 +140,8 @@ highlight RedundantSpaces ctermbg=darkred guibg=red
 set listchars=tab:→\ ,eol:$,trail:·
 nmap <Leader>di :set list!<CR>
 
-" Remove the GUI toolbar, make options text instead of popups, enable the
-" mouse, and use a good font
-set guioptions-=T
-set guioptions+=c
+" Disable the mouse.
 set mouse=
-"set guifont=Inconsolata\ 10
 
 " Windows should always have a status line
 set laststatus=2
