@@ -38,6 +38,8 @@ shopt -s globstar  # enable recursive patterns like **/*.txt
 #fi
 
 sourcefile() { [[ -s "$1" ]] && . "$1"; }
+sourcefile ~/.nvm/nvm.sh
+sourcefile ~/.nvm/bash_completion
 sourcefile /etc/bash_completion                       # Ubuntu version
 sourcefile /opt/local/etc/bash_completion             # Macports version
 sourcefile /usr/share/bash-completion/bash_completion # Fedora version
