@@ -1,4 +1,8 @@
 " Set up +python3 support.
+" Use these instructions:
+"   $ python3 -m venv ~/.vim/pynvim
+"   $ . ~/.vim/pynvim/bin/activate
+"   $ pip3 install -U pynvim
 let g:python3_host_prog = '~/.vim/pynvim/bin/python3'
 
 " Source the vim configuration.
