@@ -1,0 +1,2 @@
+# Workspace-level Bazel flags. Machine-specific ones live in ~/.bazelrc, which
+# home/install.py seeds from home/defaults/.bazelrc.

@@ -1,0 +1,4 @@
+# File managed by Salt.
+# Let members of the "video" group control the display backlight (used by the
+# awesome brightness key bindings).
+ACTION=="add", SUBSYSTEM=="backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
