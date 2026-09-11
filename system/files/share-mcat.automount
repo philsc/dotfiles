@@ -1,0 +1,12 @@
+# Mounts /share/mcat on first access instead of at boot, so boot never
+# waits on the Pi.
+[Unit]
+Description=Automount ood.local mcat share
+
+[Automount]
+Where=/share/mcat
+# Unmount when idle so a Pi that goes away does not leave a hung mount behind.
+TimeoutIdleSec=120
+
+[Install]
+WantedBy=multi-user.target

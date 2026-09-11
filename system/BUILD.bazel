@@ -7,6 +7,12 @@ load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 #   bazel build //system:backlight_deb
 #   sudo dpkg -i bazel-bin/system/dotfiles-backlight_0.1_all.deb
 #
+# A package with dependencies goes through apt instead, which installs them
+# where dpkg would only complain:
+#
+#   bazel build //system:ood_shares_deb
+#   sudo apt install ./bazel-bin/system/dotfiles-ood-shares_0.1_all.deb
+#
 # The version is fixed on purpose: dpkg reinstalls a package of the version
 # it already has, which is what the install loop wants.
 DEB_VERSION = "0.1"
@@ -38,6 +44,48 @@ pkg_deb(
     package = "dotfiles-backlight",
     postinst = "deb/backlight.postinst",
     priority = "optional",
+    section = "misc",
+    version = DEB_VERSION,
+)
+
+# Lazily mounts ood.local's samba shares under /share. Units, not fstab lines:
+# /etc/fstab is the admin's file, and units come and go with the package.
+pkg_files(
+    name = "ood_shares_deb_units",
+    srcs = [
+        "files/share-mcat.automount",
+        "files/share-mcat.mount",
+        "files/share-media.automount",
+        "files/share-media.mount",
+    ],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "usr/lib/systemd/system",
+)
+
+pkg_tar(
+    name = "ood_shares_deb_data",
+    srcs = [":ood_shares_deb_units"],
+    extension = "tar",
+)
+
+pkg_deb(
+    name = "ood_shares_deb",
+    architecture = "all",
+    data = ":ood_shares_deb_data",
+    # libnss-mdns is what resolves ood.local for mount.cifs.
+    depends = [
+        "cifs-utils",
+        "libnss-mdns",
+    ],
+    description = "Mounts ood.local's samba shares under /share on first access",
+    maintainer = DEB_MAINTAINER,
+    package = "dotfiles-ood-shares",
+    postinst = "deb/ood-shares.postinst",
+    postrm = "deb/ood-shares.postrm",
+    prerm = "deb/ood-shares.prerm",
+    priority = "optional",
+    # For browsing the shares without mounting: smbclient -N -L ood.local
+    recommends = ["smbclient"],
     section = "misc",
     version = DEB_VERSION,
 )

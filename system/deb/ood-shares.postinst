@@ -1,0 +1,11 @@
+#!/bin/sh
+# postinst for dotfiles-ood-shares: start the automounts without a reboot.
+set -e
+
+# Only where systemd is running, which a chroot is not.
+if [ "$1" = configure ] && [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+    systemctl enable --now share-media.automount share-mcat.automount
+fi
+
+exit 0

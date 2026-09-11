@@ -1,0 +1,12 @@
+# Mounts /share/media on first access instead of at boot, so boot never
+# waits on the Pi.
+[Unit]
+Description=Automount ood.local media share
+
+[Automount]
+Where=/share/media
+# Unmount when idle so a Pi that goes away does not leave a hung mount behind.
+TimeoutIdleSec=120
+
+[Install]
+WantedBy=multi-user.target

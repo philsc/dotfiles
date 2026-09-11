@@ -1,0 +1,9 @@
+#!/bin/sh
+# postrm for dotfiles-ood-shares: drop the deleted units from systemd's view.
+set -e
+
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload || true
+fi
+
+exit 0

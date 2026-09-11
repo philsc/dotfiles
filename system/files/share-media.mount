@@ -1,0 +1,15 @@
+# Mount unit for ood.local's "media" share. The automount of the same name
+# is what gets enabled; this one is pulled in on first access to /share/media.
+[Unit]
+Description=ood.local media share
+
+[Mount]
+What=//ood.local/media
+Where=/share/media
+Type=cifs
+# A guest share: nothing on the house's network needs a login to mount it.
+# uid/gid make the local view mine; the Pi forces ownership on its side
+# regardless of who mounted it.
+Options=guest,uid=1000,gid=1000,file_mode=0664,dir_mode=0775,iocharset=utf8,vers=3.1.1
+# A powered-off Pi should fail fast rather than hang whatever touched /share.
+TimeoutSec=15
