@@ -131,20 +131,124 @@ display_brightness = function ()
   end)
 end
 
+-- Battery-related helpers.
+-- Returns the names of all batteries in /sys/class/power_supply (e.g. "BAT0").
+detect_batteries = function ()
+  local batteries = {}
+  for name in readcmd('ls /sys/class/power_supply'):gmatch('[^\n]+') do
+    local fd = io.open('/sys/class/power_supply/' .. name .. '/type', 'r')
+    if fd then
+      local kind = fd:read('*l')
+      io.close(fd)
+      if kind == 'Battery' then
+        table.insert(batteries, name)
+      end
+    end
+  end
+  table.sort(batteries)
+  return batteries
+end
+
+-- Creates a widget that draws a battery outline filled according to the
+-- charge level. Call :update(state, percent) to change what is shown; state
+-- is one of vicious' battery states ("+" charging, "-" discharging, "↯" full).
+create_battery_icon = function ()
+  local icon = wibox.widget.base.make_widget()
+  icon.state = "⌁"
+  icon.percent = 0
+
+  function icon:update(state, percent)
+    self.state = state
+    self.percent = percent
+    self:emit_signal("widget::redraw_needed")
+  end
+
+  function icon:fit(context, width, height)
+    return 24, height
+  end
+
+  function icon:draw(context, cr, width, height)
+    local body_w, body_h = 17, 9
+    local nub_w, nub_h = 2, 4
+    local x = 2
+    local y = math.floor((height - body_h) / 2)
+    local fg = beautiful.fg_normal or "#aaaaaa"
+
+    -- Outline and nub.
+    cr:set_line_width(1)
+    cr:set_source(gears.color(fg))
+    cr:rectangle(x + 0.5, y + 0.5, body_w - 1, body_h - 1)
+    cr:stroke()
+    cr:rectangle(x + body_w, y + (body_h - nub_h) / 2, nub_w, nub_h)
+    cr:fill()
+
+    -- Fill level.
+    local fill_color = fg
+    if self.state == "+" then
+      fill_color = "#81a2be"
+    elseif self.percent <= 15 then
+      fill_color = "#cc6666"
+    elseif self.percent <= 30 then
+      fill_color = "#f0c674"
+    end
+    local fill_w = math.floor((body_w - 4) * self.percent / 100 + 0.5)
+    if fill_w > 0 then
+      cr:set_source(gears.color(fill_color))
+      cr:rectangle(x + 2, y + 2, fill_w, body_h - 4)
+      cr:fill()
+    end
+
+    -- Charging bolt.
+    if self.state == "+" then
+      local bx, by = x + 6, y + 1
+      cr:set_source(gears.color(beautiful.bg_normal or "#222222"))
+      cr:move_to(bx + 3, by)
+      cr:line_to(bx, by + 4)
+      cr:line_to(bx + 2.5, by + 4)
+      cr:line_to(bx + 2, by + 7)
+      cr:line_to(bx + 5, by + 3)
+      cr:line_to(bx + 2.5, by + 3)
+      cr:close_path()
+      cr:fill()
+    end
+  end
+
+  return icon
+end
+
 -- }}}
 
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
----- Battery indicators.
+-- Battery indicators. Batteries are auto-detected; prefs.battery can
+-- override per-battery settings. Each battery is drawn as an icon whose
+-- tooltip shows the details.
 batwidgets = {}
-for bat, settings in pairs(prefs.battery) do
-  label = wibox.widget.textbox(bat)
-  remaining = wibox.widget.textbox('-')
-  vicious.register(remaining, vicious.widgets.bat, "$1 $3", settings.refresh_rate, bat)
+for _, bat in ipairs(detect_batteries()) do
+  local settings = prefs.battery[bat] or {}
+  local refresh_rate = settings.refresh_rate or 30
+  local icon = create_battery_icon()
+  local tooltip = awful.tooltip({ objects = { icon } })
+  local state_names = { ["+"] = "charging", ["-"] = "discharging", ["↯"] = "full" }
 
-  table.insert(batwidgets, label)
-  table.insert(batwidgets, remaining)
+  gears.timer({
+    timeout = refresh_rate,
+    call_now = true,
+    autostart = true,
+    callback = function ()
+      -- args: $1 state (+ - ↯ ⌁), $2 percent, $3 time remaining
+      local args = vicious.widgets.bat(nil, bat)
+      icon:update(args[1], args[2])
+      local text = string.format('%s: %d%% (%s)', bat, args[2], state_names[args[1]] or "unknown")
+      if args[3] ~= "N/A" then
+        text = text .. ", " .. args[3] .. " remaining"
+      end
+      tooltip.text = text
+    end,
+  })
+
+  table.insert(batwidgets, icon)
 end
 
 
