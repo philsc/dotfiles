@@ -129,11 +129,59 @@ sound_helper = function (action, param)
   create_notification('volume', get_volume)
 end
 
--- Brightness-related helpers.
+-- Brightness-related helpers. The hardware backlight is controlled through
+-- /sys/class/backlight and expressed in percent. The brightness file needs to
+-- be writable by the user (see system/files/90-backlight.rules).
+brightness_min, brightness_max = 5, 100
+
+-- Returns the sysfs directory of the backlight device, or nil if there is none.
+backlight_dir = function ()
+  local device = prefs.backlight or readcmd('ls /sys/class/backlight'):match('[^\n]+')
+  return device and ('/sys/class/backlight/' .. device) or nil
+end
+
+read_sysfs = function (path)
+  local fd = io.open(path, 'r')
+  if not fd then return nil end
+  local value = fd:read('*l')
+  io.close(fd)
+  return tonumber(value)
+end
+
+-- Returns the current brightness in percent.
+get_brightness = function ()
+  local dir = backlight_dir()
+  if not dir then return 0 end
+  local value, max = read_sysfs(dir .. '/brightness'), read_sysfs(dir .. '/max_brightness')
+  if not value or not max or max == 0 then return 0 end
+  return math.floor(value / max * 100 + 0.5)
+end
+
 display_brightness = function ()
   create_notification('brightness', function ()
-      return {title = 'Brightness', text = readcmd('xbacklight -get')}
+      return {title = 'Brightness', text = get_brightness() .. "%"}
   end)
+end
+
+-- Changes the brightness by delta percent, clamped to a sane range.
+adjust_brightness = function (delta)
+  local dir = backlight_dir()
+  local max = dir and read_sysfs(dir .. '/max_brightness')
+  if not max then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = 'Brightness', text = 'No backlight device found' })
+    return
+  end
+  local percent = math.max(brightness_min, math.min(brightness_max, get_brightness() + delta))
+  local fd, err = io.open(dir .. '/brightness', 'w')
+  if not fd then
+    naughty.notify({ preset = naughty.config.presets.critical,
+                     title = 'Brightness', text = 'Cannot write backlight: ' .. tostring(err) })
+    return
+  end
+  fd:write(string.format('%d\n', math.floor(percent / 100 * max + 0.5)))
+  io.close(fd)
+  display_brightness()
 end
 
 -- Battery-related helpers.
@@ -521,22 +569,14 @@ globalkeys = awful.util.table.join(
               {description = "run vim to send keys to client", group = "launcher"}),
 
     -- Multimedia keys
-    awful.key({ "Shift"           }, "XF86MonBrightnessDown", function()
-      awful.spawn("xbacklight -dec 1 -steps 1 -time 0")
-      display_brightness()
-    end),
-    awful.key({ "Shift"           }, "XF86MonBrightnessUp", function()
-      awful.spawn("xbacklight -inc 1 -steps 1 -time 0")
-      display_brightness()
-    end),
-    awful.key({                   }, "XF86MonBrightnessDown", function()
-      awful.spawn("xbacklight -dec 5 -steps 1 -time 0")
-      display_brightness()
-    end),
-    awful.key({                   }, "XF86MonBrightnessUp", function()
-      awful.spawn("xbacklight -inc 5 -steps 1 -time 0")
-      display_brightness()
-    end),
+    awful.key({ "Shift"           }, "XF86MonBrightnessDown", function() adjust_brightness(-1) end,
+              {description = "decrease brightness by 1%", group = "screen"}),
+    awful.key({ "Shift"           }, "XF86MonBrightnessUp", function() adjust_brightness(1) end,
+              {description = "increase brightness by 1%", group = "screen"}),
+    awful.key({                   }, "XF86MonBrightnessDown", function() adjust_brightness(-prefs.brightness_step) end,
+              {description = "decrease brightness", group = "screen"}),
+    awful.key({                   }, "XF86MonBrightnessUp", function() adjust_brightness(prefs.brightness_step) end,
+              {description = "increase brightness", group = "screen"}),
 
     awful.key({ }, "XF86AudioMute", function () sound_helper("set-sink-mute", "toggle") end),
     awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("set-sink-volume", "-5%") end),
