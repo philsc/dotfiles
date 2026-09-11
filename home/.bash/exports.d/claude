@@ -1,0 +1,5 @@
+#!/bin/bash
+export CLAUDE_CODE_SCROLL_SPEED=3
+
+# Until urxt fixes their bugs, turn off mouse movement/clicks for now.
+export CLAUDE_CODE_DISABLE_MOUSE_CLICKS=1
