@@ -175,8 +175,11 @@ create_battery_icon = function ()
   function icon:draw(context, cr, width, height)
     local body_w, body_h = 17, 9
     local nub_w, nub_h = 2, 4
+    -- The state indicator (+/-) sits below the body.
+    local indicator_gap, indicator_size = 3, 5
+    local total_h = body_h + indicator_gap + indicator_size
     local x = 2
-    local y = math.floor((height - body_h) / 2)
+    local y = math.floor((height - total_h) / 2)
     local fg = beautiful.fg_normal or "#aaaaaa"
 
     -- Outline and nub.
@@ -216,6 +219,21 @@ create_battery_icon = function ()
       cr:close_path()
       cr:fill()
     end
+
+    -- Charging/discharging indicator: "+" or "-" centred below the body.
+    if self.state == "+" or self.state == "-" then
+      local cx = x + body_w / 2
+      local cy = y + body_h + indicator_gap + indicator_size / 2
+      cr:set_source(gears.color(fill_color))
+      cr:set_line_width(1)
+      cr:move_to(cx - indicator_size / 2, cy)
+      cr:line_to(cx + indicator_size / 2, cy)
+      if self.state == "+" then
+        cr:move_to(cx, cy - indicator_size / 2)
+        cr:line_to(cx, cy + indicator_size / 2)
+      end
+      cr:stroke()
+    end
   end
 
   return icon
@@ -230,6 +248,7 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 -- override per-battery settings. Each battery is drawn as an icon whose
 -- tooltip shows the details.
 batwidgets = {}
+battery_updaters = {}
 for _, bat in ipairs(detect_batteries()) do
   local settings = prefs.battery[bat] or {}
   local refresh_rate = settings.refresh_rate or 30
@@ -237,23 +256,41 @@ for _, bat in ipairs(detect_batteries()) do
   local tooltip = awful.tooltip({ objects = { icon } })
   local state_names = { ["+"] = "charging", ["-"] = "discharging", ["↯"] = "full" }
 
+  local update = function ()
+    -- args: $1 state (+ - ↯ ⌁), $2 percent, $3 time remaining
+    local args = vicious.widgets.bat(nil, bat)
+    icon:update(args[1], args[2])
+    local text = string.format('%s: %d%% (%s)', bat, args[2], state_names[args[1]] or "unknown")
+    if args[3] ~= "N/A" then
+      text = text .. ", " .. args[3] .. " remaining"
+    end
+    tooltip.text = text
+  end
+
+  -- Poll periodically to track the charge level.
   gears.timer({
     timeout = refresh_rate,
     call_now = true,
     autostart = true,
-    callback = function ()
-      -- args: $1 state (+ - ↯ ⌁), $2 percent, $3 time remaining
-      local args = vicious.widgets.bat(nil, bat)
-      icon:update(args[1], args[2])
-      local text = string.format('%s: %d%% (%s)', bat, args[2], state_names[args[1]] or "unknown")
-      if args[3] ~= "N/A" then
-        text = text .. ", " .. args[3] .. " remaining"
-      end
-      tooltip.text = text
-    end,
+    callback = update,
   })
 
   table.insert(batwidgets, icon)
+  table.insert(battery_updaters, update)
+end
+
+-- Refresh immediately when UPower reports a change (e.g. the charger being
+-- plugged in or unplugged) instead of waiting for the next poll.
+if dbus and #battery_updaters > 0 then
+  dbus.add_match("system", "type='signal',interface='org.freedesktop.DBus.Properties'," ..
+                 "member='PropertiesChanged',path_namespace='/org/freedesktop/UPower/devices'")
+  dbus.connect_signal("org.freedesktop.DBus.Properties", function (data)
+    if data.member == "PropertiesChanged" and data.path:find("/org/freedesktop/UPower/devices/", 1, true) == 1 then
+      for _, update in ipairs(battery_updaters) do
+        update()
+      end
+    end
+  end)
 end
 
 
