@@ -43,6 +43,11 @@ beautiful.init(awful.util.get_themes_dir() .. "default/theme.lua")
 -- Local preferences.
 local prefs = dofile(awful.util.getdir("config") .. "prefs.lua")
 
+-- Override the theme's wallpaper with the preferred one, if set.
+if prefs.wallpaper then
+  beautiful.wallpaper = prefs.wallpaper
+end
+
 -- This is used later as the default terminal and editor to run.
 terminal = prefs.terminal
 
