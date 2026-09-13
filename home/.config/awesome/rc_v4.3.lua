@@ -132,7 +132,7 @@ end
 -- Brightness-related helpers. The hardware backlight is controlled through
 -- /sys/class/backlight and expressed in percent. The brightness file needs to
 -- be writable by the user (see system/files/90-backlight.rules).
-brightness_min, brightness_max = 5, 100
+brightness_min, brightness_max = 1, 100
 
 -- Returns the sysfs directory of the backlight device, or nil if there is none.
 backlight_dir = function ()
@@ -179,7 +179,7 @@ adjust_brightness = function (delta)
                      title = 'Brightness', text = 'Cannot write backlight: ' .. tostring(err) })
     return
   end
-  fd:write(string.format('%d\n', math.floor(percent / 100 * max + 0.5)))
+  fd:write(string.format('%d\n', math.max(1, math.floor(percent / 100 * max + 0.5))))
   io.close(fd)
   display_brightness()
 end
