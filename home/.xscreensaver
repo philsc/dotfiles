@@ -1,0 +1,22 @@
+# XScreenSaver settings. These override /etc/X11/app-defaults/XScreenSaver and
+# any X resources, and the daemon hot-reloads this file when it changes.
+#
+# Don't use xscreensaver-settings (the GUI): it rewrites ~/.xscreensaver and
+# will replace the symlink into the dotfiles repo with a regular file.
+
+# No screensaver animations, just a blank screen. Lock after 5 minutes idle.
+mode:               blank
+timeout:            0:05:00
+lock:               True
+lockTimeout:        0:00:00
+
+# Power the panel off as soon as the screen blanks.
+dpmsEnabled:        True
+dpmsQuickOff:       True
+dpmsStandby:        0:05:00
+dpmsSuspend:        0:05:00
+dpmsOff:            0:05:00
+
+fade:               False
+unfade:             False
+splash:             False

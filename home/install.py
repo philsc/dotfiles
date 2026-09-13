@@ -140,6 +140,7 @@ def create_links(force=False):
         '.colordiffrc',
         '.mutt',
         '.Xresources',
+        '.xscreensaver',
         '.xprofile',
         '.xinitrc',
         '.gtkrc-2.0',
