@@ -523,6 +523,14 @@ globalkeys = awful.util.table.join(
     -- Standard program
     awful.key({ modkey, "Control" }, "c", function () awful.spawn("maim-post-select") end,
               {description = "take a screenshot", group = "launcher"}),
+    -- Delayed variant: the hotkey's X grab dismisses open popups/tooltips, so
+    -- wait a few seconds to give them a chance to be re-opened.
+    awful.key({ modkey, "Control", "Shift" }, "c",
+        function ()
+            naughty.notify({ text = "Screenshot in 3s...", timeout = 2 })
+            awful.spawn("maim-post-select --delay=3")
+        end,
+        {description = "take a delayed screenshot (keeps popups)", group = "launcher"}),
     awful.key({ modkey,           }, "c", function () awful.spawn("maim-clip") end,
               {description = "take a screenshot", group = "launcher"}),
     awful.key({ modkey,           }, ";", function () awful.spawn(terminal) end,
