@@ -184,6 +184,90 @@ adjust_brightness = function (delta)
   display_brightness()
 end
 
+-- External monitors have no backlight in sysfs; their brightness is set over
+-- DDC/CI with ddcutil(1). This needs write access to /dev/i2c-*, which the
+-- udev rule shipped with ddcutil grants to the logged-in user.
+--
+-- ddcutil takes about half a second per call, so it runs asynchronously to
+-- keep awesome responsive. Concurrent instances fight over the i2c bus lock
+-- and lose updates, so only one runs at a time: key presses accumulate in
+-- `pending` and get applied as a single absolute write once the previous
+-- call finishes.
+external_brightness = {
+  value = nil,   -- last known brightness in percent, nil if never read
+  read_at = 0,   -- os.time() of the last read from the monitor
+  max_age = 60,  -- re-read the monitor if the cached value is older than this
+  pending = 0,   -- delta not yet written to the monitor
+  busy = false,  -- whether a ddcutil call is in flight
+}
+
+-- Runs ddcutil and calls on_success with its output, or on_failure after
+-- showing the error.
+external_brightness_helper = function (args, on_success, on_failure)
+  awful.spawn.easy_async('ddcutil --noverify ' .. args, function (stdout, stderr, _, exit_code)
+    if exit_code ~= 0 then
+      naughty.notify({ preset = naughty.config.presets.critical,
+                       title = 'External brightness', text = 'ddcutil failed: ' .. stderr })
+      on_failure()
+      return
+    end
+    on_success(stdout)
+  end)
+end
+
+display_external_brightness = function ()
+  create_notification('brightness', function ()
+      return {title = 'External brightness', text = external_brightness.value .. '%'}
+  end)
+end
+
+-- Applies the pending delta, reading the current value from the monitor
+-- first if the cached one is missing or stale.
+flush_external_brightness = function ()
+  local state = external_brightness
+  if state.busy or state.pending == 0 then return end
+  state.busy = true
+  local finish = function ()
+    state.busy = false
+    flush_external_brightness()
+  end
+  -- Drop what was queued so a disconnected monitor doesn't pile up errors.
+  local abort = function ()
+    state.busy = false
+    state.pending = 0
+  end
+  if not state.value or os.time() - state.read_at > state.max_age then
+    external_brightness_helper('getvcp 10 --brief', function (stdout)
+      -- The output looks like "VCP 10 C <current> <max>".
+      local value, max = stdout:match('VCP 10 C (%d+) (%d+)')
+      if not value then
+        naughty.notify({ preset = naughty.config.presets.critical,
+                         title = 'External brightness', text = 'Unexpected ddcutil output: ' .. stdout })
+        abort()
+        return
+      end
+      state.value = math.floor(value / max * 100 + 0.5)
+      state.read_at = os.time()
+      finish()
+    end, abort)
+    return
+  end
+  local target = math.max(0, math.min(100, state.value + state.pending))
+  state.pending = 0
+  external_brightness_helper('setvcp 10 ' .. target, function ()
+    state.value = target
+    state.read_at = os.time()
+    display_external_brightness()
+    finish()
+  end, abort)
+end
+
+-- Changes the external monitor's brightness by delta percent.
+adjust_external_brightness = function (delta)
+  external_brightness.pending = external_brightness.pending + delta
+  flush_external_brightness()
+end
+
 -- Battery-related helpers.
 -- Returns the names of all batteries in /sys/class/power_supply (e.g. "BAT0").
 detect_batteries = function ()
@@ -577,6 +661,14 @@ globalkeys = awful.util.table.join(
               {description = "run vim to send keys to client", group = "launcher"}),
 
     -- Multimedia keys
+    awful.key({ "Shift", "Control" }, "XF86MonBrightnessDown", function() adjust_external_brightness(-1) end,
+              {description = "decrease external monitor brightness by 1%", group = "screen"}),
+    awful.key({ "Shift", "Control" }, "XF86MonBrightnessUp", function() adjust_external_brightness(1) end,
+              {description = "increase external monitor brightness by 1%", group = "screen"}),
+    awful.key({ "Control"         }, "XF86MonBrightnessDown", function() adjust_external_brightness(-prefs.brightness_step) end,
+              {description = "decrease external monitor brightness", group = "screen"}),
+    awful.key({ "Control"         }, "XF86MonBrightnessUp", function() adjust_external_brightness(prefs.brightness_step) end,
+              {description = "increase external monitor brightness", group = "screen"}),
     awful.key({ "Shift"           }, "XF86MonBrightnessDown", function() adjust_brightness(-1) end,
               {description = "decrease brightness by 1%", group = "screen"}),
     awful.key({ "Shift"           }, "XF86MonBrightnessUp", function() adjust_brightness(1) end,
