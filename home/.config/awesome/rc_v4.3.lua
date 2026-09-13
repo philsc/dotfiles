@@ -417,7 +417,7 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     for i=1,num_tags-1 do
-      tag = awful.tag.add(tags[i], {
+      local tag = awful.tag.add(tags[i], {
         screen = s,
         layout = awful.layout.layouts[1],
       })
@@ -794,4 +794,9 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+-- Put windows back where they were when a monitor is plugged in or out. This
+-- has to come after connect_for_each_screen above so the tags of a new screen
+-- exist by the time the windows are moved back to it.
+require("screen_memory").setup()
 -- }}}

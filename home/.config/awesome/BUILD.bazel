@@ -1,0 +1,8 @@
+load("//build/lua:defs.bzl", "lua_test")
+
+lua_test(
+    name = "screen_memory_test",
+    size = "small",
+    src = "screen_memory_test.lua",
+    deps = ["screen_memory.lua"],
+)
