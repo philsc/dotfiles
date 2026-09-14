@@ -1,0 +1,9 @@
+# Site-specific additions to /usr/bin/redshift's AppArmor profile, installed
+# by dotfiles-redshift.
+#
+# Debian's profile only allows the pre-1.12 config path ~/.config/redshift.conf.
+# Redshift 1.12 also reads ~/.config/redshift/redshift.conf, and in the dotfiles
+# that directory is a symlink into the repo checkout, which AppArmor resolves
+# before matching. Hence the second, wildcarded rule.
+owner @{HOME}/.config/redshift/redshift.conf r,
+owner @{HOME}/**/.config/redshift/redshift.conf r,

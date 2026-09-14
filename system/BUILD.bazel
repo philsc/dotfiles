@@ -13,6 +13,9 @@ load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 #   bazel build //system:ood_shares_deb
 #   sudo apt install ./bazel-bin/system/dotfiles-ood-shares_0.1_all.deb
 #
+#   bazel build //system:redshift_deb
+#   sudo apt install ./bazel-bin/system/dotfiles-redshift_0.1_all.deb
+#
 # The version is fixed on purpose: dpkg reinstalls a package of the version
 # it already has, which is what the install loop wants.
 DEB_VERSION = "0.1"
@@ -86,6 +89,55 @@ pkg_deb(
     priority = "optional",
     # For browsing the shares without mounting: smbclient -N -L ood.local
     recommends = ["smbclient"],
+    section = "misc",
+    version = DEB_VERSION,
+)
+
+# Makes redshift usable under awesome: authorizes it with geoclue, which has no
+# desktop agent there to ask, and widens Debian's AppArmor profile to the config
+# path redshift 1.12 uses. The geoclue file goes under /etc as a conffile, since
+# geoclue only reads drop-ins from /etc/geoclue/conf.d. The AppArmor snippet is
+# copied into /etc/apparmor.d/local by the postinst, see there for why.
+pkg_files(
+    name = "redshift_deb_geoclue_conf",
+    srcs = ["files/geoclue-redshift.conf"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "etc/geoclue/conf.d",
+    renames = {"files/geoclue-redshift.conf": "redshift.conf"},
+)
+
+pkg_files(
+    name = "redshift_deb_apparmor_local",
+    srcs = ["files/apparmor-redshift.local"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "usr/share/dotfiles-redshift",
+)
+
+pkg_tar(
+    name = "redshift_deb_data",
+    srcs = [
+        ":redshift_deb_apparmor_local",
+        ":redshift_deb_geoclue_conf",
+    ],
+    extension = "tar",
+)
+
+pkg_deb(
+    name = "redshift_deb",
+    architecture = "all",
+    conffiles = ["/etc/geoclue/conf.d/redshift.conf"],
+    data = ":redshift_deb_data",
+    # The AppArmor override goes into a file redshift's postinst creates.
+    depends = [
+        "geoclue-2.0",
+        "redshift",
+    ],
+    description = "Lets redshift read its config and get its location under awesome",
+    maintainer = DEB_MAINTAINER,
+    package = "dotfiles-redshift",
+    postinst = "deb/redshift.postinst",
+    postrm = "deb/redshift.postrm",
+    priority = "optional",
     section = "misc",
     version = DEB_VERSION,
 )

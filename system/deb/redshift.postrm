@@ -1,0 +1,14 @@
+#!/bin/sh
+# postrm for dotfiles-redshift: put the AppArmor local override back to the
+# empty file redshift's package expects. Not removed: the profile #includes it
+# and would fail to load without it.
+set -e
+
+if [ "$1" = remove ] && [ -e /etc/apparmor.d/local/usr.bin.redshift ]; then
+    : > /etc/apparmor.d/local/usr.bin.redshift
+    if aa-enabled --quiet 2>/dev/null; then
+        apparmor_parser -r -T -W /etc/apparmor.d/usr.bin.redshift || true
+    fi
+fi
+
+exit 0

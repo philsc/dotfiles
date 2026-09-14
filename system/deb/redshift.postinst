@@ -1,0 +1,25 @@
+#!/bin/sh
+# postinst for dotfiles-redshift: fill in redshift's AppArmor local override
+# and make a running geoclue pick up its drop-in.
+set -e
+
+if [ "$1" = configure ]; then
+    # Debian's redshift package creates this file empty and does not own it
+    # (see dh_apparmor), so it cannot be shipped as a conffile without a
+    # prompt. Overwrite it instead and reload the profile like redshift's own
+    # postinst does.
+    install -m 644 /usr/share/dotfiles-redshift/apparmor-redshift.local \
+        /etc/apparmor.d/local/usr.bin.redshift
+    if aa-enabled --quiet 2>/dev/null; then
+        apparmor_parser -r -T -W /etc/apparmor.d/usr.bin.redshift || true
+    fi
+
+    # Geoclue is D-Bus activated and usually not running, in which case
+    # try-restart does nothing and the next activation reads the new config.
+    # Only where systemd is running, which a chroot is not.
+    if [ -d /run/systemd/system ]; then
+        systemctl try-restart geoclue.service || true
+    fi
+fi
+
+exit 0

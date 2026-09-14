@@ -153,6 +153,7 @@ def create_links(force=False):
         '.config/awesome',
         '.config/fontconfig',
         '.config/nvim',
+        '.config/redshift',
         '.inputrc',
     ]
     misc = [

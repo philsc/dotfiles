@@ -19,6 +19,10 @@ xrdb -merge "$HOME/.Xresources"
 # Start up the necessary daemons.
 urxvtd -o -f -q
 xscreensaver -no-splash &
+# Geoclue only hands out locations once an agent for the user is registered.
+# Debian autostarts this one through /etc/xdg/autostart, which awesome ignores.
+/usr/libexec/geoclue-2.0/demos/agent &
+redshift &
 
 # Set caps-lock as another left-Control key.
 setxkbmap -option ctrl:nocaps
