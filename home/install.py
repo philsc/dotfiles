@@ -12,11 +12,19 @@ import zipfile
 import tempfile
 import shutil
 import tarfile
+import platform
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
 
-RIPGREP_VERSION = '13.0.0'
+RIPGREP_VERSION = '15.2.0'
+
+# Upstream names its musl tarballs after the machine name reported by
+# uname -m (x86_64, aarch64), so no mapping is needed.
+if platform.machine() not in ('x86_64', 'aarch64'):
+    sys.exit('Unsupported architecture for ripgrep: %s' % platform.machine())
+RIPGREP_DIR = 'ripgrep-%s-%s-unknown-linux-musl' % (
+    RIPGREP_VERSION, platform.machine())
 
 
 def make_printer(prefix):
@@ -185,8 +193,7 @@ def create_links(force=False):
         ('tools/fzf/shell/key-bindings.bash', '.bash/aliases.d/fzf'),
         ('tools/fzf-tests', '.bin/fzf-tests'),
         ('tools/fd', '.bin/fd'),
-        ('tools/ripgrep-%s-x86_64-unknown-linux-musl/rg' %
-         RIPGREP_VERSION, '.bin/rg'),
+        ('tools/%s/rg' % RIPGREP_DIR, '.bin/rg'),
         ('tools/bazel', '.bin/bazel'),
         ('python/autopep8/autopep8.py', '.bin/autopep8'),
         ('python', '.python'),
@@ -299,9 +306,9 @@ def create_git_configs():
 
 def install_tools():
     tools = [
-        ('https://github.com/BurntSushi/ripgrep/releases/download/%s/ripgrep-%s-x86_64-unknown-linux-musl.tar.gz'
-            % (RIPGREP_VERSION, RIPGREP_VERSION),
-         'ripgrep-%s-x86_64-unknown-linux-musl' % RIPGREP_VERSION,)
+        ('https://github.com/BurntSushi/ripgrep/releases/download/%s/%s.tar.gz'
+            % (RIPGREP_VERSION, RIPGREP_DIR),
+         RIPGREP_DIR),
     ]
 
     for tool in tools:
