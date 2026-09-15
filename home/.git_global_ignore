@@ -4,3 +4,4 @@
 .ycm_extra_conf.py
 .vimrc.directory
 .jira.d
+**/.claude/settings.local.json
