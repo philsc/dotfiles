@@ -1,0 +1,9 @@
+# Registers as the user's geoclue agent, without which geoclue serves nobody.
+# Debian autostarts it through /etc/xdg/autostart, which awesome ignores.
+# Talks D-Bus only, so it does not need X and survives logouts.
+[Unit]
+Description=Geoclue demo agent
+
+[Service]
+ExecStart=/usr/libexec/geoclue-2.0/demos/agent
+Restart=on-failure

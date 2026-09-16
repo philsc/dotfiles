@@ -99,6 +99,16 @@ pkg_deb(
 # geoclue only reads drop-ins from /etc/geoclue/conf.d. The AppArmor snippet is
 # copied into /etc/apparmor.d/local by the postinst, see there for why.
 pkg_files(
+    name = "redshift_deb_units",
+    srcs = [
+        "files/geoclue-agent.service",
+        "files/redshift.service",
+    ],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "usr/lib/systemd/user",
+)
+
+pkg_files(
     name = "redshift_deb_geoclue_conf",
     srcs = ["files/geoclue-redshift.conf"],
     attributes = pkg_attributes(mode = "0644"),
@@ -118,6 +128,7 @@ pkg_tar(
     srcs = [
         ":redshift_deb_apparmor_local",
         ":redshift_deb_geoclue_conf",
+        ":redshift_deb_units",
     ],
     extension = "tar",
 )
