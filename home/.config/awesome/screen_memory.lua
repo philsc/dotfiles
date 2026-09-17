@@ -1,13 +1,15 @@
 -- Remembers where windows were when a screen comes or goes.
 --
 -- Right before a screen is added or removed, a snapshot of every client's
--- screen, tags and (for floating clients) geometry is taken and stored under
--- the screen configuration that was active at the time. After the change, if a
--- snapshot exists for the new configuration, it is restored; otherwise awesome's
--- default applies (clients of a removed screen end up on the first tag of the
--- surviving screen, adding a screen moves nothing). Plugging a monitor back in
--- therefore puts every window back where it was the last time that monitor was
--- connected.
+-- screen, tags, maximized state and (for floating clients) geometry is taken
+-- and stored under the screen configuration that was active at the time. After
+-- the change, if a snapshot exists for the new configuration, it is restored;
+-- otherwise awesome's default applies (clients of a removed screen end up on
+-- the first tag of the surviving screen, adding a screen moves nothing).
+-- Plugging a monitor back in therefore puts every window back where it was the
+-- last time that monitor was connected, and a window that is maximized on the
+-- laptop's screen alone but not when the external monitor is connected keeps
+-- flipping between the two.
 --
 -- Screens are identified by their RandR output names, so the same monitor on a
 -- different port counts as a different configuration. Snapshots only live in
@@ -83,8 +85,11 @@ function M.setup(capi)
           output = output_name(c.screen),
           tags = tags,
           floating = c.floating,
+          maximized = c.maximized,
         }
-        if c.floating then
+        -- A maximized client counts as floating, but its geometry is just the
+        -- screen's, so only remember the geometry the user chose.
+        if c.floating and not c.maximized then
           -- Relative to the screen so a screen that moved around still gets the
           -- window at the same spot.
           local g, sg = c:geometry(), c.screen.geometry
@@ -123,6 +128,9 @@ function M.setup(capi)
         if #tags > 0 then
           c.screen = s
           c:tags(tags)
+          -- Unmaximizing restores the geometry from before the client was
+          -- maximized, so it has to happen before the remembered one is set.
+          c.maximized = record.maximized
           if record.floating and record.geometry then
             local g, sg = record.geometry, s.geometry
             c:geometry({

@@ -45,6 +45,7 @@ local function fake_client(s, tag_names, options)
     valid = true,
     screen = s,
     floating = options.floating or false,
+    maximized = options.maximized or false,
     _tags = {},
     _geometry = options.geometry or { x = 0, y = 0, width = 100, height = 100 },
   }
@@ -251,6 +252,51 @@ function tests.floating_geometry_is_relative_to_the_screen()
   assert(c.screen == external2, "floating client not moved back")
   local g = c:geometry()
   assert(g.x == -2560 + 300 and g.y == 200 and g.width == 640 and g.height == 480,
+         string.format("unexpected geometry %d,%d %dx%d", g.x, g.y, g.width, g.height))
+end
+
+function tests.maximized_state_follows_the_screen_configuration()
+  local capi, laptop, external = two_screen_setup()
+  screen_memory.setup(capi)
+  local c = capi.add_client(fake_client(external, { "2" }))
+
+  -- Not maximized with the monitor, maximized on the laptop alone.
+  capi.remove_screen(external)
+  assert(not c.maximized, "client maximized without a snapshot")
+  c.maximized = true
+  local external2 = fake_screen({ ["DP-1"] = {} })
+  capi.add_screen(external2)
+  assert_placed(c, external2, "2", "client after replug")
+  assert(not c.maximized, "client still maximized with the monitor")
+
+  capi.remove_screen(external2)
+  assert_placed(c, laptop, "1", "client after second unplug")
+  assert(c.maximized, "client not maximized again on the laptop")
+end
+
+function tests.maximized_client_keeps_its_unmaximized_geometry()
+  local capi, laptop, external = two_screen_setup()
+  local snapshots = screen_memory.setup(capi)
+  -- awesome reports maximized clients as floating with the screen's geometry.
+  local c = capi.add_client(fake_client(external, { "1" }, {
+    floating = true,
+    maximized = true,
+    geometry = { x = 1920, y = 0, width = 2560, height = 1440 },
+  }))
+
+  capi.remove_screen(external)
+  assert(snapshots["DP-1+eDP"][c].geometry == nil, "maximized geometry was remembered")
+  -- Unmaximizing restores the geometry the client had before, which the
+  -- snapshot must not overwrite.
+  c.maximized = false
+  c:geometry({ x = 100, y = 100, width = 640, height = 480 })
+  local external2 = fake_screen({ ["DP-1"] = {} }, { x = 1920, y = 0, width = 2560, height = 1440 })
+  capi.add_screen(external2)
+
+  assert(c.screen == external2, "client not moved back")
+  assert(c.maximized, "client not maximized again")
+  local g = c:geometry()
+  assert(g.x == 100 and g.y == 100 and g.width == 640 and g.height == 480,
          string.format("unexpected geometry %d,%d %dx%d", g.x, g.y, g.width, g.height))
 end
 
