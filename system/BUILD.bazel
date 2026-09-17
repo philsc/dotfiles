@@ -2,13 +2,13 @@ load("@rules_pkg//pkg:deb.bzl", "pkg_deb")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_attributes", "pkg_files")
 load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 
-# System configuration as Debian packages:
+# System configuration as Debian packages.
+#
+# A package with dependencies goes through apt, which installs them where dpkg
+# would only complain:
 #
 #   bazel build //system:backlight_deb
-#   sudo dpkg -i bazel-bin/system/dotfiles-backlight_0.1_all.deb
-#
-# A package with dependencies goes through apt instead, which installs them
-# where dpkg would only complain:
+#   sudo apt install ./bazel-bin/system/dotfiles-backlight_0.1_all.deb
 #
 #   bazel build //system:ood_shares_deb
 #   sudo apt install ./bazel-bin/system/dotfiles-ood-shares_0.1_all.deb
@@ -41,7 +41,11 @@ pkg_deb(
     name = "backlight_deb",
     architecture = "all",
     data = ":backlight_deb_data",
-    depends = ["udev"],
+    depends = [
+        # Drive external monitors over DDC/CI, the internal panel via udev.
+        "ddcutil",
+        "udev",
+    ],
     description = "Lets the video group control the display backlight",
     maintainer = DEB_MAINTAINER,
     package = "dotfiles-backlight",
