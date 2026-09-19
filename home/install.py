@@ -162,6 +162,7 @@ def create_links(force=False):
         '.config/fontconfig',
         '.config/nvim',
         '.config/redshift',
+        '.config/gtk-3.0/settings.ini',
         '.inputrc',
     ]
     misc = [
