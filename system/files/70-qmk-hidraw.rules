@@ -1,0 +1,6 @@
+# File managed by dotfiles.
+# Let the logged-in user talk to the ErgoDox EZ's raw HID interface; the
+# awesome keymap popup (Mod4+/) reads the keymap over it. Sorted before
+# 73-seat-late.rules so the uaccess ACL applies; plugdev is the fallback where
+# there is no logind session.
+KERNEL=="hidraw*", SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", ATTRS{idProduct}=="4974", TAG+="uaccess", GROUP="plugdev", MODE="0660"

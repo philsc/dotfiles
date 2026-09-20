@@ -1,0 +1,11 @@
+#!/bin/sh
+# postinst for dotfiles-qmk: pick the rule up without a replug.
+set -e
+
+# Only where udev is running, which a chroot is not.
+if [ "$1" = configure ] && [ -d /run/udev ]; then
+    udevadm control --reload || true
+    udevadm trigger --subsystem-match=hidraw --action=add || true
+fi
+
+exit 0
