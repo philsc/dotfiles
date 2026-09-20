@@ -10,6 +10,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local keymap_popup = require("keymap_popup")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -563,6 +564,9 @@ globalkeys = awful.util.table.join(
     -- Hitting the question mark brings up the help menu.
     awful.key({ modkey, "Shift"   }, "/",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
+    -- The unshifted slash shows what the keyboard itself is programmed to do.
+    awful.key({ modkey,           }, "/",      keymap_popup.toggle,
+              {description="show the keyboard's keymap", group="awesome"}),
 
     awful.key({ modkey,           }, "p",   awful.tag.viewprev,
               {description = "view previous", group = "tag"}),

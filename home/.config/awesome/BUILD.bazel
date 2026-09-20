@@ -6,3 +6,13 @@ lua_test(
     src = "screen_memory_test.lua",
     deps = ["screen_memory.lua"],
 )
+
+lua_test(
+    name = "keymap_labels_test",
+    size = "small",
+    src = "keymap_labels_test.lua",
+    deps = [
+        "keymap_labels.lua",
+        "qmk_keycodes.lua",
+    ],
+)
