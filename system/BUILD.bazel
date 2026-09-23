@@ -19,6 +19,9 @@ load("@rules_pkg//pkg:tar.bzl", "pkg_tar")
 #   bazel build //system:qmk_deb
 #   sudo apt install ./bazel-bin/system/dotfiles-qmk_0.1_all.deb
 #
+#   bazel build //system:touchscreen_deb
+#   sudo apt install ./bazel-bin/system/dotfiles-touchscreen_0.1_all.deb
+#
 # The version is fixed on purpose: dpkg reinstalls a package of the version
 # it already has, which is what the install loop wants.
 DEB_VERSION = "0.1"
@@ -183,6 +186,36 @@ pkg_deb(
     package = "dotfiles-redshift",
     postinst = "deb/redshift.postinst",
     postrm = "deb/redshift.postrm",
+    priority = "optional",
+    section = "misc",
+    version = DEB_VERSION,
+)
+
+# Turns off the built-in finger touchscreen with an xorg InputClass snippet.
+# The snippet goes under /usr/share/X11, not /etc/X11: /etc/X11/xorg.conf.d is
+# the admin's, and a file of the same name there overrides this one.
+pkg_files(
+    name = "touchscreen_deb_conf",
+    srcs = ["files/99-disable-touchscreen.conf"],
+    attributes = pkg_attributes(mode = "0644"),
+    prefix = "usr/share/X11/xorg.conf.d",
+)
+
+pkg_tar(
+    name = "touchscreen_deb_data",
+    srcs = [":touchscreen_deb_conf"],
+    extension = "tar",
+)
+
+pkg_deb(
+    name = "touchscreen_deb",
+    architecture = "all",
+    data = ":touchscreen_deb_data",
+    # xserver-xorg-core is what reads the InputClass snippet.
+    depends = ["xserver-xorg-core"],
+    description = "Disables the built-in finger touchscreen under X",
+    maintainer = DEB_MAINTAINER,
+    package = "dotfiles-touchscreen",
     priority = "optional",
     section = "misc",
     version = DEB_VERSION,
