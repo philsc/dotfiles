@@ -20,7 +20,7 @@ xrdb -merge "$HOME/.Xresources"
 urxvtd -o -f -q
 xscreensaver -no-splash &
 # Redshift and the geoclue agent it pulls in run as user units (shipped by
-# dotfiles-redshift) so they get restarted and logged. They only need to know
+# homelab-redshift, from the homelab repo) so they get restarted and logged. They only need to know
 # where X is. restart, not start: after a logout the unit is still around in
 # failed state, and reset-failed clears its start-rate limit for a quick
 # re-login. (Guarded: reset-failed complains about a unit never loaded, i.e.

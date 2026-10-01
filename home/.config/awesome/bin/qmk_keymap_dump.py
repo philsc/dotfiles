@@ -26,7 +26,7 @@ PRODUCT_ID = 0x4974
 # Usage page 0xFF60, usage 0x61: QMK's raw HID interface.
 RAW_DESCRIPTOR_PREFIX = bytes.fromhex("0660ff0961")
 REPORT_SIZE = 32
-UDEV_RULE = "70-qmk-hidraw.rules (dotfiles-qmk deb)"
+UDEV_RULE = "70-qmk-hidraw.rules (homelab-qmk deb)"
 
 CMD_INFO = 0x01
 CMD_KEYCODES = 0x02
