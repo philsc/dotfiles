@@ -133,6 +133,9 @@ def create_folders():
             else:
                 pass
 
+    # gpg warns about a homedir anyone else can read.
+    os.chmod(os.path.join(HOME, '.gnupg'), 0o700)
+
 
 def create_links(force=False):
     # Create symbolic links to various dotfiles.
@@ -339,24 +342,6 @@ def install_tools():
         done("done\n")
 
 
-def install_certificates():
-    certs = [
-        ('https://sks-keyservers.net/sks-keyservers.netCA.pem',
-         '.gnupg/sks-keyservers.netCA.pem'),
-    ]
-
-    for (url, target) in certs:
-        dest = os.path.join(HOME, target)
-
-        if os.path.exists(dest):
-            info("Skipping certificate install for %s\n" % dest)
-        else:
-            new("Installing certificate for %s..." % dest)
-            (temp_file, _) = urllib.request.urlretrieve(url)
-            shutil.move(temp_file, dest)
-            done("done\n")
-
-
 def install_go_programs():
     programs = [
         "github.com/ankitpokhrel/jira-cli/cmd/jira",
@@ -398,8 +383,6 @@ def main(argv):
     create_empty_files()
     create_git_configs()
     install_tools()
-    # TODO(phil): Make this work again.
-    #install_certificates()
     install_go_programs()
 
     # TODO(philipp): Set up a virtualenv for nvim's +python3 support.
