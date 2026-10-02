@@ -203,6 +203,7 @@ def create_links(force=False):
         ('python', '.python'),
         ('fontconfig/fonts.conf', '.fonts.conf'),
         ('gpg.conf', '.gnupg/gpg.conf'),
+        ('gpg-agent.conf', '.gnupg/gpg-agent.conf'),
         ('templates', '.templates'),
     ]
 

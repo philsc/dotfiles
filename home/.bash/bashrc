@@ -124,6 +124,9 @@ stty start undef
 GLOBIGNORE=".:.."
 shopt -u dotglob
 
+# Tells gpg-agent's pinentry which terminal to ask for a passphrase in.
+export GPG_TTY="$(tty)"
+
 # If the keychain program is installed (ssh- and gpg-agent frontend), use it.
 [[ -n "$(type -P keychain)" ]] && eval "$(keychain --eval --quiet)"
 
