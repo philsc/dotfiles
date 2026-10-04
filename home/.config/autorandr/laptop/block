@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Rule this profile out (exit 0) while the lid is closed. With the lid shut
+# at the desk, the laptop's screen is all autorandr sees whenever the Studio
+# Display blanks for a moment (as when something is plugged into its ports),
+# and loading this profile then would turn the Studio Display off.
+grep -q closed /proc/acpi/button/lid/*/state
