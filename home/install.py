@@ -161,6 +161,7 @@ def create_links(force=False):
         '.tmux',
         '.gdbinit',
         '.config/alacritty',
+        '.config/autorandr/postswitch',
         '.config/awesome',
         '.config/fontconfig',
         '.config/nvim',
