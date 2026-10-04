@@ -310,6 +310,27 @@ adjust_external_brightness = function (delta)
   flush_external_brightness()
 end
 
+-- Whether the laptop's own panel is lit: one of awesome's screens shows an
+-- eDP or LVDS output.
+internal_panel_lit = function ()
+  for s in screen do
+    for name, _ in pairs(s.outputs or {}) do
+      if name:match('^eDP') or name:match('^LVDS') then return true end
+    end
+  end
+  return false
+end
+
+-- Changes the panel's brightness by delta percent, or the external
+-- monitor's while the panel is off (as when docked with the lid shut).
+adjust_screen_brightness = function (delta)
+  if internal_panel_lit() then
+    adjust_brightness(delta)
+  else
+    adjust_external_brightness(delta)
+  end
+end
+
 -- Battery-related helpers.
 -- Returns the names of all batteries in /sys/class/power_supply (e.g. "BAT0").
 detect_batteries = function ()
@@ -714,14 +735,14 @@ globalkeys = awful.util.table.join(
               {description = "decrease external monitor brightness", group = "screen"}),
     awful.key({ "Control"         }, "XF86MonBrightnessUp", function() adjust_external_brightness(prefs.brightness_step) end,
               {description = "increase external monitor brightness", group = "screen"}),
-    awful.key({ "Shift"           }, "XF86MonBrightnessDown", function() adjust_brightness(-1) end,
-              {description = "decrease brightness by 1%", group = "screen"}),
-    awful.key({ "Shift"           }, "XF86MonBrightnessUp", function() adjust_brightness(1) end,
-              {description = "increase brightness by 1%", group = "screen"}),
-    awful.key({                   }, "XF86MonBrightnessDown", function() adjust_brightness(-prefs.brightness_step) end,
-              {description = "decrease brightness", group = "screen"}),
-    awful.key({                   }, "XF86MonBrightnessUp", function() adjust_brightness(prefs.brightness_step) end,
-              {description = "increase brightness", group = "screen"}),
+    awful.key({ "Shift"           }, "XF86MonBrightnessDown", function() adjust_screen_brightness(-1) end,
+              {description = "decrease brightness by 1% (external monitor's if the panel is off)", group = "screen"}),
+    awful.key({ "Shift"           }, "XF86MonBrightnessUp", function() adjust_screen_brightness(1) end,
+              {description = "increase brightness by 1% (external monitor's if the panel is off)", group = "screen"}),
+    awful.key({                   }, "XF86MonBrightnessDown", function() adjust_screen_brightness(-prefs.brightness_step) end,
+              {description = "decrease brightness (external monitor's if the panel is off)", group = "screen"}),
+    awful.key({                   }, "XF86MonBrightnessUp", function() adjust_screen_brightness(prefs.brightness_step) end,
+              {description = "increase brightness (external monitor's if the panel is off)", group = "screen"}),
 
     awful.key({ }, "XF86AudioMute", function () sound_helper("set-sink-mute", "toggle") end),
     awful.key({ }, "XF86AudioLowerVolume", function () sound_helper("set-sink-volume", "-5%") end),
