@@ -185,30 +185,66 @@ adjust_brightness = function (delta)
   display_brightness()
 end
 
--- External monitors have no backlight in sysfs; their brightness is set over
--- DDC/CI with ddcutil(1). This needs write access to /dev/i2c-*, which the
--- udev rule shipped with ddcutil grants to the logged-in user.
+-- External monitors have no backlight in sysfs. Most take their brightness
+-- over DDC/CI with ddcutil(1), which needs write access to /dev/i2c-*: the
+-- udev rule shipped with ddcutil grants it to the logged-in user. The Apple
+-- Studio Display ignores DDC/CI and takes it over USB HID instead, through
+-- bin/studio_display_brightness.py, which needs homelab-backlight's udev rule
+-- (system/files/90-backlight.rules in homelab).
 --
--- ddcutil takes about half a second per call, so it runs asynchronously to
+-- ddcutil takes about half a second per call, so calls run asynchronously to
 -- keep awesome responsive. Concurrent instances fight over the i2c bus lock
 -- and lose updates, so only one runs at a time: key presses accumulate in
 -- `pending` and get applied as a single absolute write once the previous
 -- call finishes.
 external_brightness = {
-  value = nil,   -- last known brightness in percent, nil if never read
-  read_at = 0,   -- os.time() of the last read from the monitor
-  max_age = 60,  -- re-read the monitor if the cached value is older than this
-  pending = 0,   -- delta not yet written to the monitor
-  busy = false,  -- whether a ddcutil call is in flight
+  value = nil,    -- last known brightness in percent, nil if never read
+  read_at = 0,    -- os.time() of the last read from the monitor
+  max_age = 60,   -- re-read the monitor if the cached value is older than this
+  pending = 0,    -- delta not yet written to the monitor
+  busy = false,   -- whether a call is in flight
+  backend = nil,  -- the backend value was read through
 }
 
--- Runs ddcutil and calls on_success with its output, or on_failure after
--- showing the error.
-external_brightness_helper = function (args, on_success, on_failure)
-  awful.spawn.easy_async('ddcutil --noverify ' .. args, function (stdout, stderr, _, exit_code)
+studio_display_brightness = awful.util.getdir("config") .. "/bin/studio_display_brightness.py"
+
+-- How to read and write an external monitor's brightness: commands, and a
+-- parser that turns get's output into percent (nil if it can't).
+external_brightness_backends = {
+  ddcutil = {
+    name = 'ddcutil',
+    get = 'ddcutil --noverify getvcp 10 --brief',
+    set = 'ddcutil --noverify setvcp 10 %d',
+    -- The output looks like "VCP 10 C <current> <max>".
+    parse = function (stdout)
+      local value, max = stdout:match('VCP 10 C (%d+) (%d+)')
+      return value and math.floor(value / max * 100 + 0.5)
+    end,
+  },
+  studio_display = {
+    name = 'studio_display_brightness.py',
+    get = studio_display_brightness .. ' get',
+    set = studio_display_brightness .. ' set %d',
+    -- Prints the brightness in percent.
+    parse = function (stdout) return tonumber(stdout:match('%d+')) end,
+  },
+}
+
+-- The Studio Display's backend while one is attached, ddcutil's otherwise.
+external_brightness_backend = function ()
+  if readcmd('ls -d /sys/bus/hid/devices/*:05AC:1118.* 2>/dev/null') ~= '' then
+    return external_brightness_backends.studio_display
+  end
+  return external_brightness_backends.ddcutil
+end
+
+-- Runs one of backend's commands and calls on_success with its output, or
+-- on_failure after showing the error.
+external_brightness_helper = function (backend, command, on_success, on_failure)
+  awful.spawn.easy_async(command, function (stdout, stderr, _, exit_code)
     if exit_code ~= 0 then
       naughty.notify({ preset = naughty.config.presets.critical,
-                       title = 'External brightness', text = 'ddcutil failed: ' .. stderr })
+                       title = 'External brightness', text = backend.name .. ' failed: ' .. stderr })
       on_failure()
       return
     end
@@ -223,7 +259,7 @@ display_external_brightness = function ()
 end
 
 -- Applies the pending delta, reading the current value from the monitor
--- first if the cached one is missing or stale.
+-- first if the cached one is missing, stale or from another monitor.
 flush_external_brightness = function ()
   local state = external_brightness
   if state.busy or state.pending == 0 then return end
@@ -237,17 +273,22 @@ flush_external_brightness = function ()
     state.busy = false
     state.pending = 0
   end
+  local backend = external_brightness_backend()
+  if backend ~= state.backend then
+    state.backend = backend
+    state.value = nil
+  end
   if not state.value or os.time() - state.read_at > state.max_age then
-    external_brightness_helper('getvcp 10 --brief', function (stdout)
-      -- The output looks like "VCP 10 C <current> <max>".
-      local value, max = stdout:match('VCP 10 C (%d+) (%d+)')
+    external_brightness_helper(backend, backend.get, function (stdout)
+      local value = backend.parse(stdout)
       if not value then
         naughty.notify({ preset = naughty.config.presets.critical,
-                         title = 'External brightness', text = 'Unexpected ddcutil output: ' .. stdout })
+                         title = 'External brightness',
+                         text = 'Unexpected ' .. backend.name .. ' output: ' .. stdout })
         abort()
         return
       end
-      state.value = math.floor(value / max * 100 + 0.5)
+      state.value = value
       state.read_at = os.time()
       finish()
     end, abort)
@@ -255,7 +296,7 @@ flush_external_brightness = function ()
   end
   local target = math.max(0, math.min(100, state.value + state.pending))
   state.pending = 0
-  external_brightness_helper('setvcp 10 ' .. target, function ()
+  external_brightness_helper(backend, string.format(backend.set, target), function ()
     state.value = target
     state.read_at = os.time()
     display_external_brightness()
