@@ -1,0 +1,2 @@
+#!/bin/bash
+alias bose-fix='pactl set-card-profile bluez_card.68_F2_1F_42_01_A0 off && sleep 2 && pactl set-card-profile bluez_card.68_F2_1F_42_01_A0 a2dp_sink && pactl set-default-sink bluez_sink.68_F2_1F_42_01_A0.a2dp_sink'
