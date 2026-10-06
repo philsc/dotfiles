@@ -18,5 +18,18 @@ echo "Xft.dpi: $dpi" | xrdb -merge
 # awesome-client talks over.
 : "${DBUS_SESSION_BUS_ADDRESS:=unix:path=/run/user/$(id -u)/bus}"
 export DBUS_SESSION_BUS_ADDRESS
-# Deferred, so awesome answers before it replaces itself.
-awesome-client 'require("gears").timer.delayed_call(awesome.restart)'
+
+# Restarting awesome under a blanked or locked xscreensaver restacks its
+# windows above the lock's: the desktop shows, but xscreensaver keeps the
+# keyboard and mouse, so it looks frozen (as on resuming without the Studio
+# Display after a suspend). So wait until the screen is back, in the
+# background so autorandr isn't held up. The flock keeps a second switch
+# from queueing a second restart.
+setsid -f flock -n "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/autorandr-awesome-restart" sh -c '
+  while xscreensaver-command -time 2>/dev/null |
+      grep -Eq " (blanked|locked) since"; do
+    sleep 2
+  done
+  # Deferred, so awesome answers before it replaces itself.
+  awesome-client "require(\"gears\").timer.delayed_call(awesome.restart)"
+' >/dev/null 2>&1
