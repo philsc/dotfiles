@@ -1,0 +1,41 @@
+#!/bin/bash
+
+# Re-runs autorandr whenever the lid opens and after every resume. autorandr on its own only reacts
+# to output hotplug events, and the laptop profiles are blocked while the lid is closed (see
+# ~/.config/autorandr/laptop/block). Unplugging the external display with the lid shut therefore
+# leaves every output off, and opening the lid causes no hotplug event that would fix it. The resume
+# trigger is there because the lid event that wakes the laptop isn't guaranteed to reach acpid.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+readonly LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/autorandr-lid-listener.lock"
+
+listen() {
+  local -a pids=()
+  acpi_listen &
+  pids+=("$!")
+  gdbus monitor --system --dest org.freedesktop.login1 --object-path /org/freedesktop/login1 &
+  pids+=("$!")
+  # Stop once either source goes away so that systemd restarts the whole listener.
+  wait -n || true
+  kill "${pids[@]}" 2>/dev/null || true
+  return 1
+}
+
+run_autorandr() {
+  # The delay lets the panel settle. The lock keeps a lid event and a resume that arrive together
+  # from running autorandr at the same time. The second run then finds the profile already loaded
+  # and does nothing.
+  sleep 1
+  flock "${LOCK_FILE}" autorandr --change || true
+}
+
+listen | while read -r line; do
+  case "${line}" in
+    "button/lid "*" open" | *"PrepareForSleep (false,)"*)
+      run_autorandr
+      ;;
+  esac
+done

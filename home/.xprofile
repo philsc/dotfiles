@@ -30,6 +30,8 @@ if systemctl --user is-failed -q redshift.service; then
   systemctl --user reset-failed redshift.service
 fi
 systemctl --user restart redshift.service
+# Re-runs autorandr on lid open and resume. See ~/.bin/autorandr-lid-listener.
+systemctl --user restart autorandr-lid-listener.service
 
 # Set caps-lock as another left-Control key.
 setxkbmap -option ctrl:nocaps

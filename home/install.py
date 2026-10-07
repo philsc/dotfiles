@@ -166,10 +166,12 @@ def create_links(force=False):
         '.config/fontconfig',
         '.config/nvim',
         '.config/redshift',
+        '.config/systemd/user/autorandr-lid-listener.service',
         '.config/gtk-3.0/settings.ini',
         '.inputrc',
     ]
     misc = [
+        ('tools/autorandr-lid-listener', '.bin/autorandr-lid-listener'),
         ('tools/desktop-launch.py', '.bin/desktop-launch.py'),
         ('tools/maim-post-select', '.bin/maim-post-select'),
         ('tools/maim-all', '.bin/maim-all'),

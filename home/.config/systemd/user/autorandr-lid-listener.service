@@ -1,0 +1,9 @@
+[Unit]
+Description=Re-run autorandr when the lid opens or the laptop resumes
+
+# Not enabled through any target. ~/.xprofile starts it once DISPLAY and XAUTHORITY are imported,
+# since autorandr can't do anything without them.
+[Service]
+ExecStart=%h/.bin/autorandr-lid-listener
+Restart=always
+RestartSec=5
