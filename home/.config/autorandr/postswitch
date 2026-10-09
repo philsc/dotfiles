@@ -2,17 +2,21 @@
 
 # The Studio Display's 5K panel is about 218 DPI and awesome on X11 can't
 # scale per screen, so double the font DPI while it's lit and go back to 96
-# otherwise. Decided from xrandr rather than the profile name, so it's right
-# however it's run. Apps only read the DPI at start, so awesome is restarted
-# here (its windows stay open); other apps need reopening by hand.
+# otherwise. urxvt's ProFont is a bitmap that doesn't scale with the DPI, so
+# it gets the hand-drawn size that matches. Decided from xrandr rather than
+# the profile name, so it's right however it's run. Apps only read the DPI at
+# start, so awesome is restarted here (its windows stay open); other apps need
+# reopening by hand.
 if xrandr --query | grep -Eq ' connected (primary )?5120x2880\+'; then
   dpi=192
+  font='xft:ProFont:pixelsize=22'
 else
   dpi=96
+  font='xft:ProFont:pixelsize=11'
 fi
 old=$(xrdb -query | sed -n 's/^Xft\.dpi:[[:space:]]*//p')
 [ "$old" = "$dpi" ] && exit 0
-echo "Xft.dpi: $dpi" | xrdb -merge
+printf 'Xft.dpi: %s\nurxvt.font: %s\n' "$dpi" "$font" | xrdb -merge
 
 # autorandr's systemd service may not hand on the session bus that
 # awesome-client talks over.
