@@ -18,22 +18,28 @@ old=$(xrdb -query | sed -n 's/^Xft\.dpi:[[:space:]]*//p')
 [ "$old" = "$dpi" ] && exit 0
 printf 'Xft.dpi: %s\nurxvt.font: %s\n' "$dpi" "$font" | xrdb -merge
 
-# autorandr's systemd service may not hand on the session bus that
-# awesome-client talks over.
-: "${DBUS_SESSION_BUS_ADDRESS:=unix:path=/run/user/$(id -u)/bus}"
-export DBUS_SESSION_BUS_ADDRESS
+# autorandr's systemd service may not hand on the session bus or runtime
+# directory that awesome-client and systemd-run talk over.
+: "${XDG_RUNTIME_DIR:=/run/user/$(id -u)}"
+: "${DBUS_SESSION_BUS_ADDRESS:=unix:path=$XDG_RUNTIME_DIR/bus}"
+export XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS
 
 # Restarting awesome under a blanked or locked xscreensaver restacks its
 # windows above the lock's: the desktop shows, but xscreensaver keeps the
 # keyboard and mouse, so it looks frozen (as on resuming without the Studio
 # Display after a suspend). So wait until the screen is back, in the
-# background so autorandr isn't held up. The flock keeps a second switch
-# from queueing a second restart.
-setsid -f flock -n "${XDG_RUNTIME_DIR:-/run/user/$(id -u)}/autorandr-awesome-restart" sh -c '
+# background so autorandr isn't held up. The waiter runs as a transient unit
+# of the user's systemd manager because a plain background process would sit
+# in autorandr.service's cgroup and be killed as soon as that oneshot service
+# exits. The flock keeps a second switch from queueing a second restart.
+set -- -E DISPLAY="$DISPLAY"
+[ -n "$XAUTHORITY" ] && set -- "$@" -E XAUTHORITY="$XAUTHORITY"
+systemd-run --user --collect --quiet "$@" \
+    flock -n "$XDG_RUNTIME_DIR/autorandr-awesome-restart" sh -c '
   while xscreensaver-command -time 2>/dev/null |
       grep -Eq " (blanked|locked) since"; do
     sleep 2
   done
   # Deferred, so awesome answers before it replaces itself.
   awesome-client "require(\"gears\").timer.delayed_call(awesome.restart)"
-' >/dev/null 2>&1
+'
