@@ -127,8 +127,13 @@ shopt -u dotglob
 # Tells gpg-agent's pinentry which terminal to ask for a passphrase in.
 export GPG_TTY="$(tty)"
 
-# If the keychain program is installed (ssh- and gpg-agent frontend), use it.
-[[ -n "$(type -P keychain)" ]] && eval "$(keychain --eval --quiet)"
+# Use the per-user ssh-agent that systemd runs (ssh-agent.socket). Its socket
+# path stays the same across X session restarts, so shells in a long-lived
+# tmux keep working.
+if [[ -S "${XDG_RUNTIME_DIR}/openssh_agent" ]]; then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/openssh_agent"
+    unset SSH_AGENT_PID
+fi
 
 unset SSH_ASKPASS
 true
