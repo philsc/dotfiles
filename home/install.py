@@ -117,6 +117,7 @@ def create_folders():
     # Create a certain set of folders that are needed by the dotfiles.
     dirs = [
         '.bin',
+        '.claude',
         '.config',
         '.gnupg',
     ]
@@ -160,6 +161,7 @@ def create_links(force=False):
         '.pythonrc.py',
         '.tmux',
         '.gdbinit',
+        '.claude/CLAUDE.md',
         '.config/alacritty',
         '.config/autorandr',
         '.config/awesome',
