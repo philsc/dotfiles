@@ -307,11 +307,16 @@ def create_git_configs():
         for config in configs:
             cmd = 'git config --global'.split(' ') + [config[0]]
 
-            if subprocess.call(cmd, stdout=devnull) == 0:
-                info('git config %s already configured\n' % config[0])
-            else:
+            current = subprocess.run(cmd, capture_output=True, text=True)
+
+            if current.returncode != 0:
                 subprocess.call(cmd + [config[1]], stdout=devnull)
                 new('git configured %s\n' % config[0])
+            elif current.stdout.rstrip('\n') != config[1]:
+                subprocess.call(cmd + [config[1]], stdout=devnull)
+                new('git updated %s\n' % config[0])
+            else:
+                info('git config %s already configured\n' % config[0])
 
 
 def install_tools():
