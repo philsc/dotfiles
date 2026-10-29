@@ -13,6 +13,7 @@ import tempfile
 import shutil
 import tarfile
 import platform
+import json
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 HOME = os.getenv('HOME')
@@ -162,6 +163,7 @@ def create_links(force=False):
         '.tmux',
         '.gdbinit',
         '.claude/CLAUDE.md',
+        '.claude/helpers/reflow_pr_body.py',
         '.config/alacritty',
         '.config/autorandr',
         '.config/awesome',
@@ -319,6 +321,53 @@ def create_git_configs():
                 info('git config %s already configured\n' % config[0])
 
 
+def create_claude_settings():
+    # Claude Code and other tools write to ~/.claude/settings.json too, so it
+    # can't be a symlink. Merge our hooks into it instead.
+    settings_filename = os.path.join(HOME, '.claude', 'settings.json')
+
+    hooks = [
+        # Rewraps PR bodies at 72 columns after Claude runs `gh pr create` or
+        # `gh pr edit`, so GitHub's squash merge doesn't wrap them again.
+        ('PostToolUse', 'Bash',
+         'python3 "%s"' % os.path.join(
+             HOME, '.claude', 'helpers', 'reflow_pr_body.py'),
+         60),
+    ]
+
+    try:
+        with open(settings_filename, 'r') as f:
+            settings = json.load(f)
+    except FileNotFoundError:
+        settings = {}
+
+    changed = False
+    for (event, matcher, command, timeout) in hooks:
+        entries = settings.setdefault('hooks', {}).setdefault(event, [])
+        installed = any(
+            hook.get('command') == command
+            for entry in entries
+            for hook in entry.get('hooks', []))
+        if installed:
+            info('Claude hook %s already configured\n' % command)
+            continue
+        entries.append({
+            'matcher': matcher,
+            'hooks': [{
+                'type': 'command',
+                'command': command,
+                'timeout': timeout,
+            }],
+        })
+        new('Claude hook %s configured\n' % command)
+        changed = True
+
+    if changed:
+        with open(settings_filename, 'w') as f:
+            json.dump(settings, f, indent=2)
+            f.write('\n')
+
+
 def install_tools():
     tools = [
         ('https://github.com/BurntSushi/ripgrep/releases/download/%s/%s.tar.gz'
@@ -393,6 +442,7 @@ def main(argv):
     create_min_files()
     create_empty_files()
     create_git_configs()
+    create_claude_settings()
     install_tools()
     install_go_programs()
 
