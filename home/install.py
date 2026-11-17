@@ -215,7 +215,12 @@ def create_links(force=False):
     ]
 
     from os.path import join
-    links = [(l, l) for l in direct] + \
+    # Link each skill on its own: ~/.claude/skills also holds skills that
+    # other tools install and update.
+    skills = [join('.claude/skills', s)
+              for s in sorted(os.listdir(join(ROOT, '.claude/skills')))]
+
+    links = [(l, l) for l in direct + skills] + \
         misc
 
     for link in links:
